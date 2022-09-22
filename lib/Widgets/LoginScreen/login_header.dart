@@ -12,7 +12,7 @@ class LoginHeader extends StatelessWidget {
       children: [
         Spacer(),
         Container(
-          margin: EdgeInsets.only(bottom: 20),
+          margin: EdgeInsets.only(bottom: 10),
           child: Image.asset(
             'assets/images/cetasol_icon.png',
             height: 100,

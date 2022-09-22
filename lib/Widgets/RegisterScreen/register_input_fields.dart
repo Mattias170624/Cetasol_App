@@ -2,34 +2,53 @@
 
 import 'dart:io';
 
-import 'package:cetasol_app/Screens/signup_screen_1.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class LoginInputFields extends StatefulWidget {
+class RegisterInputFields extends StatefulWidget {
   @override
-  State<LoginInputFields> createState() => _LoginInputFieldsState();
+  State<RegisterInputFields> createState() => _RegisterInputFieldsState();
 }
 
-class _LoginInputFieldsState extends State<LoginInputFields> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+class _RegisterInputFieldsState extends State<RegisterInputFields> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
-      padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+      width: double.infinity,
+      margin: EdgeInsets.only(left: 20, right: 20),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Account',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+              ),
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            margin: EdgeInsets.only(bottom: 20),
+            height: 3,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
           Container(
             margin: EdgeInsets.only(bottom: 20),
             height: 40,
             child: Platform.isAndroid
                 ? TextField(
                     textInputAction: TextInputAction.next,
-                    controller: emailController,
+                    controller: _emailController,
                     decoration: InputDecoration(
                       fillColor: Theme.of(context).colorScheme.secondary,
                       border: OutlineInputBorder(),
@@ -49,7 +68,7 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                     autocorrect: false,
                   )
                 : CupertinoTextField(
-                    controller: emailController,
+                    controller: _emailController,
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.emailAddress,
                     decoration: BoxDecoration(
@@ -72,12 +91,13 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                     autocorrect: false,
                   ),
           ),
-          SizedBox(
+          Container(
+            margin: EdgeInsets.only(bottom: 20),
             height: 40,
             child: Platform.isAndroid
                 ? TextField(
-                    textInputAction: TextInputAction.done,
-                    controller: passwordController,
+                    textInputAction: TextInputAction.next,
+                    controller: _passwordController,
                     decoration: InputDecoration(
                       fillColor: Theme.of(context).colorScheme.secondary,
                       border: OutlineInputBorder(),
@@ -97,8 +117,8 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                     autocorrect: false,
                   )
                 : CupertinoTextField(
-                    controller: passwordController,
-                    textInputAction: TextInputAction.done,
+                    controller: _passwordController,
+                    textInputAction: TextInputAction.next,
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.secondary,
                       borderRadius: BorderRadius.circular(10),
@@ -114,26 +134,69 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                         color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
-                    placeholder: 'Password',
                     obscureText: true,
+                    placeholder: 'Password',
                     enableSuggestions: false,
                     autocorrect: false,
                   ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 5),
-            alignment: Alignment.centerRight,
-            child: Text(
-              'Forgot password?',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-                fontWeight: FontWeight.w400,
-                fontSize: 15,
-              ),
-            ),
+            margin: EdgeInsets.only(bottom: 10),
+            height: 40,
+            child: Platform.isAndroid
+                ? TextField(
+                    textInputAction: TextInputAction.done,
+                    controller: _phoneNumberController,
+                    decoration: InputDecoration(
+                      fillColor: Theme.of(context).colorScheme.secondary,
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(
+                        Icons.phone_outlined,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      filled: true,
+                      labelText: 'Phone Number',
+                    ),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                    keyboardType: TextInputType.phone,
+                    enableSuggestions: false,
+                    autocorrect: false,
+                  )
+                : CupertinoTextField(
+                    controller: _phoneNumberController,
+                    textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.phone,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 1,
+                      ),
+                    ),
+                    prefix: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Icon(
+                        CupertinoIcons.mail,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    placeholder: 'Phone Number',
+                    enableSuggestions: false,
+                    autocorrect: false,
+                  ),
+          ),
+          Text(
+            'A verification code will be sent to this number on the next page',
+            style: TextStyle(fontSize: 13),
+            textAlign: TextAlign.left,
           ),
           Spacer(),
-          SizedBox(
+          Container(
+            margin: EdgeInsets.only(bottom: 60),
             width: double.infinity,
             child: Platform.isAndroid
                 ? ElevatedButton(
@@ -155,36 +218,6 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                     ),
                     onPressed: () {},
                   ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 10),
-            child: Text(
-              "Don't have an account?",
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Padding(
-            padding: Platform.isAndroid
-                ? EdgeInsets.only(bottom: 20)
-                : EdgeInsets.only(bottom: 30),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignUpScreen1()),
-                );
-              },
-              child: Text(
-                'Sign up',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 15,
-                ),
-              ),
-            ),
           ),
         ],
       ),
