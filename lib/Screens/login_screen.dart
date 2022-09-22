@@ -37,7 +37,28 @@ class LoginScreen extends StatelessWidget {
             ),
           )
         : CupertinoPageScaffold(
-            child: Text('test'),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: SafeArea(
+                  bottom: false,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          child: LoginHeader(),
+                        ),
+                      ),
+                      Expanded(
+                        child: LoginInputFields(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           );
   }
 }

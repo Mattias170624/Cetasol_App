@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -23,51 +25,99 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
           Container(
             margin: EdgeInsets.only(bottom: 20),
             height: 40,
-            child: TextField(
-              textInputAction: TextInputAction.next,
-              controller: emailController,
-              decoration: InputDecoration(
-                fillColor: Theme.of(context).colorScheme.secondary,
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(
-                  Icons.email_outlined,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                filled: true,
-                labelText: 'Email',
-              ),
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-              ),
-              keyboardType: TextInputType.emailAddress,
-              enableSuggestions: false,
-              autocorrect: false,
-            ),
+            child: Platform.isAndroid
+                ? TextField(
+                    textInputAction: TextInputAction.next,
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      fillColor: Theme.of(context).colorScheme.secondary,
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(
+                        Icons.email_outlined,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      filled: true,
+                      labelText: 'Email',
+                    ),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    enableSuggestions: false,
+                    autocorrect: false,
+                  )
+                : CupertinoTextField(
+                    controller: emailController,
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 1,
+                      ),
+                    ),
+                    prefix: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Icon(
+                        CupertinoIcons.mail,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    placeholder: 'Email',
+                    enableSuggestions: false,
+                    autocorrect: false,
+                  ),
           ),
           SizedBox(
             height: 40,
-            child: TextField(
-              textInputAction: TextInputAction.done,
-              controller: passwordController,
-              decoration: InputDecoration(
-                fillColor: Theme.of(context).colorScheme.secondary,
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(
-                  Icons.lock_outline,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                filled: true,
-                labelText: 'Password',
-              ),
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-              ),
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
-            ),
+            child: Platform.isAndroid
+                ? TextField(
+                    textInputAction: TextInputAction.done,
+                    controller: passwordController,
+                    decoration: InputDecoration(
+                      fillColor: Theme.of(context).colorScheme.secondary,
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(
+                        Icons.lock_outline,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      filled: true,
+                      labelText: 'Password',
+                    ),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                    obscureText: true,
+                    enableSuggestions: false,
+                    autocorrect: false,
+                  )
+                : CupertinoTextField(
+                    controller: passwordController,
+                    textInputAction: TextInputAction.done,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 1,
+                      ),
+                    ),
+                    prefix: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Icon(
+                        CupertinoIcons.lock,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    placeholder: 'Password',
+                    obscureText: true,
+                    enableSuggestions: false,
+                    autocorrect: false,
+                  ),
           ),
           Container(
             margin: EdgeInsets.only(top: 5),
@@ -76,34 +126,54 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
               'Forgot password?',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimary,
+                fontWeight: FontWeight.w400,
+                fontSize: 15,
               ),
             ),
           ),
           Spacer(),
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                primary: Theme.of(context).colorScheme.onPrimary,
-                fixedSize: Size(double.infinity, 40),
-              ),
-              child: Text(
-                'Login',
-                style: Theme.of(context).textTheme.titleMedium,
+            child: Platform.isAndroid
+                ? ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                      fixedSize: Size(double.infinity, 40),
+                    ),
+                    child: Text(
+                      'Login',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  )
+                : CupertinoButton(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    child: Text(
+                      'Login',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    onPressed: () {},
+                  ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: Text(
+              "Don't have an account?",
+              style: TextStyle(
+                fontSize: 14,
               ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 10),
-            child: Text("Don't have an account?"),
-          ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 20),
+            padding: Platform.isAndroid
+                ? EdgeInsets.only(bottom: 20)
+                : EdgeInsets.only(bottom: 30),
             child: Text(
               'Sign up',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimary,
+                fontWeight: FontWeight.w400,
+                fontSize: 15,
               ),
             ),
           ),
