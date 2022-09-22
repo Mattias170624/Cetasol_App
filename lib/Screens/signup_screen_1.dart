@@ -2,32 +2,39 @@
 
 import 'dart:io';
 
-import 'package:cetasol_app/Widgets/LoginScreen/login_header.dart';
-import 'package:cetasol_app/Widgets/LoginScreen/login_input_fields.dart';
+import 'package:cetasol_app/Widgets/RegisterScreen/register_header_icon.dart';
+import 'package:cetasol_app/Widgets/RegisterScreen/register_input_fields.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
+class SignUpScreen1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double padding = MediaQuery.of(context).padding.top;
-    double deviceHeight = MediaQuery.of(context).size.height - padding;
+    double deviceSafeHeight = MediaQuery.of(context).size.height -
+        (MediaQuery.of(context).padding.top + kToolbarHeight);
 
     return Platform.isAndroid
         ? Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              title: Text(
+                'Sign up 1/2',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
             body: SafeArea(
               child: SingleChildScrollView(
                 physics: const ClampingScrollPhysics(),
                 child: Container(
-                  color: Theme.of(context).colorScheme.primary,
-                  height: deviceHeight,
+                  height: deviceSafeHeight,
                   child: Column(
                     children: [
                       Expanded(
-                        child: LoginHeader(),
+                        child: RegisterHeaderIcon(),
                       ),
                       Expanded(
-                        child: LoginInputFields(),
+                        flex: 2,
+                        child: RegisterInputFields(),
                       ),
                     ],
                   ),
@@ -36,7 +43,7 @@ class LoginScreen extends StatelessWidget {
             ),
           )
         : CupertinoPageScaffold(
-            backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: Colors.white,
             child: SingleChildScrollView(
               physics: const ClampingScrollPhysics(),
               child: SizedBox(
@@ -44,14 +51,7 @@ class LoginScreen extends StatelessWidget {
                 child: SafeArea(
                   bottom: false,
                   child: Column(
-                    children: [
-                      Expanded(
-                        child: LoginHeader(),
-                      ),
-                      Expanded(
-                        child: LoginInputFields(),
-                      ),
-                    ],
+                    children: [],
                   ),
                 ),
               ),
