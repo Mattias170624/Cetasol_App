@@ -167,8 +167,8 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                   )
                 : CupertinoTextField(
                     controller: _phoneNumberController,
-                    textInputAction: TextInputAction.done,
-                    keyboardType: TextInputType.phone,
+                    textInputAction: TextInputAction.continueAction,
+                    keyboardType: TextInputType.number,
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.secondary,
                       borderRadius: BorderRadius.circular(10),
@@ -180,7 +180,7 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                     prefix: Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: Icon(
-                        CupertinoIcons.mail,
+                        CupertinoIcons.phone,
                         color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
@@ -196,7 +196,9 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
           ),
           Spacer(),
           Container(
-            margin: EdgeInsets.only(bottom: 60),
+            margin: Platform.isAndroid
+                ? EdgeInsets.only(bottom: 60)
+                : EdgeInsets.only(bottom: 10),
             width: double.infinity,
             child: Platform.isAndroid
                 ? ElevatedButton(
@@ -206,7 +208,7 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                       fixedSize: Size(double.infinity, 40),
                     ),
                     child: Text(
-                      'Login',
+                      'Continue',
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                   )

@@ -17,6 +17,8 @@ class LoginScreen extends StatelessWidget {
         ? Scaffold(
             body: SafeArea(
               child: SingleChildScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 physics: const ClampingScrollPhysics(),
                 child: Container(
                   color: Theme.of(context).colorScheme.primary,
@@ -38,6 +40,7 @@ class LoginScreen extends StatelessWidget {
         : CupertinoPageScaffold(
             backgroundColor: Theme.of(context).colorScheme.primary,
             child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               physics: const ClampingScrollPhysics(),
               child: SizedBox(
                 height: MediaQuery.of(context).size.height,

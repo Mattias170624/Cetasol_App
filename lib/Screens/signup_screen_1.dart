@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 class SignUpScreen1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double iOSNavbarHeight = MediaQuery.of(context).padding.top;
     double deviceSafeHeight = MediaQuery.of(context).size.height -
         (MediaQuery.of(context).padding.top + kToolbarHeight);
 
@@ -24,6 +25,8 @@ class SignUpScreen1 extends StatelessWidget {
             ),
             body: SafeArea(
               child: SingleChildScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 physics: const ClampingScrollPhysics(),
                 child: Container(
                   height: deviceSafeHeight,
@@ -43,15 +46,39 @@ class SignUpScreen1 extends StatelessWidget {
             ),
           )
         : CupertinoPageScaffold(
-            backgroundColor: Colors.white,
-            child: SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: SafeArea(
-                  bottom: false,
+            navigationBar: CupertinoNavigationBar(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              leading: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(
+                  CupertinoIcons.back,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
+              middle: Text(
+                'Sign up 1/2',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            child: SafeArea(
+              child: SingleChildScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                physics: const ClampingScrollPhysics(),
+                child: Container(
+                  height: deviceSafeHeight - iOSNavbarHeight,
                   child: Column(
-                    children: [],
+                    children: [
+                      Expanded(
+                        child: RegisterHeaderIcon(),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: RegisterInputFields(),
+                      ),
+                    ],
                   ),
                 ),
               ),
