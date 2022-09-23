@@ -6,6 +6,9 @@ import 'package:cetasol_app/Screens/signup_screen_1.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 class LoginInputFields extends StatefulWidget {
   @override
   State<LoginInputFields> createState() => _LoginInputFieldsState();
@@ -14,7 +17,9 @@ class LoginInputFields extends StatefulWidget {
 class _LoginInputFieldsState extends State<LoginInputFields> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -123,12 +128,15 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
           Container(
             margin: EdgeInsets.only(top: 5),
             alignment: Alignment.centerRight,
-            child: Text(
-              'Forgot password?',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-                fontWeight: FontWeight.w400,
-                fontSize: 15,
+            child: GestureDetector(
+              onTap: addUser,
+              child: Text(
+                'Forgot password?',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 15,
+                ),
               ),
             ),
           ),
@@ -189,5 +197,17 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
         ],
       ),
     );
+  }
+
+  Future<void> addUser() {
+    // Call the user's CollectionReference to add a new user
+    return users
+        .add({
+          'full_name': 'name', // John Doe
+          'company': 'test', // Stokes and Sons
+          'age': '10' // 42
+        })
+        .then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
   }
 }
