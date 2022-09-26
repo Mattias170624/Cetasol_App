@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Platform.isAndroid
         ? MaterialApp(
+            debugShowCheckedModeBanner: false,
             theme: ThemeData(
               scaffoldBackgroundColor: Color(0xFF143452),
               colorScheme: const ColorScheme(
@@ -48,7 +50,7 @@ class MyApp extends StatelessWidget {
                 titleMedium: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
                 titleSmall: TextStyle(
                   fontSize: 13,
@@ -84,7 +86,7 @@ class MyApp extends StatelessWidget {
                 titleMedium: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
                 titleSmall: TextStyle(
                   fontSize: 13,
