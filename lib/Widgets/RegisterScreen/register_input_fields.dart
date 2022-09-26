@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:cetasol_app/Screens/signup_screen_2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -202,7 +203,16 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
             width: double.infinity,
             child: Platform.isAndroid
                 ? ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_validateUserInputs()) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUpScreen2(),
+                          ),
+                        );
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       primary: Theme.of(context).colorScheme.onPrimary,
                       fixedSize: Size(double.infinity, 40),
@@ -215,7 +225,7 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                 : CupertinoButton(
                     color: Theme.of(context).colorScheme.onPrimary,
                     child: Text(
-                      'Login',
+                      'Continue',
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     onPressed: () {},
@@ -224,5 +234,9 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
         ],
       ),
     );
+  }
+
+  bool _validateUserInputs() {
+    return true;
   }
 }
