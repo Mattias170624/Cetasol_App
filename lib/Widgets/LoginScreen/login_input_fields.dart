@@ -135,7 +135,7 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimary,
                   fontWeight: FontWeight.w400,
-                  fontSize: 15,
+                  fontSize: 14,
                 ),
               ),
             ),
@@ -155,7 +155,6 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurface,
                         fontSize: 20,
-                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   )
@@ -166,7 +165,6 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurface,
                         fontSize: 20,
-                        fontWeight: FontWeight.w400,
                       ),
                     ),
                     onPressed: () {},
@@ -177,7 +175,7 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
             child: Text(
               "Don't have an account?",
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 13,
               ),
             ),
           ),
@@ -197,7 +195,7 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimary,
                   fontWeight: FontWeight.w400,
-                  fontSize: 15,
+                  fontSize: 14,
                 ),
               ),
             ),

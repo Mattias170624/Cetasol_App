@@ -28,7 +28,7 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
             child: Text(
               'Account',
               style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.surface,
                 fontWeight: FontWeight.w400,
                 fontSize: 16,
               ),
@@ -36,7 +36,7 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
           ),
           Container(
             width: double.infinity,
-            margin: EdgeInsets.only(bottom: 20),
+            margin: EdgeInsets.only(bottom: 20, top: 5),
             height: 3,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -219,14 +219,20 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                     ),
                     child: Text(
                       'Continue',
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 20,
+                      ),
                     ),
                   )
                 : CupertinoButton(
                     color: Theme.of(context).colorScheme.onPrimary,
                     child: Text(
                       'Continue',
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 20,
+                      ),
                     ),
                     onPressed: () {},
                   ),

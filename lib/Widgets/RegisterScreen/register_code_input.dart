@@ -25,12 +25,13 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
       margin: EdgeInsets.only(left: 20, right: 20),
       child: Column(
         children: [
+          Spacer(),
           Container(
             alignment: Alignment.centerLeft,
             child: Text(
               'Verification',
               style: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.surface,
                 fontWeight: FontWeight.w400,
                 fontSize: 16,
               ),
@@ -38,24 +39,25 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
           ),
           Container(
             width: double.infinity,
-            margin: EdgeInsets.only(bottom: 20),
+            margin: EdgeInsets.only(bottom: 20, top: 5),
             height: 3,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
           Container(
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.primary,
             ),
             child: Column(
               children: [
                 Text(
                   'Enter your code',
                   style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontSize: 20,
                     fontWeight: FontWeight.w400,
                   ),
@@ -78,16 +80,18 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(0),
-                            fillColor: Theme.of(context).colorScheme.onPrimary,
+                            fillColor: Theme.of(context).colorScheme.secondary,
                             filled: true,
                             border: OutlineInputBorder(),
                             hintText: '...',
-                            hintStyle: TextStyle(color: Colors.white),
+                            hintStyle: TextStyle(
+                                color: Theme.of(context).colorScheme.surface),
                           ),
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(1)
                           ],
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.surface),
                         ),
                       ),
                       Spacer(),
@@ -102,16 +106,17 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(0),
-                            fillColor: Theme.of(context).colorScheme.onPrimary,
+                            fillColor: Theme.of(context).colorScheme.secondary,
                             filled: true,
                             border: OutlineInputBorder(),
                             hintText: '...',
-                            hintStyle: TextStyle(color: Colors.white),
+                            hintStyle: TextStyle(color: Colors.black),
                           ),
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(1)
                           ],
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.surface),
                         ),
                       ),
                       Spacer(),
@@ -126,16 +131,18 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(0),
-                            fillColor: Theme.of(context).colorScheme.onPrimary,
+                            fillColor: Theme.of(context).colorScheme.secondary,
                             filled: true,
                             border: OutlineInputBorder(),
                             hintText: '...',
-                            hintStyle: TextStyle(color: Colors.white),
+                            hintStyle: TextStyle(
+                                color: Theme.of(context).colorScheme.surface),
                           ),
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(1)
                           ],
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.surface),
                         ),
                       ),
                       Spacer(),
@@ -150,16 +157,18 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(0),
-                            fillColor: Theme.of(context).colorScheme.onPrimary,
+                            fillColor: Theme.of(context).colorScheme.secondary,
                             filled: true,
                             border: OutlineInputBorder(),
                             hintText: '...',
-                            hintStyle: TextStyle(color: Colors.white),
+                            hintStyle: TextStyle(
+                                color: Theme.of(context).colorScheme.surface),
                           ),
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(1)
                           ],
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.surface),
                         ),
                       ),
                       Spacer(),
@@ -174,16 +183,18 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(0),
-                            fillColor: Theme.of(context).colorScheme.onPrimary,
+                            fillColor: Theme.of(context).colorScheme.secondary,
                             filled: true,
                             border: OutlineInputBorder(),
                             hintText: '...',
-                            hintStyle: TextStyle(color: Colors.white),
+                            hintStyle: TextStyle(
+                                color: Theme.of(context).colorScheme.surface),
                           ),
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(1)
                           ],
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.surface),
                         ),
                       ),
                       Spacer(),
@@ -202,7 +213,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                 Text(
                   "Didn't recieve any text?",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.surface,
                     fontSize: 13,
                   ),
                 ),
@@ -232,7 +243,10 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
               ),
               child: Text(
                 'Continue',
-                style: Theme.of(context).textTheme.titleMedium,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 20,
+                ),
               ),
             ),
           ),

@@ -10,16 +10,18 @@ class RegisterTitle extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Spacer(),
           Text(
             'A 5 digit code has been\nsent to your device',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 24,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.w400,
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(bottom: 25),
+            padding: EdgeInsets.only(bottom: 20),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
