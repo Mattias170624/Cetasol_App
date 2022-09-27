@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:flutter/animation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -72,130 +75,273 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                       SizedBox(
                         width: 50,
                         height: 50,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.next,
-                          onChanged: (_) => FocusScope.of(context).nextFocus(),
-                          controller: box1,
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(0),
-                            fillColor: Theme.of(context).colorScheme.secondary,
-                            filled: true,
-                            border: OutlineInputBorder(),
-                            hintText: '...',
-                            hintStyle: TextStyle(
-                                color: Theme.of(context).colorScheme.surface),
-                          ),
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(1)
-                          ],
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.surface),
-                        ),
+                        child: Platform.isAndroid
+                            ? TextFormField(
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.next,
+                                onChanged: (_) =>
+                                    FocusScope.of(context).nextFocus(),
+                                controller: box1,
+                                textAlign: TextAlign.center,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(0),
+                                  fillColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  filled: true,
+                                  border: OutlineInputBorder(),
+                                  hintText: '...',
+                                  hintStyle: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .surface),
+                                ),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(1)
+                                ],
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.surface),
+                              )
+                            : CupertinoTextField(
+                                placeholder: '...',
+                                textAlign: TextAlign.center,
+                                controller: box1,
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.next,
+                                onChanged: (_) =>
+                                    FocusScope.of(context).nextFocus(),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(1)
+                                ],
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
+                                placeholderStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
+                                decoration: BoxDecoration(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
                       ),
                       Spacer(),
                       SizedBox(
                         width: 50,
                         height: 50,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.next,
-                          onChanged: (_) => FocusScope.of(context).nextFocus(),
-                          controller: box2,
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(0),
-                            fillColor: Theme.of(context).colorScheme.secondary,
-                            filled: true,
-                            border: OutlineInputBorder(),
-                            hintText: '...',
-                            hintStyle: TextStyle(color: Colors.black),
-                          ),
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(1)
-                          ],
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.surface),
-                        ),
+                        child: Platform.isAndroid
+                            ? TextFormField(
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.next,
+                                onChanged: (_) =>
+                                    FocusScope.of(context).nextFocus(),
+                                controller: box2,
+                                textAlign: TextAlign.center,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(0),
+                                  fillColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  filled: true,
+                                  border: OutlineInputBorder(),
+                                  hintText: '...',
+                                  hintStyle: TextStyle(color: Colors.black),
+                                ),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(1)
+                                ],
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.surface),
+                              )
+                            : CupertinoTextField(
+                                placeholder: '...',
+                                textAlign: TextAlign.center,
+                                controller: box2,
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.next,
+                                onChanged: (_) =>
+                                    FocusScope.of(context).nextFocus(),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(1)
+                                ],
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
+                                placeholderStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
+                                decoration: BoxDecoration(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
                       ),
                       Spacer(),
                       SizedBox(
                         width: 50,
                         height: 50,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.next,
-                          onChanged: (_) => FocusScope.of(context).nextFocus(),
-                          controller: box3,
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(0),
-                            fillColor: Theme.of(context).colorScheme.secondary,
-                            filled: true,
-                            border: OutlineInputBorder(),
-                            hintText: '...',
-                            hintStyle: TextStyle(
-                                color: Theme.of(context).colorScheme.surface),
-                          ),
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(1)
-                          ],
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.surface),
-                        ),
+                        child: Platform.isAndroid
+                            ? TextFormField(
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.next,
+                                onChanged: (_) =>
+                                    FocusScope.of(context).nextFocus(),
+                                controller: box3,
+                                textAlign: TextAlign.center,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(0),
+                                  fillColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  filled: true,
+                                  border: OutlineInputBorder(),
+                                  hintText: '...',
+                                  hintStyle: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .surface),
+                                ),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(1)
+                                ],
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.surface),
+                              )
+                            : CupertinoTextField(
+                                placeholder: '...',
+                                textAlign: TextAlign.center,
+                                controller: box3,
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.next,
+                                onChanged: (_) =>
+                                    FocusScope.of(context).nextFocus(),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(1)
+                                ],
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
+                                placeholderStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
+                                decoration: BoxDecoration(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
                       ),
                       Spacer(),
                       SizedBox(
                         width: 50,
                         height: 50,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.next,
-                          onChanged: (_) => FocusScope.of(context).nextFocus(),
-                          controller: box4,
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(0),
-                            fillColor: Theme.of(context).colorScheme.secondary,
-                            filled: true,
-                            border: OutlineInputBorder(),
-                            hintText: '...',
-                            hintStyle: TextStyle(
-                                color: Theme.of(context).colorScheme.surface),
-                          ),
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(1)
-                          ],
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.surface),
-                        ),
+                        child: Platform.isAndroid
+                            ? TextFormField(
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.next,
+                                onChanged: (_) =>
+                                    FocusScope.of(context).nextFocus(),
+                                controller: box4,
+                                textAlign: TextAlign.center,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(0),
+                                  fillColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  filled: true,
+                                  border: OutlineInputBorder(),
+                                  hintText: '...',
+                                  hintStyle: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .surface),
+                                ),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(1)
+                                ],
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.surface),
+                              )
+                            : CupertinoTextField(
+                                placeholder: '...',
+                                textAlign: TextAlign.center,
+                                controller: box4,
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.next,
+                                onChanged: (_) =>
+                                    FocusScope.of(context).nextFocus(),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(1)
+                                ],
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
+                                placeholderStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
+                                decoration: BoxDecoration(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
                       ),
                       Spacer(),
                       SizedBox(
                         width: 50,
                         height: 50,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.next,
-                          onChanged: (_) => FocusScope.of(context).unfocus(),
-                          controller: box5,
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(0),
-                            fillColor: Theme.of(context).colorScheme.secondary,
-                            filled: true,
-                            border: OutlineInputBorder(),
-                            hintText: '...',
-                            hintStyle: TextStyle(
-                                color: Theme.of(context).colorScheme.surface),
-                          ),
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(1)
-                          ],
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.surface),
-                        ),
+                        child: Platform.isAndroid
+                            ? TextFormField(
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.next,
+                                onChanged: (_) =>
+                                    FocusScope.of(context).unfocus(),
+                                controller: box5,
+                                textAlign: TextAlign.center,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(0),
+                                  fillColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  filled: true,
+                                  border: OutlineInputBorder(),
+                                  hintText: '...',
+                                  hintStyle: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .surface),
+                                ),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(1)
+                                ],
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.surface),
+                              )
+                            : CupertinoTextField(
+                                placeholder: '...',
+                                textAlign: TextAlign.center,
+                                controller: box5,
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.done,
+                                onChanged: (_) =>
+                                    FocusScope.of(context).unfocus(),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(1)
+                                ],
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
+                                placeholderStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
+                                decoration: BoxDecoration(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
                       ),
                       Spacer(),
                     ],
@@ -233,22 +379,36 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
           ),
           Spacer(),
           Container(
-            margin: EdgeInsets.only(bottom: 60),
+            margin: Platform.isAndroid
+                ? EdgeInsets.only(bottom: 60)
+                : EdgeInsets.only(bottom: 0),
             width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                primary: Theme.of(context).colorScheme.onPrimary,
-                fixedSize: Size(double.infinity, 40),
-              ),
-              child: Text(
-                'Continue',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: 20,
-                ),
-              ),
-            ),
+            child: Platform.isAndroid
+                ? ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      primary: Theme.of(context).colorScheme.onPrimary,
+                      fixedSize: Size(double.infinity, 40),
+                    ),
+                    child: Text(
+                      'Continue',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 20,
+                      ),
+                    ),
+                  )
+                : CupertinoButton(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    child: Text(
+                      'Continue',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 20,
+                      ),
+                    ),
+                    onPressed: () {},
+                  ),
           ),
         ],
       ),

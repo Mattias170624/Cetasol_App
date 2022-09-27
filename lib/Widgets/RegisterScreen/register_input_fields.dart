@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:cetasol_app/Screens/signup_screen_2.dart';
 import 'package:cetasol_app/Widgets/RegisterScreen/register_inputs.dart';
+import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +76,6 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                           ),
                           textInputAction: TextInputAction.next,
                           controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
                           enableSuggestions: false,
                           autocorrect: false,
                           style: TextStyle(
@@ -91,27 +91,47 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                             ],
                           ),
                         )
-                      : CupertinoTextField(
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.emailAddress,
+                      : CupertinoTextFormFieldRow(
+                          prefix: Container(
+                            padding: EdgeInsets.only(
+                                left: 10, right: 5, top: 5, bottom: 5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                              ),
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(2),
+                              child: Icon(
+                                CupertinoIcons.mail,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                          ),
                           decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
                             color: Theme.of(context).colorScheme.secondary,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.primary,
-                              width: 1,
-                            ),
                           ),
-                          prefix: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Icon(
-                              CupertinoIcons.mail,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
+                          padding: EdgeInsets.zero,
                           placeholder: 'Email',
+                          style: TextStyle(height: 1.5),
+                          textInputAction: TextInputAction.next,
+                          controller: _emailController,
                           enableSuggestions: false,
                           autocorrect: false,
+                          validator: MultiValidator(
+                            [
+                              RequiredValidator(errorText: "Required"),
+                              EmailValidator(
+                                  errorText:
+                                      "Please enter a valid email address"),
+                            ],
+                          ),
                         ),
                 ),
                 Container(
@@ -148,7 +168,6 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                           ),
                           textInputAction: TextInputAction.next,
                           controller: _passwordController,
-                          keyboardType: TextInputType.emailAddress,
                           enableSuggestions: false,
                           obscureText: obscurePassword,
                           autocorrect: false,
@@ -165,27 +184,49 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                             ],
                           ),
                         )
-                      : CupertinoTextField(
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.emailAddress,
+                      : CupertinoTextFormFieldRow(
+                          prefix: Container(
+                            padding: EdgeInsets.only(
+                                left: 10, right: 5, top: 5, bottom: 5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                              ),
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(2),
+                              child: Icon(
+                                CupertinoIcons.lock,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                          ),
                           decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
                             color: Theme.of(context).colorScheme.secondary,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.primary,
-                              width: 1,
-                            ),
                           ),
-                          prefix: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Icon(
-                              CupertinoIcons.mail,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                          placeholder: 'Email',
+                          padding: EdgeInsets.zero,
+                          placeholder: 'Password',
+                          style: TextStyle(height: 1.5),
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.visiblePassword,
+                          obscureText: true,
+                          controller: _passwordController,
                           enableSuggestions: false,
                           autocorrect: false,
+                          validator: MultiValidator(
+                            [
+                              RequiredValidator(errorText: "Required"),
+                              MinLengthValidator(10,
+                                  errorText:
+                                      'Must contain atleast 10 characters')
+                            ],
+                          ),
                         ),
                 ),
                 Container(
@@ -215,27 +256,43 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                           ),
                           validator: RequiredValidator(errorText: "Required"),
                         )
-                      : CupertinoTextField(
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.emailAddress,
+                      : CupertinoTextFormFieldRow(
+                          prefix: Container(
+                            padding: EdgeInsets.only(
+                                left: 10, right: 5, top: 5, bottom: 5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                              ),
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(2),
+                              child: Icon(
+                                CupertinoIcons.phone,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                          ),
                           decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
                             color: Theme.of(context).colorScheme.secondary,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.primary,
-                              width: 1,
-                            ),
                           ),
-                          prefix: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Icon(
-                              CupertinoIcons.mail,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                          placeholder: 'Email',
+                          padding: EdgeInsets.zero,
+                          placeholder: 'Phone Number',
+                          style: TextStyle(height: 1.5),
+                          keyboardType: Platform.isIOS
+                              ? TextInputType.numberWithOptions(
+                                  signed: true, decimal: true)
+                              : TextInputType.number,
+                          controller: _phoneController,
                           enableSuggestions: false,
                           autocorrect: false,
+                          validator: RequiredValidator(errorText: "Required"),
                         ),
                 ),
               ],
@@ -288,7 +345,16 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                         fontSize: 20,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_validateUserInputs()) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUpScreen2(),
+                          ),
+                        );
+                      }
+                    },
                   ),
           ),
         ],
