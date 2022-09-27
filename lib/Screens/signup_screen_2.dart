@@ -80,7 +80,15 @@ class SignUpScreen2 extends StatelessWidget {
                 child: Container(
                   height: deviceSafeHeight - iOSNavbarHeight,
                   child: Column(
-                    children: [],
+                    children: [
+                      Expanded(
+                        child: RegisterTitle(),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: RegisterCodeInput(),
+                      ),
+                    ],
                   ),
                 ),
               ),

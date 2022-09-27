@@ -62,31 +62,44 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                           ),
                           validator: RequiredValidator(errorText: "Required"),
                         )
-                      : CupertinoTextField(
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.emailAddress,
+                      : CupertinoTextFormFieldRow(
+                          prefix: Container(
+                            padding: EdgeInsets.only(
+                                left: 10, right: 5, top: 5, bottom: 5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                              ),
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(2),
+                              child: Icon(
+                                CupertinoIcons.mail,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                          ),
                           decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
                             color: Theme.of(context).colorScheme.secondary,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.primary,
-                              width: 1,
-                            ),
                           ),
-                          prefix: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Icon(
-                              CupertinoIcons.mail,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
+                          padding: EdgeInsets.zero,
                           placeholder: 'Email',
+                          style: TextStyle(height: 1.5),
+                          textInputAction: TextInputAction.next,
+                          controller: _emailController,
                           enableSuggestions: false,
                           autocorrect: false,
+                          validator: RequiredValidator(errorText: "Required"),
                         ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(bottom: 10),
+                  padding: EdgeInsets.only(bottom: 5),
                   child: Platform.isAndroid
                       ? TextFormField(
                           decoration: InputDecoration(
@@ -113,27 +126,41 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                           ),
                           validator: RequiredValidator(errorText: "Required"),
                         )
-                      : CupertinoTextField(
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.emailAddress,
+                      : CupertinoTextFormFieldRow(
+                          prefix: Container(
+                            padding: EdgeInsets.only(
+                                left: 10, right: 5, top: 5, bottom: 5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                              ),
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(2),
+                              child: Icon(
+                                CupertinoIcons.lock,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                          ),
                           decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
                             color: Theme.of(context).colorScheme.secondary,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.primary,
-                              width: 1,
-                            ),
                           ),
-                          prefix: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Icon(
-                              CupertinoIcons.mail,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                          placeholder: 'Email',
+                          padding: EdgeInsets.zero,
+                          placeholder: 'Password',
+                          style: TextStyle(height: 1.5),
+                          textInputAction: TextInputAction.done,
+                          obscureText: true,
+                          controller: _passwordController,
                           enableSuggestions: false,
                           autocorrect: false,
+                          validator: RequiredValidator(errorText: "Required"),
                         ),
                 ),
               ],
@@ -186,7 +213,12 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                         fontSize: 20,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_validateUserInputs()) {
+                        // Login user to fire auth
+                        // Transfer user to homescreen
+                      }
+                    },
                   ),
           ),
           Padding(
