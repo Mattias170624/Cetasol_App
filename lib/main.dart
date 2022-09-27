@@ -23,81 +23,45 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Theme.of(context).colorScheme.onSecondary,
+        statusBarIconBrightness: Brightness.dark,
+      ),
+    );
     return Platform.isAndroid
         ? MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              scaffoldBackgroundColor: Color(0xFF143452),
-              colorScheme: const ColorScheme(
-                brightness: Brightness.light,
-                error: Colors.black,
-                onPrimary: Color(0xFFFF4d00),
-                onError: Colors.black,
-                onSurface: Colors.black,
-                onBackground: Colors.black,
-                primary: Color(0xFF143452),
-                secondary: Color(0xFF8AC1EA),
-                surface: Colors.black,
-                onSecondary: Colors.black,
-                background: Colors.black,
-              ),
-              textTheme: const TextTheme(
-                titleLarge: TextStyle(
-                  fontSize: 34,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white,
-                ),
-                titleMedium: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                ),
-                titleSmall: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+            theme: _SharedColorTheme().themedata,
             home: LoginScreen(),
           )
         : MaterialApp(
-            theme: ThemeData(
-              scaffoldBackgroundColor: Color(0xFF143452),
-              colorScheme: const ColorScheme(
-                brightness: Brightness.light,
-                error: Colors.black,
-                onPrimary: Color(0xFFFF4d00),
-                onError: Colors.black,
-                onSurface: Colors.black,
-                onBackground: Colors.black,
-                primary: Color(0xFF143452),
-                secondary: Color(0xFF8AC1EA),
-                surface: Colors.black,
-                onSecondary: Colors.black,
-                background: Colors.black,
-              ),
-              textTheme: const TextTheme(
-                titleLarge: TextStyle(
-                  fontSize: 34,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white,
-                ),
-                titleMedium: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                ),
-                titleSmall: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+            debugShowCheckedModeBanner: false,
+            theme: _SharedColorTheme().themedata,
             home: CupertinoApp(
               home: LoginScreen(),
             ),
           );
   }
+}
+
+class _SharedColorTheme {
+  ThemeData themedata = ThemeData(
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.white,
+    ),
+    colorScheme: const ColorScheme(
+      brightness: Brightness.light,
+      error: Colors.black,
+      onPrimary: Color(0xFFFF4d00),
+      onError: Colors.black,
+      onSurface: Colors.white,
+      onBackground: Colors.black,
+      primary: Color(0xFF143452),
+      secondary: Color(0xFF8AC1EA),
+      surface: Colors.black,
+      onSecondary: Colors.black,
+      background: Colors.black,
+    ),
+  );
 }

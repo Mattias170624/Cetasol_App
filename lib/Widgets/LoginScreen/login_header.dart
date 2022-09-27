@@ -26,10 +26,22 @@ class LoginHeader extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text('Troubleshooting',
-                    style: Theme.of(context).textTheme.titleMedium),
-                Text('& Installation',
-                    style: Theme.of(context).textTheme.titleMedium),
+                Text(
+                  'Troubleshooting',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                Text(
+                  '& Installation',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
               ],
             ),
             Container(
@@ -43,7 +55,14 @@ class LoginHeader extends StatelessWidget {
                 ),
               ),
             ),
-            Text('Guide', style: Theme.of(context).textTheme.titleLarge),
+            Text(
+              'Guide',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontSize: 30,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
           ],
         ),
         Spacer(),
@@ -53,7 +72,7 @@ class LoginHeader extends StatelessWidget {
               top: Radius.elliptical(MediaQuery.of(context).size.width, 100),
             ),
             child: Container(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),

@@ -152,14 +152,22 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                     ),
                     child: Text(
                       'Login',
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   )
                 : CupertinoButton(
                     color: Theme.of(context).colorScheme.onPrimary,
                     child: Text(
                       'Login',
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                     onPressed: () {},
                   ),
