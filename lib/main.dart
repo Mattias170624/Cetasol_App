@@ -46,7 +46,7 @@ class _SharedColorTheme {
     ),
     colorScheme: const ColorScheme(
       brightness: Brightness.light,
-      error: Colors.black,
+      error: Colors.red,
       onPrimary: Color(0xFFFF4d00),
       onError: Colors.black,
       onSurface: Colors.white,

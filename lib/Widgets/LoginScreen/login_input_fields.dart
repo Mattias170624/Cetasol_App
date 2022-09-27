@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:cetasol_app/Screens/signup_screen_1.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,10 @@ class LoginInputFields extends StatefulWidget {
 }
 
 class _LoginInputFieldsState extends State<LoginInputFields> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
@@ -28,102 +31,113 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            margin: EdgeInsets.only(bottom: 20),
-            height: 40,
-            child: Platform.isAndroid
-                ? TextField(
-                    textInputAction: TextInputAction.next,
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      fillColor: Theme.of(context).colorScheme.secondary,
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(
-                        Icons.email_outlined,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      filled: true,
-                      labelText: 'Email',
-                    ),
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                  )
-                : CupertinoTextField(
-                    controller: emailController,
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.primary,
-                        width: 1,
-                      ),
-                    ),
-                    prefix: Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Icon(
-                        CupertinoIcons.mail,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    placeholder: 'Email',
-                    enableSuggestions: false,
-                    autocorrect: false,
-                  ),
-          ),
-          SizedBox(
-            height: 40,
-            child: Platform.isAndroid
-                ? TextField(
-                    textInputAction: TextInputAction.done,
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      fillColor: Theme.of(context).colorScheme.secondary,
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(
-                        Icons.lock_outline,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      filled: true,
-                      labelText: 'Password',
-                    ),
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                    ),
-                    obscureText: true,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                  )
-                : CupertinoTextField(
-                    controller: passwordController,
-                    textInputAction: TextInputAction.done,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.primary,
-                        width: 1,
-                      ),
-                    ),
-                    prefix: Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Icon(
-                        CupertinoIcons.lock,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    placeholder: 'Password',
-                    obscureText: true,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                  ),
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: Platform.isAndroid
+                      ? TextFormField(
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(vertical: 0),
+                            fillColor: Theme.of(context).colorScheme.secondary,
+                            border: OutlineInputBorder(),
+                            hintText: 'Email',
+                            errorStyle: TextStyle(height: 0.5),
+                            filled: true,
+                            prefixIcon: Icon(
+                              Icons.email_outlined,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          textInputAction: TextInputAction.next,
+                          controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),
+                          validator: RequiredValidator(errorText: "Required"),
+                        )
+                      : CupertinoTextField(
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.secondary,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 1,
+                            ),
+                          ),
+                          prefix: Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Icon(
+                              CupertinoIcons.mail,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          placeholder: 'Email',
+                          enableSuggestions: false,
+                          autocorrect: false,
+                        ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: Platform.isAndroid
+                      ? TextFormField(
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(vertical: 0),
+                            fillColor: Theme.of(context).colorScheme.secondary,
+                            border: OutlineInputBorder(),
+                            hintText: 'Password',
+                            errorStyle: TextStyle(height: 0.5),
+                            filled: true,
+                            prefixIcon: Icon(
+                              Icons.lock_outlined,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          textInputAction: TextInputAction.done,
+                          controller: _passwordController,
+                          keyboardType: TextInputType.emailAddress,
+                          obscureText: true,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),
+                          validator: RequiredValidator(errorText: "Required"),
+                        )
+                      : CupertinoTextField(
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.secondary,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 1,
+                            ),
+                          ),
+                          prefix: Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Icon(
+                              CupertinoIcons.mail,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          placeholder: 'Email',
+                          enableSuggestions: false,
+                          autocorrect: false,
+                        ),
+                ),
+              ],
+            ),
           ),
           Container(
             margin: EdgeInsets.only(top: 5),
@@ -145,7 +159,12 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
             width: double.infinity,
             child: Platform.isAndroid
                 ? ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_validateUserInputs()) {
+                        // Login user to fire auth
+                        // Transfer user to homescreen
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       primary: Theme.of(context).colorScheme.onPrimary,
                       fixedSize: Size(double.infinity, 40),
@@ -176,6 +195,7 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
               "Don't have an account?",
               style: TextStyle(
                 fontSize: 13,
+                color: Theme.of(context).colorScheme.surface,
               ),
             ),
           ),
@@ -203,6 +223,11 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
         ],
       ),
     );
+  }
+
+  bool _validateUserInputs() {
+    // Checks if user input is valid, then opens the next screen
+    return (_formKey.currentState!.validate());
   }
 
   Future<void> addUser() {
