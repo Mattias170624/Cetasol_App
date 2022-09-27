@@ -23,12 +23,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: Theme.of(context).colorScheme.onSecondary,
-        statusBarIconBrightness: Brightness.dark,
-      ),
-    );
     return Platform.isAndroid
         ? MaterialApp(
             debugShowCheckedModeBanner: false,

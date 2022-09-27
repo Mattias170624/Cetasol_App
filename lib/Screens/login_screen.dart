@@ -6,12 +6,19 @@ import 'package:cetasol_app/Widgets/LoginScreen/login_header.dart';
 import 'package:cetasol_app/Widgets/LoginScreen/login_input_fields.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double padding = MediaQuery.of(context).padding.top;
     double deviceHeight = MediaQuery.of(context).size.height - padding;
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Color.fromARGB(255, 14, 38, 61),
+        statusBarIconBrightness: Brightness.light,
+      ),
+    );
 
     return Platform.isAndroid
         ? Scaffold(

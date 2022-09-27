@@ -3,8 +3,6 @@
 import 'dart:io';
 
 import 'package:cetasol_app/Widgets/RegisterScreen/register_code_input.dart';
-import 'package:cetasol_app/Widgets/RegisterScreen/register_header_icon.dart';
-import 'package:cetasol_app/Widgets/RegisterScreen/register_input_fields.dart';
 import 'package:cetasol_app/Widgets/RegisterScreen/register_title.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +16,16 @@ class SignUpScreen2 extends StatelessWidget {
 
     return Platform.isAndroid
         ? Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: Theme.of(context).colorScheme.onSurface,
             appBar: AppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: Theme.of(context).colorScheme.primary,
               title: Text(
                 'Sign up 2/2',
-                style: Theme.of(context).textTheme.titleMedium,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
             body: SafeArea(
@@ -39,15 +41,9 @@ class SignUpScreen2 extends StatelessWidget {
                         child: RegisterTitle(),
                       ),
                       Expanded(
+                        flex: 2,
                         child: RegisterCodeInput(),
                       ),
-                      // Expanded(
-                      //   child: RegisterHeaderIcon(),
-                      // ),
-                      // Expanded(
-                      //   flex: 2,
-                      //   child: RegisterInputFields(),
-                      // ),
                     ],
                   ),
                 ),
@@ -55,9 +51,9 @@ class SignUpScreen2 extends StatelessWidget {
             ),
           )
         : CupertinoPageScaffold(
-            backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: Theme.of(context).colorScheme.onSurface,
             navigationBar: CupertinoNavigationBar(
-              backgroundColor: Colors.white,
+              backgroundColor: Theme.of(context).colorScheme.primary,
               leading: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
@@ -69,7 +65,11 @@ class SignUpScreen2 extends StatelessWidget {
               ),
               middle: Text(
                 'Sign up 2/2',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
             child: SafeArea(

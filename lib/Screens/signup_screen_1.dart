@@ -16,11 +16,16 @@ class SignUpScreen1 extends StatelessWidget {
 
     return Platform.isAndroid
         ? Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).colorScheme.onSurface,
             appBar: AppBar(
+              backgroundColor: Theme.of(context).colorScheme.primary,
               title: Text(
                 'Sign up 1/2',
-                style: Theme.of(context).textTheme.titleMedium,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
             body: SafeArea(
