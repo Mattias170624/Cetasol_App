@@ -8,6 +8,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen2 extends StatelessWidget {
+  final String email;
+  final String password;
+  final int phone;
+
+  SignUpScreen2(this.email, this.password, this.phone);
+
   @override
   Widget build(BuildContext context) {
     double iOSNavbarHeight = MediaQuery.of(context).padding.top;
@@ -42,7 +48,7 @@ class SignUpScreen2 extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 2,
-                        child: RegisterCodeInput(),
+                        child: RegisterCodeInput(email, password, phone),
                       ),
                     ],
                   ),
@@ -86,7 +92,7 @@ class SignUpScreen2 extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 2,
-                        child: RegisterCodeInput(),
+                        child: RegisterCodeInput(email, password, phone),
                       ),
                     ],
                   ),

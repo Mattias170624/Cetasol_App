@@ -11,15 +11,6 @@ class AuthService {
     return user;
   }
 
-  Future<User> handleRegister(email, password) async {
-    UserCredential result = await auth.createUserWithEmailAndPassword(
-        email: email, password: password);
-
-    final User user = result.user!;
-
-    return user;
-  }
-
   Future<void> userAuthListener() async {
     FirebaseAuth.instance.authStateChanges().listen(
       (User? user) {

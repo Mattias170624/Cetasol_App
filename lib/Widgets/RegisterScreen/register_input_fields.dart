@@ -3,8 +3,7 @@
 import 'dart:io';
 
 import 'package:cetasol_app/Screens/signup_screen_2.dart';
-import 'package:cetasol_app/Widgets/RegisterScreen/register_inputs.dart';
-import 'package:cetasol_app/firebase_auth.dart';
+import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:flutter/cupertino.dart';
@@ -330,7 +329,11 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SignUpScreen2(),
+                            builder: (context) => SignUpScreen2(
+                              _emailController.value.text,
+                              _passwordController.value.text,
+                              int.parse(_phoneController.value.text),
+                            ),
                           ),
                         );
                       }
@@ -361,7 +364,11 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SignUpScreen2(),
+                            builder: (context) => SignUpScreen2(
+                              _emailController.value.text,
+                              _passwordController.value.text,
+                              int.parse(_phoneController.value.text),
+                            ),
                           ),
                         );
                       }

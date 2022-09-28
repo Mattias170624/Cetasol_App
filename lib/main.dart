@@ -3,7 +3,7 @@
 import 'dart:io';
 
 import 'package:cetasol_app/Screens/login_screen.dart';
-import 'package:cetasol_app/firebase_auth.dart';
+import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
