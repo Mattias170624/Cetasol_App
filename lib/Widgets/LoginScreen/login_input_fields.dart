@@ -170,7 +170,6 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
             margin: EdgeInsets.only(top: 5),
             alignment: Alignment.centerRight,
             child: GestureDetector(
-              onTap: addUser,
               child: Text(
                 'Forgot password?',
                 style: TextStyle(
@@ -260,17 +259,5 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
   bool _validateUserInputs() {
     // Checks if user input is valid, then opens the next screen
     return (_formKey.currentState!.validate());
-  }
-
-  Future<void> addUser() {
-    // Call the user's CollectionReference to add a new user
-    return users
-        .add({
-          'full_name': 'name', // John Doe
-          'company': 'test', // Stokes and Sons
-          'age': '10' // 42
-        })
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
   }
 }

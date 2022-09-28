@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:cetasol_app/Models/user_model.dart';
 import 'package:cetasol_app/Widgets/LoginScreen/login_header.dart';
 import 'package:cetasol_app/Widgets/LoginScreen/login_input_fields.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,7 +20,6 @@ class LoginScreen extends StatelessWidget {
         statusBarIconBrightness: Brightness.light,
       ),
     );
-
     return Platform.isAndroid
         ? Scaffold(
             body: SafeArea(

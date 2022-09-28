@@ -2,6 +2,8 @@
 
 import 'dart:io';
 
+import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
+import 'package:cetasol_app/Models/user_model.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,16 +12,22 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class RegisterCodeInput extends StatefulWidget {
+  late final String email;
+  final String password;
+  late final int phone;
+
+  RegisterCodeInput(this.email, this.password, this.phone);
+
   @override
   State<RegisterCodeInput> createState() => _RegisterCodeInputState();
 }
 
 class _RegisterCodeInputState extends State<RegisterCodeInput> {
-  final box1 = TextEditingController();
-  final box2 = TextEditingController();
-  final box3 = TextEditingController();
-  final box4 = TextEditingController();
-  final box5 = TextEditingController();
+  final _box1 = TextEditingController();
+  final _box2 = TextEditingController();
+  final _box3 = TextEditingController();
+  final _box4 = TextEditingController();
+  final _box5 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +89,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                                 textInputAction: TextInputAction.next,
                                 onChanged: (_) =>
                                     FocusScope.of(context).nextFocus(),
-                                controller: box1,
+                                controller: _box1,
                                 textAlign: TextAlign.center,
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.all(0),
@@ -105,7 +113,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                             : CupertinoTextField(
                                 placeholder: '...',
                                 textAlign: TextAlign.center,
-                                controller: box1,
+                                controller: _box1,
                                 keyboardType: TextInputType.number,
                                 textInputAction: TextInputAction.next,
                                 onChanged: (_) =>
@@ -136,7 +144,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                                 textInputAction: TextInputAction.next,
                                 onChanged: (_) =>
                                     FocusScope.of(context).nextFocus(),
-                                controller: box2,
+                                controller: _box2,
                                 textAlign: TextAlign.center,
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.all(0),
@@ -157,7 +165,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                             : CupertinoTextField(
                                 placeholder: '...',
                                 textAlign: TextAlign.center,
-                                controller: box2,
+                                controller: _box2,
                                 keyboardType: TextInputType.number,
                                 textInputAction: TextInputAction.next,
                                 onChanged: (_) =>
@@ -188,7 +196,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                                 textInputAction: TextInputAction.next,
                                 onChanged: (_) =>
                                     FocusScope.of(context).nextFocus(),
-                                controller: box3,
+                                controller: _box3,
                                 textAlign: TextAlign.center,
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.all(0),
@@ -212,7 +220,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                             : CupertinoTextField(
                                 placeholder: '...',
                                 textAlign: TextAlign.center,
-                                controller: box3,
+                                controller: _box3,
                                 keyboardType: TextInputType.number,
                                 textInputAction: TextInputAction.next,
                                 onChanged: (_) =>
@@ -243,7 +251,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                                 textInputAction: TextInputAction.next,
                                 onChanged: (_) =>
                                     FocusScope.of(context).nextFocus(),
-                                controller: box4,
+                                controller: _box4,
                                 textAlign: TextAlign.center,
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.all(0),
@@ -267,7 +275,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                             : CupertinoTextField(
                                 placeholder: '...',
                                 textAlign: TextAlign.center,
-                                controller: box4,
+                                controller: _box4,
                                 keyboardType: TextInputType.number,
                                 textInputAction: TextInputAction.next,
                                 onChanged: (_) =>
@@ -298,7 +306,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                                 textInputAction: TextInputAction.next,
                                 onChanged: (_) =>
                                     FocusScope.of(context).unfocus(),
-                                controller: box5,
+                                controller: _box5,
                                 textAlign: TextAlign.center,
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.all(0),
@@ -322,7 +330,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                             : CupertinoTextField(
                                 placeholder: '...',
                                 textAlign: TextAlign.center,
-                                controller: box5,
+                                controller: _box5,
                                 keyboardType: TextInputType.number,
                                 textInputAction: TextInputAction.done,
                                 onChanged: (_) =>
@@ -385,7 +393,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
             width: double.infinity,
             child: Platform.isAndroid
                 ? ElevatedButton(
-                    onPressed: () {},
+                    onPressed: _handleContinueButton,
                     style: ElevatedButton.styleFrom(
                       primary: Theme.of(context).colorScheme.onPrimary,
                       fixedSize: Size(double.infinity, 40),
@@ -400,6 +408,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                   )
                 : CupertinoButton(
                     color: Theme.of(context).colorScheme.onPrimary,
+                    onPressed: _handleContinueButton,
                     child: Text(
                       'Continue',
                       style: TextStyle(
@@ -407,11 +416,23 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                         fontSize: 20,
                       ),
                     ),
-                    onPressed: () {},
                   ),
           ),
         ],
       ),
+    );
+  }
+
+  void _handleContinueButton() {
+    var box1Number = int.tryParse(_box1.value.text) ?? 0;
+    var box2Number = int.tryParse(_box2.value.text) ?? 0;
+    var box3Number = int.tryParse(_box3.value.text) ?? 0;
+    var box4Number = int.tryParse(_box4.value.text) ?? 0;
+    var box5Number = int.tryParse(_box5.value.text) ?? 0;
+
+    // If phone number is validated, add user object to database
+    FirestoreDatabase().addNewUser(
+      UserModel(widget.email, widget.phone),
     );
   }
 }
