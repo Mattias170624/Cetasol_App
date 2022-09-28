@@ -4,11 +4,9 @@ import 'dart:io';
 
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:cetasol_app/Screens/signup_screen_1.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class LoginInputFields extends StatefulWidget {
   @override

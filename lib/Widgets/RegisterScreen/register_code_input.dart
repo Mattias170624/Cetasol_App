@@ -4,12 +4,9 @@ import 'dart:io';
 
 import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
 import 'package:cetasol_app/Models/user_model.dart';
-import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class RegisterCodeInput extends StatefulWidget {
   late final String email;
