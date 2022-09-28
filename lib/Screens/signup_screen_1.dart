@@ -33,7 +33,7 @@ class SignUpScreen1 extends StatelessWidget {
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
                 physics: const ClampingScrollPhysics(),
-                child: Container(
+                child: SizedBox(
                   height: deviceSafeHeight,
                   child: Column(
                     children: [
@@ -72,7 +72,7 @@ class SignUpScreen1 extends StatelessWidget {
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
                 physics: const ClampingScrollPhysics(),
-                child: Container(
+                child: SizedBox(
                   height: deviceSafeHeight - iOSNavbarHeight,
                   child: Column(
                     children: [

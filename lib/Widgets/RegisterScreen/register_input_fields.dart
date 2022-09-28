@@ -2,14 +2,11 @@
 
 import 'dart:io';
 
-import 'package:cetasol_app/Screens/signup_screen_2.dart';
 import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
-import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:cetasol_app/Screens/signup_screen_2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
 
 class RegisterInputFields extends StatefulWidget {
   @override
@@ -18,9 +15,9 @@ class RegisterInputFields extends StatefulWidget {
 
 class _RegisterInputFieldsState extends State<RegisterInputFields> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   String? emailErrorText;
   bool obscurePassword = true;
 
