@@ -3,9 +3,11 @@
 import 'dart:io';
 
 import 'package:cetasol_app/Screens/login_screen.dart';
+import 'package:cetasol_app/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +25,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var authHandler = new AuthService().userAuthListener();
+
     return Platform.isAndroid
         ? MaterialApp(
             debugShowCheckedModeBanner: false,

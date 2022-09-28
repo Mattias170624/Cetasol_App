@@ -4,10 +4,13 @@ import 'dart:io';
 
 import 'package:cetasol_app/Screens/signup_screen_2.dart';
 import 'package:cetasol_app/Widgets/RegisterScreen/register_inputs.dart';
+import 'package:cetasol_app/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RegisterInputFields extends StatefulWidget {
   @override
@@ -16,10 +19,17 @@ class RegisterInputFields extends StatefulWidget {
 
 class _RegisterInputFieldsState extends State<RegisterInputFields> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  String? emailErrorText;
   bool obscurePassword = true;
+
+  void _changeEmailErrorText(String? text) {
+    setState(() {
+      emailErrorText = text;
+    });
+  }
 
   void _showObscurePassword() {
     setState(() {
@@ -67,6 +77,7 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                             fillColor: Theme.of(context).colorScheme.secondary,
                             border: OutlineInputBorder(),
                             hintText: 'Email',
+                            errorText: emailErrorText,
                             errorStyle: TextStyle(height: 0.5),
                             filled: true,
                             prefixIcon: Icon(
@@ -84,7 +95,7 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                           ),
                           validator: MultiValidator(
                             [
-                              RequiredValidator(errorText: "Required"),
+                              RequiredValidator(errorText: 'Required'),
                               EmailValidator(
                                   errorText:
                                       "Please enter a valid email address"),
@@ -314,8 +325,8 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
             width: double.infinity,
             child: Platform.isAndroid
                 ? ElevatedButton(
-                    onPressed: () {
-                      if (_validateUserInputs()) {
+                    onPressed: () async {
+                      if (await _handleUserInputs()) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -345,8 +356,8 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                         fontSize: 20,
                       ),
                     ),
-                    onPressed: () {
-                      if (_validateUserInputs()) {
+                    onPressed: () async {
+                      if (await _handleUserInputs()) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -362,8 +373,24 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
     );
   }
 
-  bool _validateUserInputs() {
-    // Checks if user input is valid, then opens the next screen
-    return (_formKey.currentState!.validate());
+  Future<bool> _handleUserInputs() async {
+    var email = _emailController.value.text;
+    _changeEmailErrorText(null);
+
+    // Guard against invalid user inputs
+    if (!_formKey.currentState!.validate()) return false;
+
+    // Checks for duplicate emails, then proceeds to next page
+    return await AuthService().checkIfEmailInUse(email).then(
+      (value) {
+        if (value) {
+          _changeEmailErrorText(null);
+          return true;
+        } else {
+          _changeEmailErrorText('Email is already in use');
+          return false;
+        }
+      },
+    );
   }
 }
