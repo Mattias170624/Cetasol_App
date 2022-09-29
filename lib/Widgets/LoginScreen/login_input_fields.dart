@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:cetasol_app/Screens/signup_screen_1.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,9 +19,7 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -168,6 +167,7 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
             margin: EdgeInsets.only(top: 5),
             alignment: Alignment.centerRight,
             child: GestureDetector(
+              onTap: () => AuthService().auth.signOut(),
               child: Text(
                 'Forgot password?',
                 style: TextStyle(

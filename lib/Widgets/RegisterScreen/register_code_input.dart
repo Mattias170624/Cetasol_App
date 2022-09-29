@@ -2,8 +2,8 @@
 
 import 'dart:io';
 
-import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
-import 'package:cetasol_app/Models/user_model.dart';
+import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
+import 'package:cetasol_app/Screens/home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +25,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
   final _box3 = TextEditingController();
   final _box4 = TextEditingController();
   final _box5 = TextEditingController();
+  final _box6 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -302,7 +303,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                                 keyboardType: TextInputType.number,
                                 textInputAction: TextInputAction.next,
                                 onChanged: (_) =>
-                                    FocusScope.of(context).unfocus(),
+                                    FocusScope.of(context).nextFocus(),
                                 controller: _box5,
                                 textAlign: TextAlign.center,
                                 decoration: InputDecoration(
@@ -328,6 +329,61 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                                 placeholder: '...',
                                 textAlign: TextAlign.center,
                                 controller: _box5,
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.next,
+                                onChanged: (_) =>
+                                    FocusScope.of(context).nextFocus(),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(1)
+                                ],
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
+                                placeholderStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
+                                decoration: BoxDecoration(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                      ),
+                      Spacer(),
+                      SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: Platform.isAndroid
+                            ? TextFormField(
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.done,
+                                onChanged: (_) =>
+                                    FocusScope.of(context).unfocus(),
+                                controller: _box6,
+                                textAlign: TextAlign.center,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(0),
+                                  fillColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  filled: true,
+                                  border: OutlineInputBorder(),
+                                  hintText: '...',
+                                  hintStyle: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .surface),
+                                ),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(1)
+                                ],
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.surface),
+                              )
+                            : CupertinoTextField(
+                                placeholder: '...',
+                                textAlign: TextAlign.center,
+                                controller: _box6,
                                 keyboardType: TextInputType.number,
                                 textInputAction: TextInputAction.done,
                                 onChanged: (_) =>
@@ -369,7 +425,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: _tempbutton,
                   child: Text(
                     'Resend code',
                     style: TextStyle(
@@ -420,16 +476,32 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
     );
   }
 
-  void _handleContinueButton() {
-    var box1Number = int.tryParse(_box1.value.text) ?? 0;
-    var box2Number = int.tryParse(_box2.value.text) ?? 0;
-    var box3Number = int.tryParse(_box3.value.text) ?? 0;
-    var box4Number = int.tryParse(_box4.value.text) ?? 0;
-    var box5Number = int.tryParse(_box5.value.text) ?? 0;
+  void _tempbutton() {
+    AuthService().sendSmsCode('+${widget.phone.toString()}');
+  }
 
-    // If phone number is validated, add user object to database
-    FirestoreDatabase().addNewUser(
-      UserModel(widget.email, widget.phone),
-    );
+  void _handleContinueButton() async {
+    var box1Num = _box1.value.text;
+    var box2Num = _box2.value.text;
+    var box3Num = _box3.value.text;
+    var box4Num = _box4.value.text;
+    var box5Num = _box5.value.text;
+    var box6Num = _box6.value.text;
+
+    var smsCode = box1Num + box2Num + box3Num + box4Num + box5Num + box6Num;
+
+    final allAuthResults = await AuthService().createUserAuthProviders(
+        smsCode, widget.phone.toString(), widget.email, widget.password);
+
+    if (allAuthResults) {
+      // User passed all auth tests, transfer to homescreen
+      _showHomeScreen();
+    }
+  }
+
+  void _showHomeScreen() {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+        (Route route) => false);
   }
 }
