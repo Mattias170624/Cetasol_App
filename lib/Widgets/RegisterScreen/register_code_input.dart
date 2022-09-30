@@ -6,7 +6,7 @@ import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:cetasol_app/Screens/home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:pinput/pinput.dart';
 
 class RegisterCodeInput extends StatefulWidget {
   late final String email;
@@ -26,6 +26,22 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
   final _box4 = TextEditingController();
   final _box5 = TextEditingController();
   final _box6 = TextEditingController();
+  final _pinController = TextEditingController();
+
+  bool showSmsError = false;
+  String smsErrorText = '';
+
+  void _showSmsError(bool value) {
+    setState(() {
+      showSmsError = value;
+    });
+  }
+
+  void _changeSmsErrorText(String newErrorText) {
+    setState(() {
+      smsErrorText = newErrorText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,334 +93,86 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Spacer(),
-                      SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: Platform.isAndroid
-                            ? TextFormField(
-                                keyboardType: TextInputType.number,
-                                textInputAction: TextInputAction.next,
-                                onChanged: (_) =>
-                                    FocusScope.of(context).nextFocus(),
-                                controller: _box1,
-                                textAlign: TextAlign.center,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(0),
-                                  fillColor:
-                                      Theme.of(context).colorScheme.secondary,
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: '...',
-                                  hintStyle: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .surface),
-                                ),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1)
-                                ],
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.surface),
-                              )
-                            : CupertinoTextField(
-                                placeholder: '...',
-                                textAlign: TextAlign.center,
-                                controller: _box1,
-                                keyboardType: TextInputType.number,
-                                textInputAction: TextInputAction.next,
-                                onChanged: (_) =>
-                                    FocusScope.of(context).nextFocus(),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1)
-                                ],
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.surface,
-                                ),
-                                placeholderStyle: TextStyle(
-                                  color: Theme.of(context).colorScheme.surface,
-                                ),
-                                decoration: BoxDecoration(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                              ),
+                      Pinput(
+                        length: 6,
+                        controller: _pinController,
+                        errorText: smsErrorText,
+                        forceErrorState: showSmsError,
+                        errorTextStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 15,
+                        ),
+                        animationDuration: Duration(milliseconds: 100),
+                        defaultPinTheme: PinTheme(
+                          width: 45,
+                          height: 45,
+                          padding: EdgeInsets.all(0),
+                          margin: EdgeInsets.all(0),
+                          textStyle: TextStyle(
+                              fontSize: 20,
+                              color: Theme.of(context).colorScheme.surface,
+                              fontWeight: FontWeight.w600),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.secondary,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
                       ),
-                      Spacer(),
-                      SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: Platform.isAndroid
-                            ? TextFormField(
-                                keyboardType: TextInputType.number,
-                                textInputAction: TextInputAction.next,
-                                onChanged: (_) =>
-                                    FocusScope.of(context).nextFocus(),
-                                controller: _box2,
-                                textAlign: TextAlign.center,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(0),
-                                  fillColor:
-                                      Theme.of(context).colorScheme.secondary,
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: '...',
-                                  hintStyle: TextStyle(color: Colors.black),
-                                ),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1)
-                                ],
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.surface),
-                              )
-                            : CupertinoTextField(
-                                placeholder: '...',
-                                textAlign: TextAlign.center,
-                                controller: _box2,
-                                keyboardType: TextInputType.number,
-                                textInputAction: TextInputAction.next,
-                                onChanged: (_) =>
-                                    FocusScope.of(context).nextFocus(),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1)
-                                ],
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.surface,
-                                ),
-                                placeholderStyle: TextStyle(
-                                  color: Theme.of(context).colorScheme.surface,
-                                ),
-                                decoration: BoxDecoration(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                              ),
-                      ),
-                      Spacer(),
-                      SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: Platform.isAndroid
-                            ? TextFormField(
-                                keyboardType: TextInputType.number,
-                                textInputAction: TextInputAction.next,
-                                onChanged: (_) =>
-                                    FocusScope.of(context).nextFocus(),
-                                controller: _box3,
-                                textAlign: TextAlign.center,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(0),
-                                  fillColor:
-                                      Theme.of(context).colorScheme.secondary,
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: '...',
-                                  hintStyle: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .surface),
-                                ),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1)
-                                ],
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.surface),
-                              )
-                            : CupertinoTextField(
-                                placeholder: '...',
-                                textAlign: TextAlign.center,
-                                controller: _box3,
-                                keyboardType: TextInputType.number,
-                                textInputAction: TextInputAction.next,
-                                onChanged: (_) =>
-                                    FocusScope.of(context).nextFocus(),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1)
-                                ],
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.surface,
-                                ),
-                                placeholderStyle: TextStyle(
-                                  color: Theme.of(context).colorScheme.surface,
-                                ),
-                                decoration: BoxDecoration(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                              ),
-                      ),
-                      Spacer(),
-                      SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: Platform.isAndroid
-                            ? TextFormField(
-                                keyboardType: TextInputType.number,
-                                textInputAction: TextInputAction.next,
-                                onChanged: (_) =>
-                                    FocusScope.of(context).nextFocus(),
-                                controller: _box4,
-                                textAlign: TextAlign.center,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(0),
-                                  fillColor:
-                                      Theme.of(context).colorScheme.secondary,
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: '...',
-                                  hintStyle: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .surface),
-                                ),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1)
-                                ],
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.surface),
-                              )
-                            : CupertinoTextField(
-                                placeholder: '...',
-                                textAlign: TextAlign.center,
-                                controller: _box4,
-                                keyboardType: TextInputType.number,
-                                textInputAction: TextInputAction.next,
-                                onChanged: (_) =>
-                                    FocusScope.of(context).nextFocus(),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1)
-                                ],
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.surface,
-                                ),
-                                placeholderStyle: TextStyle(
-                                  color: Theme.of(context).colorScheme.surface,
-                                ),
-                                decoration: BoxDecoration(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                              ),
-                      ),
-                      Spacer(),
-                      SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: Platform.isAndroid
-                            ? TextFormField(
-                                keyboardType: TextInputType.number,
-                                textInputAction: TextInputAction.next,
-                                onChanged: (_) =>
-                                    FocusScope.of(context).nextFocus(),
-                                controller: _box5,
-                                textAlign: TextAlign.center,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(0),
-                                  fillColor:
-                                      Theme.of(context).colorScheme.secondary,
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: '...',
-                                  hintStyle: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .surface),
-                                ),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1)
-                                ],
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.surface),
-                              )
-                            : CupertinoTextField(
-                                placeholder: '...',
-                                textAlign: TextAlign.center,
-                                controller: _box5,
-                                keyboardType: TextInputType.number,
-                                textInputAction: TextInputAction.next,
-                                onChanged: (_) =>
-                                    FocusScope.of(context).nextFocus(),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1)
-                                ],
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.surface,
-                                ),
-                                placeholderStyle: TextStyle(
-                                  color: Theme.of(context).colorScheme.surface,
-                                ),
-                                decoration: BoxDecoration(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                              ),
-                      ),
-                      Spacer(),
-                      SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: Platform.isAndroid
-                            ? TextFormField(
-                                keyboardType: TextInputType.number,
-                                textInputAction: TextInputAction.done,
-                                onChanged: (_) =>
-                                    FocusScope.of(context).unfocus(),
-                                controller: _box6,
-                                textAlign: TextAlign.center,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(0),
-                                  fillColor:
-                                      Theme.of(context).colorScheme.secondary,
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: '...',
-                                  hintStyle: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .surface),
-                                ),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1)
-                                ],
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.surface),
-                              )
-                            : CupertinoTextField(
-                                placeholder: '...',
-                                textAlign: TextAlign.center,
-                                controller: _box6,
-                                keyboardType: TextInputType.number,
-                                textInputAction: TextInputAction.done,
-                                onChanged: (_) =>
-                                    FocusScope.of(context).unfocus(),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1)
-                                ],
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.surface,
-                                ),
-                                placeholderStyle: TextStyle(
-                                  color: Theme.of(context).colorScheme.surface,
-                                ),
-                                decoration: BoxDecoration(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                              ),
-                      ),
-                      Spacer(),
+                      // SizedBox(
+                      //   width: 50,
+                      //   height: 50,
+                      //   child: Platform.isAndroid
+                      //       ? TextFormField(
+                      //           keyboardType: TextInputType.number,
+                      //           textInputAction: TextInputAction.next,
+                      //           onChanged: (_) =>
+                      //               FocusScope.of(context).nextFocus(),
+                      //           controller: _box1,
+                      //           textAlign: TextAlign.center,
+                      //           decoration: InputDecoration(
+                      //             contentPadding: EdgeInsets.all(0),
+                      //             fillColor:
+                      //                 Theme.of(context).colorScheme.secondary,
+                      //             filled: true,
+                      //             border: OutlineInputBorder(),
+                      //             hintText: '...',
+                      //             hintStyle: TextStyle(
+                      //                 color: Theme.of(context)
+                      //                     .colorScheme
+                      //                     .surface),
+                      //           ),
+                      //           inputFormatters: [
+                      //             LengthLimitingTextInputFormatter(1)
+                      //           ],
+                      //           style: TextStyle(
+                      //               color:
+                      //                   Theme.of(context).colorScheme.surface),
+                      //         )
+                      //       : CupertinoTextField(
+                      //           placeholder: '...',
+                      //           textAlign: TextAlign.center,
+                      //           controller: _box1,
+                      //           keyboardType: TextInputType.number,
+                      //           textInputAction: TextInputAction.next,
+                      //           onChanged: (_) =>
+                      //               FocusScope.of(context).nextFocus(),
+                      //           inputFormatters: [
+                      //             LengthLimitingTextInputFormatter(1)
+                      //           ],
+                      //           style: TextStyle(
+                      //             color: Theme.of(context).colorScheme.surface,
+                      //           ),
+                      //           placeholderStyle: TextStyle(
+                      //             color: Theme.of(context).colorScheme.surface,
+                      //           ),
+                      //           decoration: BoxDecoration(
+                      //             color:
+                      //                 Theme.of(context).colorScheme.secondary,
+                      //             borderRadius: BorderRadius.circular(5),
+                      //           ),
+                      //         ),
+                      // ),
                     ],
                   ),
                 )
@@ -481,27 +249,60 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
   }
 
   void _handleContinueButton() async {
-    var box1Num = _box1.value.text;
-    var box2Num = _box2.value.text;
-    var box3Num = _box3.value.text;
-    var box4Num = _box4.value.text;
-    var box5Num = _box5.value.text;
-    var box6Num = _box6.value.text;
+    var pinText = _pinController.text;
 
-    var smsCode = box1Num + box2Num + box3Num + box4Num + box5Num + box6Num;
+    print(widget.phone.runtimeType);
+    print(widget.phone);
+    if (!_checkUserInput(pinText)) return;
 
-    final allAuthResults = await AuthService().createUserAuthProviders(
-        smsCode, widget.phone.toString(), widget.email, widget.password);
+    // final allAuthResults = await AuthService().createUserAuthProviders(
+    //     pinText, widget.phone.toString(), widget.email, widget.password);
 
-    if (allAuthResults) {
-      // User passed all auth tests, transfer to homescreen
-      _showHomeScreen();
+    // if (allAuthResults) {
+    //   // User passed all auth tests, transfer to homescreen
+    //   _showHomeScreen();
+    // }
+  }
+
+  bool _checkUserInput(String text) {
+    final validCharacters = RegExp(r'^[0-9]+$');
+
+    if (text.length < 6) {
+      _showSmsError(true);
+      _changeSmsErrorText('Please fill in all fields.');
+      return false;
     }
+
+    if (!text.contains(validCharacters)) {
+      _showSmsError(true);
+      _changeSmsErrorText('Please use only numbers.');
+      return false;
+    }
+
+    _showSmsError(false);
+    return true;
   }
 
   void _showHomeScreen() {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => HomeScreen()),
         (Route route) => false);
+  }
+
+  PinTheme defaultPinTheme() {
+    return PinTheme(
+      width: 45,
+      height: 45,
+      padding: EdgeInsets.all(0),
+      margin: EdgeInsets.all(0),
+      textStyle: TextStyle(
+          fontSize: 20,
+          color: Theme.of(context).colorScheme.onSurface,
+          fontWeight: FontWeight.w600),
+      decoration: BoxDecoration(
+        border: Border.all(color: Color.fromRGBO(234, 239, 243, 1)),
+        borderRadius: BorderRadius.circular(10),
+      ),
+    );
   }
 }
