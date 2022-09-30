@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 class SignUpScreen2 extends StatelessWidget {
   final String email;
   final String password;
-  final int phone;
+  final String phone;
 
   SignUpScreen2(this.email, this.password, this.phone);
 

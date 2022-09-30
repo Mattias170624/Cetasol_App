@@ -7,6 +7,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:cetasol_app/Screens/signup_screen_2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class RegisterInputFields extends StatefulWidget {
   @override
@@ -17,9 +18,15 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   String? emailErrorText;
   bool obscurePassword = true;
+  bool isPhoneTextValid = false;
+  bool showPhoneError = false;
+
+  PhoneNumber number = PhoneNumber(isoCode: 'SE');
+  late PhoneNumber _parsedNumber;
+  String initialCountry = 'SE';
 
   void _changeEmailErrorText(String? text) {
     setState(() {
@@ -30,6 +37,18 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
   void _showObscurePassword() {
     setState(() {
       obscurePassword = !obscurePassword;
+    });
+  }
+
+  void _setPhoneTextValidity(bool newvalue) {
+    setState(() {
+      isPhoneTextValid = newvalue;
+    });
+  }
+
+  void _hidePhoneError(bool newValue) {
+    setState(() {
+      showPhoneError = newValue;
     });
   }
 
@@ -173,7 +192,7 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                               color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
-                          textInputAction: TextInputAction.next,
+                          textInputAction: TextInputAction.done,
                           controller: _passwordController,
                           enableSuggestions: false,
                           obscureText: obscurePassword,
@@ -220,7 +239,7 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                           padding: EdgeInsets.zero,
                           placeholder: 'Password',
                           style: TextStyle(height: 1.5),
-                          textInputAction: TextInputAction.next,
+                          textInputAction: TextInputAction.done,
                           keyboardType: TextInputType.visiblePassword,
                           obscureText: true,
                           controller: _passwordController,
@@ -237,70 +256,78 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                         ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(bottom: 5),
-                  child: Platform.isAndroid
-                      ? TextFormField(
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(vertical: 0),
-                            fillColor: Theme.of(context).colorScheme.secondary,
-                            border: OutlineInputBorder(),
-                            hintText: 'Phone Number',
-                            errorStyle: TextStyle(height: 0.5),
-                            filled: true,
-                            prefixIcon: Icon(
-                              Icons.phone,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                          textInputAction: TextInputAction.done,
-                          controller: _phoneController,
-                          keyboardType: TextInputType.phone,
-                          enableSuggestions: false,
-                          autocorrect: false,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),
-                          validator: RequiredValidator(errorText: "Required"),
-                        )
-                      : CupertinoTextFormFieldRow(
-                          prefix: Container(
-                            padding: EdgeInsets.only(
-                                left: 10, right: 5, top: 5, bottom: 5),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                              ),
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(2),
-                              child: Icon(
-                                CupertinoIcons.phone,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(10),
-                              bottomRight: Radius.circular(10),
-                            ),
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          padding: EdgeInsets.zero,
-                          placeholder: 'Phone Number',
-                          style: TextStyle(height: 1.5),
-                          keyboardType: Platform.isIOS
-                              ? TextInputType.numberWithOptions(
-                                  signed: true, decimal: true)
-                              : TextInputType.number,
-                          controller: _phoneController,
-                          enableSuggestions: false,
-                          autocorrect: false,
-                          validator: RequiredValidator(errorText: "Required"),
-                        ),
+                  margin: EdgeInsets.only(bottom: 5),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondary,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                    border: Border.all(
+                      color: showPhoneError
+                          ? Theme.of(context).colorScheme.error
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  child: InternationalPhoneNumberInput(
+                    autoValidateMode: AutovalidateMode.disabled,
+                    validator: (_) => null,
+                    textAlignVertical: TextAlignVertical.center,
+                    spaceBetweenSelectorAndTextField: 0,
+                    scrollPadding: EdgeInsets.all(0),
+                    inputBorder: InputBorder.none,
+                    selectorTextStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    selectorConfig: SelectorConfig(
+                      selectorType: PhoneInputSelectorType.DIALOG,
+                      leadingPadding: 15,
+                      trailingSpace: false,
+                      setSelectorButtonAsPrefixIcon: true,
+                    ),
+                    searchBoxDecoration: InputDecoration(
+                      fillColor: Theme.of(context).colorScheme.secondary,
+                      filled: true,
+                      alignLabelWithHint: true,
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                      hintText: 'Search country',
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                            width: 1),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                            width: 1),
+                      ),
+                    ),
+                    textStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                    initialValue: number,
+                    onInputChanged: (newValue) => {_parsedNumber = newValue},
+                    onInputValidated: (bool value) =>
+                        _setPhoneTextValidity(value),
+                  ),
+                ),
+                Visibility(
+                  visible: showPhoneError,
+                  child: Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: Text(
+                      'Invalid phone number',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                        fontSize: 13,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -329,7 +356,7 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                             builder: (context) => SignUpScreen2(
                               _emailController.value.text,
                               _passwordController.value.text,
-                              int.parse(_phoneController.value.text),
+                              _parsedNumber.phoneNumber!,
                             ),
                           ),
                         );
@@ -364,7 +391,7 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                             builder: (context) => SignUpScreen2(
                               _emailController.value.text,
                               _passwordController.value.text,
-                              int.parse(_phoneController.value.text),
+                              _parsedNumber.phoneNumber!,
                             ),
                           ),
                         );
@@ -383,6 +410,13 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
 
     // Guard against invalid user inputs
     if (!_formKey.currentState!.validate()) return false;
+
+    if (isPhoneTextValid) {
+      _hidePhoneError(false);
+    } else {
+      _hidePhoneError(true);
+      return false;
+    }
 
     // Checks for duplicate emails, then proceeds to next page
     return await AuthService().checkIfEmailInUse(email).then(

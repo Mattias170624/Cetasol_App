@@ -11,21 +11,15 @@ import 'package:pinput/pinput.dart';
 class RegisterCodeInput extends StatefulWidget {
   late final String email;
   final String password;
-  late final int phone;
+  late final String phoneNumber;
 
-  RegisterCodeInput(this.email, this.password, this.phone);
+  RegisterCodeInput(this.email, this.password, this.phoneNumber);
 
   @override
   State<RegisterCodeInput> createState() => _RegisterCodeInputState();
 }
 
 class _RegisterCodeInputState extends State<RegisterCodeInput> {
-  final _box1 = TextEditingController();
-  final _box2 = TextEditingController();
-  final _box3 = TextEditingController();
-  final _box4 = TextEditingController();
-  final _box5 = TextEditingController();
-  final _box6 = TextEditingController();
   final _pinController = TextEditingController();
 
   bool showSmsError = false;
@@ -119,60 +113,6 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                           ),
                         ),
                       ),
-                      // SizedBox(
-                      //   width: 50,
-                      //   height: 50,
-                      //   child: Platform.isAndroid
-                      //       ? TextFormField(
-                      //           keyboardType: TextInputType.number,
-                      //           textInputAction: TextInputAction.next,
-                      //           onChanged: (_) =>
-                      //               FocusScope.of(context).nextFocus(),
-                      //           controller: _box1,
-                      //           textAlign: TextAlign.center,
-                      //           decoration: InputDecoration(
-                      //             contentPadding: EdgeInsets.all(0),
-                      //             fillColor:
-                      //                 Theme.of(context).colorScheme.secondary,
-                      //             filled: true,
-                      //             border: OutlineInputBorder(),
-                      //             hintText: '...',
-                      //             hintStyle: TextStyle(
-                      //                 color: Theme.of(context)
-                      //                     .colorScheme
-                      //                     .surface),
-                      //           ),
-                      //           inputFormatters: [
-                      //             LengthLimitingTextInputFormatter(1)
-                      //           ],
-                      //           style: TextStyle(
-                      //               color:
-                      //                   Theme.of(context).colorScheme.surface),
-                      //         )
-                      //       : CupertinoTextField(
-                      //           placeholder: '...',
-                      //           textAlign: TextAlign.center,
-                      //           controller: _box1,
-                      //           keyboardType: TextInputType.number,
-                      //           textInputAction: TextInputAction.next,
-                      //           onChanged: (_) =>
-                      //               FocusScope.of(context).nextFocus(),
-                      //           inputFormatters: [
-                      //             LengthLimitingTextInputFormatter(1)
-                      //           ],
-                      //           style: TextStyle(
-                      //             color: Theme.of(context).colorScheme.surface,
-                      //           ),
-                      //           placeholderStyle: TextStyle(
-                      //             color: Theme.of(context).colorScheme.surface,
-                      //           ),
-                      //           decoration: BoxDecoration(
-                      //             color:
-                      //                 Theme.of(context).colorScheme.secondary,
-                      //             borderRadius: BorderRadius.circular(5),
-                      //           ),
-                      //         ),
-                      // ),
                     ],
                   ),
                 )
@@ -245,23 +185,21 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
   }
 
   void _tempbutton() {
-    AuthService().sendSmsCode('+${widget.phone.toString()}');
+    AuthService().sendSmsCode('+${widget.phoneNumber.toString()}');
   }
 
   void _handleContinueButton() async {
     var pinText = _pinController.text;
 
-    print(widget.phone.runtimeType);
-    print(widget.phone);
     if (!_checkUserInput(pinText)) return;
 
-    // final allAuthResults = await AuthService().createUserAuthProviders(
-    //     pinText, widget.phone.toString(), widget.email, widget.password);
+    final allAuthResults = await AuthService().createUserAuthProviders(
+        pinText, widget.phoneNumber, widget.email, widget.password);
 
-    // if (allAuthResults) {
-    //   // User passed all auth tests, transfer to homescreen
-    //   _showHomeScreen();
-    // }
+    if (allAuthResults) {
+      // User passed all auth tests, transfer to homescreen
+      _showHomeScreen();
+    }
   }
 
   bool _checkUserInput(String text) {
@@ -287,22 +225,5 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => HomeScreen()),
         (Route route) => false);
-  }
-
-  PinTheme defaultPinTheme() {
-    return PinTheme(
-      width: 45,
-      height: 45,
-      padding: EdgeInsets.all(0),
-      margin: EdgeInsets.all(0),
-      textStyle: TextStyle(
-          fontSize: 20,
-          color: Theme.of(context).colorScheme.onSurface,
-          fontWeight: FontWeight.w600),
-      decoration: BoxDecoration(
-        border: Border.all(color: Color.fromRGBO(234, 239, 243, 1)),
-        borderRadius: BorderRadius.circular(10),
-      ),
-    );
   }
 }
