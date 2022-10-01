@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Text('Phone: ${AuthService().auth.currentUser!.phoneNumber}'),
           ElevatedButton(
             onPressed: () {
-              AuthService().auth.signOut();
+              AuthService().signOutUser(context);
             },
             child: Text('Sign out'),
           )

@@ -1,10 +1,10 @@
 class UserModel {
   String? email;
-  int? phone;
+  String? phone;
 
   UserModel(this.email, this.phone);
 
-  // Method used for handling database objects
+  // Method used for creating user object in database
   Map<String, dynamic> toMap() {
     return {
       'email': email,

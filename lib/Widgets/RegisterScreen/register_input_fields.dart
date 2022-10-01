@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
+import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:cetasol_app/Screens/signup_screen_2.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,22 +20,37 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+
+  String _usedDuplicatePhoneNumber = '';
+  String _phoneErrorText = '';
   String? emailErrorText;
   bool obscurePassword = true;
-  bool isPhoneTextValid = false;
+  bool isPhoneTextInvalid = false;
   bool showPhoneError = false;
 
   PhoneNumber number = PhoneNumber(isoCode: 'SE');
   late PhoneNumber _parsedNumber;
   String initialCountry = 'SE';
 
-  void _changeEmailErrorText(String? text) {
+  void _setPreviousPhoneNumber(String text) {
+    setState(() {
+      _usedDuplicatePhoneNumber = text;
+    });
+  }
+
+  void _setEmailErrorText(String? text) {
     setState(() {
       emailErrorText = text;
     });
   }
 
-  void _showObscurePassword() {
+  void _setPhoneErrorText(String text) {
+    setState(() {
+      _phoneErrorText = text;
+    });
+  }
+
+  void _setObscurePassword() {
     setState(() {
       obscurePassword = !obscurePassword;
     });
@@ -42,11 +58,11 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
 
   void _setPhoneTextValidity(bool newvalue) {
     setState(() {
-      isPhoneTextValid = newvalue;
+      isPhoneTextInvalid = newvalue;
     });
   }
 
-  void _hidePhoneError(bool newValue) {
+  void _setPhoneError(bool newValue) {
     setState(() {
       showPhoneError = newValue;
     });
@@ -166,7 +182,7 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                       ? TextFormField(
                           decoration: InputDecoration(
                             suffixIcon: GestureDetector(
-                              onTap: _showObscurePassword,
+                              onTap: _setObscurePassword,
                               child: obscurePassword
                                   ? Icon(
                                       Icons.remove_red_eye,
@@ -320,7 +336,7 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                     width: double.infinity,
                     margin: EdgeInsets.only(bottom: 10),
                     child: Text(
-                      'Invalid phone number',
+                      _phoneErrorText,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.error,
                         fontSize: 13,
@@ -348,20 +364,7 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
             width: double.infinity,
             child: Platform.isAndroid
                 ? ElevatedButton(
-                    onPressed: () async {
-                      if (await _handleUserInputs()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignUpScreen2(
-                              _emailController.value.text,
-                              _passwordController.value.text,
-                              _parsedNumber.phoneNumber!,
-                            ),
-                          ),
-                        );
-                      }
-                    },
+                    onPressed: _handleContinueButton,
                     style: ElevatedButton.styleFrom(
                       primary: Theme.of(context).colorScheme.onPrimary,
                       fixedSize: Size(double.infinity, 40),
@@ -375,6 +378,7 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                     ),
                   )
                 : CupertinoButton(
+                    onPressed: _handleContinueButton,
                     color: Theme.of(context).colorScheme.onPrimary,
                     child: Text(
                       'Continue',
@@ -383,20 +387,6 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
                         fontSize: 20,
                       ),
                     ),
-                    onPressed: () async {
-                      if (await _handleUserInputs()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignUpScreen2(
-                              _emailController.value.text,
-                              _passwordController.value.text,
-                              _parsedNumber.phoneNumber!,
-                            ),
-                          ),
-                        );
-                      }
-                    },
                   ),
           ),
         ],
@@ -404,31 +394,103 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
     );
   }
 
-  Future<bool> _handleUserInputs() async {
-    var email = _emailController.value.text;
-    _changeEmailErrorText(null);
-
-    // Guard against invalid user inputs
-    if (!_formKey.currentState!.validate()) return false;
-
-    if (isPhoneTextValid) {
-      _hidePhoneError(false);
+  void _handleContinueButton() async {
+    if (await _validateUserInputs()) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SignUpScreen2(
+            _emailController.value.text,
+            _passwordController.value.text,
+            _parsedNumber.phoneNumber!,
+          ),
+        ),
+      );
     } else {
-      _hidePhoneError(true);
-      return false;
+      print('User input validation failed');
+    }
+  }
+
+  Future<bool> _validateUserInputs() async {
+    late bool validationResult1;
+    late bool validationResult2;
+    late bool validationResult3;
+    late bool validationResult4;
+
+    // 1: Case when email / password are invalid
+    if (_formKey.currentState!.validate()) {
+      validationResult1 = true;
+    } else {
+      validationResult1 = false;
     }
 
-    // Checks for duplicate emails, then proceeds to next page
-    return await AuthService().checkIfEmailInUse(email).then(
-      (value) {
-        if (value) {
-          _changeEmailErrorText(null);
-          return true;
+    // 2: Case when phone number is badly written
+    if (isPhoneTextInvalid) {
+      _setPhoneError(false);
+      validationResult2 = true;
+    } else {
+      _setPhoneErrorText('Invalid phone number');
+      _setPhoneError(true);
+      validationResult2 = false;
+    }
+
+    // 3: Case when email is already in use
+    if (validationResult1) {
+      await AuthService()
+          .checkDuplicateEmail(_emailController.value.text)
+          .then((result) {
+        if (result) {
+          _setEmailErrorText(null);
+          validationResult3 = true;
         } else {
-          _changeEmailErrorText('Email is already in use');
-          return false;
+          _setEmailErrorText('Email is already in use');
+          validationResult3 = false;
         }
-      },
-    );
+      });
+    } else {
+      validationResult3 = false;
+    }
+
+    // 4: Case if phone number is already in use
+    if (validationResult2) {
+      if (_parsedNumber.phoneNumber == _usedDuplicatePhoneNumber) {
+        _setPhoneErrorText('Phone number already in use');
+        _setPhoneError(true);
+        return false;
+      }
+
+      print('Reading database');
+      await FirestoreDatabase()
+          .checkDuplicatePhone(_parsedNumber.phoneNumber!)
+          .then(
+        (result) {
+          if (result) {
+            _setPhoneError(false);
+            _setPreviousPhoneNumber(_parsedNumber.phoneNumber!);
+            validationResult4 = true;
+          } else {
+            _setPreviousPhoneNumber(_parsedNumber.phoneNumber!);
+            _setPhoneErrorText('Phone number already in use');
+            _setPhoneError(true);
+            validationResult4 = false;
+          }
+        },
+      );
+    } else {
+      validationResult4 = false;
+    }
+
+    return (validationResult1 &&
+        validationResult2 &&
+        validationResult3 &&
+        validationResult4);
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    phoneController.dispose();
+    super.dispose();
   }
 }

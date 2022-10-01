@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:io';
 
 import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
@@ -185,7 +183,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
   }
 
   void _tempbutton() {
-    AuthService().sendSmsCode('+${widget.phoneNumber.toString()}');
+    AuthService().sendSmsCode(widget.phoneNumber);
   }
 
   void _handleContinueButton() async {
@@ -225,5 +223,11 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => HomeScreen()),
         (Route route) => false);
+  }
+
+  @override
+  void dispose() {
+    _pinController.dispose();
+    super.dispose();
   }
 }

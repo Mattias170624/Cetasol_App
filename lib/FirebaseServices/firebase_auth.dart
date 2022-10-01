@@ -1,6 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
 import 'package:cetasol_app/Models/user_model.dart';
+import 'package:cetasol_app/Screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class AuthService {
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -24,15 +29,13 @@ class AuthService {
     }
   }
 
-  Future<bool> checkIfEmailInUse(String email) async {
+  Future<bool> checkDuplicateEmail(String email) async {
     try {
       final list =
           await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
       if (list.isNotEmpty) {
-        print('Duplicate email found');
         return false;
       } else {
-        print('Fresh email, proceed');
         return true;
       }
     } catch (error) {
@@ -44,15 +47,17 @@ class AuthService {
   Future sendSmsCode(String number) async {
     auth.verifyPhoneNumber(
       phoneNumber: number,
-      timeout: Duration(seconds: 60),
+      timeout: Duration(seconds: 30),
       verificationCompleted: (phoneAuthCredential) {
         // Case when phone instantly completes the incoming auth sms without user inputs
+        print('1');
       },
       verificationFailed: (error) {
-        print(error);
+        print('2 $error');
       },
       codeSent: ((verificationId, forceResendingToken) {
         incomingVerificationId = verificationId;
+        print('3');
       }),
       codeAutoRetrievalTimeout: (verificationId) {
         // Case when sms code duration runs out
@@ -71,9 +76,8 @@ class AuthService {
         emailAuthResult.runtimeType == bool) {
       if (phoneAuthResult && emailAuthResult) {
         await FirestoreDatabase().addNewUser(
-          UserModel(email, int.parse(phone)),
+          UserModel(email, phone),
         );
-
         return true;
       }
     }
@@ -90,8 +94,6 @@ class AuthService {
     await auth.signInWithCredential(phoneCredential).then((value) {
       return isNewUser = (value.additionalUserInfo!.isNewUser);
     }).onError((error, stackTrace) {
-      print(error);
-
       return isNewUser = false;
     });
     return isNewUser;
@@ -112,5 +114,15 @@ class AuthService {
 
       return false;
     }
+  }
+
+  Future<void> signOutUser(BuildContext context) {
+    return auth.signOut().whenComplete(() {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+          (Route route) => false);
+    }).onError((error, stackTrace) {
+      print(error);
+    });
   }
 }
