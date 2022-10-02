@@ -7,25 +7,38 @@ import 'package:cetasol_app/Models/user_model.dart';
 class FirestoreDatabase extends AuthService {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Future<void> addNewUser(UserModel user) async {
+  Future<bool> addNewUser(UserModel user) async {
     CollectionReference userRef =
         FirebaseFirestore.instance.collection('users');
 
     DocumentReference validNumbersRef =
         FirebaseFirestore.instance.collection('validnumbers').doc('numbers');
 
-    // Add object to 'users' collection
-    await userRef
-        .add(user.toMap())
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
+    late bool testResult1;
+    late bool testResult2;
 
-    // Add users phone to 'validnumbers' collection
-    await validNumbersRef.update({
-      "numberarray": FieldValue.arrayUnion([user.phone])
-    }).onError(
-      (error, stackTrace) => print(error),
-    );
+    // Add object to 'users' collection
+    try {
+      await userRef.add(user.toMap());
+      print('Added user to users collection');
+      testResult1 = true;
+    } catch (error) {
+      print(error);
+      testResult1 = false;
+    }
+
+    try {
+      await validNumbersRef.update({
+        "numberarray": FieldValue.arrayUnion([user.phone])
+      });
+      print('Added users phone to valid numbers collection');
+      testResult2 = true;
+    } catch (error) {
+      print(error);
+      testResult2 = false;
+    }
+
+    return (testResult1 && testResult2);
   }
 
   Future<bool> checkDuplicatePhone(String usersPhone) async {

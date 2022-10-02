@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
+import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
+import 'package:cetasol_app/Models/user_model.dart';
 import 'package:cetasol_app/Screens/home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -183,20 +185,51 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
   }
 
   void _tempbutton() {
-    AuthService().sendSmsCode(widget.phoneNumber);
+    if (AuthService.smsHasSent == null) return;
+
+    if (AuthService.smsHasSent!) {
+      _changeSmsErrorText('Wait 1 minute before resending');
+      _showSmsError(true);
+    } else {
+      print('Sending a new code now..');
+      _showSmsError(false);
+      AuthService().sendSmsCode(widget.phoneNumber);
+    }
   }
 
   void _handleContinueButton() async {
-    var pinText = _pinController.text;
+    if (!_checkUserInput(_pinController.text)) return;
 
-    if (!_checkUserInput(pinText)) return;
+    // Check if user has a valid phone
+    final phoneProviderResult =
+        await AuthService().addPhoneAuthProvider(_pinController.text);
+    if (phoneProviderResult.runtimeType == bool) {
+      if (!phoneProviderResult) {
+        _changeSmsErrorText('Entered code is wrong');
+        _showSmsError(true);
+        return;
+      }
+    } else if (phoneProviderResult == null) {
+      _changeSmsErrorText('Current code has expired');
+      return;
+    }
 
-    final allAuthResults = await AuthService().createUserAuthProviders(
-        pinText, widget.phoneNumber, widget.email, widget.password);
+    // Make user able to login with email and password
+    final emailProviderResult =
+        await AuthService().addEmailAuthProvider(widget.email, widget.password);
+    if (emailProviderResult) {
+    } else {
+      return;
+    }
 
-    if (allAuthResults) {
-      // User passed all auth tests, transfer to homescreen
+    // Add user to cloud database
+    final addUserToDbResult = await FirestoreDatabase().addNewUser(
+      UserModel(widget.email, widget.phoneNumber),
+    );
+    if (addUserToDbResult) {
       _showHomeScreen();
+    } else {
+      print('User failed final test');
     }
   }
 
@@ -229,5 +262,12 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
   void dispose() {
     _pinController.dispose();
     super.dispose();
+  }
+
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AuthService().sendSmsCode(widget.phoneNumber);
+    });
   }
 }

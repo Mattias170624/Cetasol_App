@@ -1,15 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
-import 'package:cetasol_app/Models/user_model.dart';
+import 'dart:async';
+
 import 'package:cetasol_app/Screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AuthService {
   final FirebaseAuth auth = FirebaseAuth.instance;
   static String incomingVerificationId = '';
+  static bool? smsHasSent;
 
   Future<User> handleSignIn(String email, String password) async {
     UserCredential result =
@@ -45,61 +45,48 @@ class AuthService {
   }
 
   Future sendSmsCode(String number) async {
-    auth.verifyPhoneNumber(
-      phoneNumber: number,
-      timeout: Duration(seconds: 30),
-      verificationCompleted: (phoneAuthCredential) {
-        // Case when phone instantly completes the incoming auth sms without user inputs
-        print('1');
-      },
-      verificationFailed: (error) {
-        print('2 $error');
-      },
-      codeSent: ((verificationId, forceResendingToken) {
-        incomingVerificationId = verificationId;
-        print('3');
-      }),
-      codeAutoRetrievalTimeout: (verificationId) {
-        // Case when sms code duration runs out
-      },
-    );
+    Timer(Duration(seconds: 2), () {
+      auth.verifyPhoneNumber(
+        phoneNumber: number,
+        timeout: Duration(seconds: 60),
+        verificationCompleted: (phoneAuthCredential) {
+          // Case when phone instantly completes the incoming auth sms without user inputs
+        },
+        verificationFailed: (error) {
+          print(error);
+        },
+        codeSent: ((verificationId, forceResendingToken) {
+          print('Sending sms..');
+
+          incomingVerificationId = verificationId;
+          smsHasSent = true;
+        }),
+        codeAutoRetrievalTimeout: (verificationId) {
+          smsHasSent = false;
+        },
+      );
+    });
   }
 
-  Future<bool> createUserAuthProviders(
-      String smsCode, String phone, String email, String password) async {
-    dynamic phoneAuthResult = await _addPhoneAuthProvider(smsCode);
-    dynamic emailAuthResult = await _addEmailAuthProvider(email, password);
-
-    // Checking result of both auths.
-    // If both are type bool and also both true, then return true
-    if (phoneAuthResult.runtimeType == bool &&
-        emailAuthResult.runtimeType == bool) {
-      if (phoneAuthResult && emailAuthResult) {
-        await FirestoreDatabase().addNewUser(
-          UserModel(email, phone),
-        );
-        return true;
-      }
-    }
-    return false;
-  }
-
-  Future<dynamic> _addPhoneAuthProvider(String smsCode) async {
+  Future<dynamic> addPhoneAuthProvider(String smsCode) async {
     PhoneAuthCredential phoneCredential = PhoneAuthProvider.credential(
       verificationId: incomingVerificationId,
       smsCode: smsCode,
     );
 
-    late bool isNewUser;
-    await auth.signInWithCredential(phoneCredential).then((value) {
-      return isNewUser = (value.additionalUserInfo!.isNewUser);
-    }).onError((error, stackTrace) {
-      return isNewUser = false;
-    });
-    return isNewUser;
+    try {
+      await auth.signInWithCredential(phoneCredential);
+      return true;
+    } catch (error) {
+      print('Error: $error');
+
+      // Case if the error depends on invalid code, or that code has expired
+      if (smsHasSent == false) return null;
+      return false;
+    }
   }
 
-  Future<bool> _addEmailAuthProvider(
+  Future<bool> addEmailAuthProvider(
       String emailInput, String passwordInput) async {
     AuthCredential emailCredential = EmailAuthProvider.credential(
       email: emailInput,
