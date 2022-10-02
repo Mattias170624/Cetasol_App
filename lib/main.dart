@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
+import 'package:cetasol_app/Screens/home_screen.dart';
 import 'package:cetasol_app/Screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,21 +22,27 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var authHandler = new AuthService().userAuthListener();
-
     return Platform.isAndroid
         ? MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: _SharedColorTheme().themedata,
-            home: LoginScreen(),
+            home: _decideStartScreen(),
           )
         : MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: _SharedColorTheme().themedata,
             home: CupertinoApp(
-              home: LoginScreen(),
+              home: _decideStartScreen(),
             ),
           );
+  }
+
+  Widget _decideStartScreen() {
+    if (AuthService().checkIfUserIsLoggedIn()) {
+      return HomeScreen();
+    } else {
+      return LoginScreen();
+    }
   }
 }
 

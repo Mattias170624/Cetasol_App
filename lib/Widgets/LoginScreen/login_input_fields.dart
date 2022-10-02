@@ -2,9 +2,9 @@
 
 import 'dart:io';
 
+import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:cetasol_app/Screens/signup_screen_1.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,12 +15,9 @@ class LoginInputFields extends StatefulWidget {
 
 class _LoginInputFieldsState extends State<LoginInputFields> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -168,6 +165,7 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
             margin: EdgeInsets.only(top: 5),
             alignment: Alignment.centerRight,
             child: GestureDetector(
+              onTap: () => AuthService().auth.signOut(),
               child: Text(
                 'Forgot password?',
                 style: TextStyle(
@@ -234,6 +232,7 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                 : EdgeInsets.only(bottom: 30),
             child: GestureDetector(
               onTap: () {
+                FocusScope.of(context).unfocus();
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => SignUpScreen1()),
@@ -257,5 +256,12 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
   bool _validateUserInputs() {
     // Checks if user input is valid, then opens the next screen
     return (_formKey.currentState!.validate());
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }
