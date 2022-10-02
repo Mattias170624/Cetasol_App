@@ -21,6 +21,8 @@ class _HomeScreenState extends State<HomeScreen> {
           Text('User logged in!'),
           Text('Email: ${AuthService().auth.currentUser!.email}'),
           Text('Phone: ${AuthService().auth.currentUser!.phoneNumber}'),
+          Text('Uid: ${AuthService().auth.currentUser!.uid}'),
+          Text('Phone: ${AuthService().auth.currentUser!}'),
           ElevatedButton(
             onPressed: () {
               AuthService().signOutUser(context);

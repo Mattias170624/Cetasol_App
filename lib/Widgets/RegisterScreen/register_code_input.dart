@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:io';
 
 import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
@@ -133,7 +135,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: _tempbutton,
+                  onTap: _handleResendCodeButton,
                   child: Text(
                     'Resend code',
                     style: TextStyle(
@@ -184,7 +186,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
     );
   }
 
-  void _tempbutton() {
+  void _handleResendCodeButton() {
     if (AuthService.smsHasSent == null) return;
 
     if (AuthService.smsHasSent!) {
