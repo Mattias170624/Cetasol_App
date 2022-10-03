@@ -458,18 +458,16 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
         _setPhoneError(true);
         return false;
       }
-
       print('Reading database');
       await FirestoreDatabase()
           .checkDuplicatePhone(_parsedNumber.phoneNumber!)
           .then(
         (result) {
+          _setPreviousPhoneNumber(_parsedNumber.phoneNumber!);
           if (result) {
             _setPhoneError(false);
-            _setPreviousPhoneNumber(_parsedNumber.phoneNumber!);
             validationResult4 = true;
           } else {
-            _setPreviousPhoneNumber(_parsedNumber.phoneNumber!);
             _setPhoneErrorText('Phone number already in use');
             _setPhoneError(true);
             validationResult4 = false;

@@ -45,25 +45,20 @@ class FirestoreDatabase extends AuthService {
     DocumentReference validNumbersRef =
         FirebaseFirestore.instance.collection('validnumbers').doc('numbers');
 
-    bool finalResult = false;
+    try {
+      final response = await validNumbersRef.get();
+      final numberArray = await response.get(FieldPath(['numberarray']));
 
-    await validNumbersRef.get().then((result) {
-      final validNumbers = result.get(FieldPath(['numberarray']));
-
-      if (validNumbers == null) {
-        // List does not exist
-        return finalResult == false;
-      }
-
-      finalResult = true;
-      for (var number in validNumbers) {
+      for (var number in numberArray) {
         if (number == usersPhone) {
-          // Number duplicate found in database
-          return finalResult = false;
+          // Case on duplicate phone number
+          return false;
         }
       }
-    });
-
-    return finalResult;
+      return true;
+    } catch (error) {
+      print('$error');
+      return false;
+    }
   }
 }
