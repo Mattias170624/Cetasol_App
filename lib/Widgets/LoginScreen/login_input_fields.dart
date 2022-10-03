@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
+import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
 import 'package:cetasol_app/Screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -222,7 +223,8 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
             margin: EdgeInsets.only(top: 5),
             alignment: Alignment.centerRight,
             child: GestureDetector(
-              onTap: () => AuthService().auth.signOut(),
+              onTap: () =>
+                  FirestoreDatabase().checkDuplicatePhone('+46760578565'),
               child: Text(
                 'Forgot password?',
                 style: TextStyle(
