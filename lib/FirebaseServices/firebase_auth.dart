@@ -112,4 +112,13 @@ class AuthService {
       print(error);
     });
   }
+
+  Future<dynamic> loginUser(String email, String password) async {
+    try {
+      await auth.signInWithEmailAndPassword(email: email, password: password);
+      return true;
+    } catch (error) {
+      return error;
+    }
+  }
 }
