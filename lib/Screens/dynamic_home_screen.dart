@@ -35,24 +35,22 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.onSurface,
-      bottomNavigationBar: Container(
-        child: BottomBarInspiredInside(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          color: Theme.of(context).colorScheme.error,
-          colorSelected: Theme.of(context).colorScheme.onSurface,
-          duration: Duration(milliseconds: 200),
-          itemStyle: ItemStyle.circle,
-          indexSelected: _pageIndex,
-          padbottom: 10,
-          padTop: 10,
-          iconSize: 25,
-          items: items,
-          onTap: (int newPageIndex) => _setCurrentPage(newPageIndex),
-          chipStyle: ChipStyle(
-            convexBridge: true,
-            background: Theme.of(context).colorScheme.onPrimary,
-            size: 0,
-          ),
+      bottomNavigationBar: BottomBarInspiredInside(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        color: Theme.of(context).colorScheme.error,
+        colorSelected: Theme.of(context).colorScheme.onSurface,
+        duration: Duration(milliseconds: 200),
+        itemStyle: ItemStyle.circle,
+        indexSelected: _pageIndex,
+        padbottom: Platform.isAndroid ? 10 : 0,
+        padTop: 10,
+        iconSize: 25,
+        items: items,
+        onTap: (int newPageIndex) => _setCurrentPage(newPageIndex),
+        chipStyle: ChipStyle(
+          convexBridge: true,
+          background: Theme.of(context).colorScheme.onPrimary,
+          size: 0,
         ),
       ),
       body: _chooseWhatPage(),

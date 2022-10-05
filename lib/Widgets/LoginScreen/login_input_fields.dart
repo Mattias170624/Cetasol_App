@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
 import 'package:cetasol_app/Screens/dynamic_home_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:cetasol_app/Screens/signup_screen_1.dart';
 import 'package:flutter/material.dart';
