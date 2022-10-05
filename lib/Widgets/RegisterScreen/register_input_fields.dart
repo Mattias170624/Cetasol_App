@@ -101,175 +101,85 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
               children: [
                 Container(
                   padding: EdgeInsets.only(bottom: 10),
-                  child: Platform.isAndroid
-                      ? TextFormField(
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(vertical: 0),
-                            fillColor: Theme.of(context).colorScheme.secondary,
-                            border: OutlineInputBorder(),
-                            hintText: 'Email',
-                            errorText: emailErrorText,
-                            errorStyle: TextStyle(height: 0.5),
-                            filled: true,
-                            prefixIcon: Icon(
-                              Icons.email_outlined,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                          textInputAction: TextInputAction.next,
-                          controller: _emailController,
-                          enableSuggestions: false,
-                          autocorrect: false,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(errorText: 'Required'),
-                              EmailValidator(
-                                  errorText:
-                                      "Please enter a valid email address"),
-                            ],
-                          ),
-                        )
-                      : CupertinoTextFormFieldRow(
-                          prefix: Container(
-                            padding: EdgeInsets.only(
-                                left: 10, right: 5, top: 5, bottom: 5),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                              ),
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(2),
-                              child: Icon(
-                                CupertinoIcons.mail,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(10),
-                              bottomRight: Radius.circular(10),
-                            ),
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          padding: EdgeInsets.zero,
-                          placeholder: 'Email',
-                          style: TextStyle(height: 1.5),
-                          textInputAction: TextInputAction.next,
-                          controller: _emailController,
-                          enableSuggestions: false,
-                          autocorrect: false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(errorText: "Required"),
-                              EmailValidator(
-                                  errorText:
-                                      "Please enter a valid email address"),
-                            ],
-                          ),
-                        ),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(vertical: 0),
+                      fillColor: Theme.of(context).colorScheme.secondary,
+                      border: OutlineInputBorder(),
+                      hintText: 'Email',
+                      errorText: emailErrorText,
+                      errorStyle: TextStyle(height: 0.5),
+                      filled: true,
+                      prefixIcon: Icon(
+                        Icons.email_outlined,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    controller: _emailController,
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                    validator: MultiValidator(
+                      [
+                        RequiredValidator(errorText: 'Required'),
+                        EmailValidator(
+                            errorText: "Please enter a valid email address"),
+                      ],
+                    ),
+                  ),
                 ),
                 Container(
                   padding: EdgeInsets.only(bottom: 10),
-                  child: Platform.isAndroid
-                      ? TextFormField(
-                          decoration: InputDecoration(
-                            suffixIcon: GestureDetector(
-                              onTap: _setObscurePassword,
-                              child: obscurePassword
-                                  ? Icon(
-                                      Icons.remove_red_eye,
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                      size: 20,
-                                    )
-                                  : Icon(
-                                      Icons.remove_red_eye_outlined,
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                      size: 20,
-                                    ),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(vertical: 0),
-                            fillColor: Theme.of(context).colorScheme.secondary,
-                            border: OutlineInputBorder(),
-                            hintText: 'Password',
-                            errorStyle: TextStyle(height: 0.5),
-                            filled: true,
-                            prefixIcon: Icon(
-                              Icons.lock_outlined,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                          textInputAction: TextInputAction.done,
-                          controller: _passwordController,
-                          enableSuggestions: false,
-                          obscureText: obscurePassword,
-                          autocorrect: false,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(errorText: "Required"),
-                              MinLengthValidator(10,
-                                  errorText:
-                                      'Must contain atleast 10 characters')
-                            ],
-                          ),
-                        )
-                      : CupertinoTextFormFieldRow(
-                          prefix: Container(
-                            padding: EdgeInsets.only(
-                                left: 10, right: 5, top: 5, bottom: 5),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                              ),
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(2),
-                              child: Icon(
-                                CupertinoIcons.lock,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      suffixIcon: GestureDetector(
+                        onTap: _setObscurePassword,
+                        child: obscurePassword
+                            ? Icon(
+                                Icons.remove_red_eye,
                                 color: Theme.of(context).colorScheme.primary,
+                                size: 20,
+                              )
+                            : Icon(
+                                Icons.remove_red_eye_outlined,
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 20,
                               ),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(10),
-                              bottomRight: Radius.circular(10),
-                            ),
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          padding: EdgeInsets.zero,
-                          placeholder: 'Password',
-                          style: TextStyle(height: 1.5),
-                          textInputAction: TextInputAction.done,
-                          keyboardType: TextInputType.visiblePassword,
-                          obscureText: true,
-                          controller: _passwordController,
-                          enableSuggestions: false,
-                          autocorrect: false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(errorText: "Required"),
-                              MinLengthValidator(10,
-                                  errorText:
-                                      'Must contain atleast 10 characters')
-                            ],
-                          ),
-                        ),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(vertical: 0),
+                      fillColor: Theme.of(context).colorScheme.secondary,
+                      border: OutlineInputBorder(),
+                      hintText: 'Password',
+                      errorStyle: TextStyle(height: 0.5),
+                      filled: true,
+                      prefixIcon: Icon(
+                        Icons.lock_outlined,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    textInputAction: TextInputAction.done,
+                    controller: _passwordController,
+                    enableSuggestions: false,
+                    obscureText: obscurePassword,
+                    keyboardType: TextInputType.visiblePassword,
+                    autocorrect: false,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                    validator: MultiValidator(
+                      [
+                        RequiredValidator(errorText: "Required"),
+                        MinLengthValidator(10,
+                            errorText: 'Must contain atleast 10 characters')
+                      ],
+                    ),
+                  ),
                 ),
                 Container(
                   margin: EdgeInsets.only(bottom: 5),
@@ -360,34 +270,22 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
           Container(
             margin: Platform.isAndroid
                 ? EdgeInsets.only(bottom: 60)
-                : EdgeInsets.only(bottom: 10),
+                : EdgeInsets.only(bottom: 40),
             width: double.infinity,
-            child: Platform.isAndroid
-                ? ElevatedButton(
-                    onPressed: _handleContinueButton,
-                    style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).colorScheme.onPrimary,
-                      fixedSize: Size(double.infinity, 40),
-                    ),
-                    child: Text(
-                      'Continue',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 20,
-                      ),
-                    ),
-                  )
-                : CupertinoButton(
-                    onPressed: _handleContinueButton,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    child: Text(
-                      'Continue',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
+            child: ElevatedButton(
+              onPressed: _handleContinueButton,
+              style: ElevatedButton.styleFrom(
+                primary: Theme.of(context).colorScheme.onPrimary,
+                fixedSize: Size(double.infinity, 40),
+              ),
+              child: Text(
+                'Continue',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 20,
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -452,12 +350,12 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
     }
 
     // 4: Case if phone number is already in use
+    if (_parsedNumber.phoneNumber == _usedDuplicatePhoneNumber) {
+      _setPhoneError(true);
+      return false;
+    }
+
     if (validationResult2) {
-      if (_parsedNumber.phoneNumber == _usedDuplicatePhoneNumber) {
-        _setPhoneErrorText('Phone number already in use');
-        _setPhoneError(true);
-        return false;
-      }
       print('Reading database');
       await FirestoreDatabase()
           .checkDuplicatePhone(_parsedNumber.phoneNumber!)
