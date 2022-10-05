@@ -22,7 +22,6 @@ class RegisterCodeInput extends StatefulWidget {
 
 class _RegisterCodeInputState extends State<RegisterCodeInput> {
   final _pinController = TextEditingController();
-
   bool showSmsError = false;
   String smsErrorText = '';
 
