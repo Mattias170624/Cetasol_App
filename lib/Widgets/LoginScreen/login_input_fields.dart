@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
 import 'package:cetasol_app/Screens/dynamic_home_screen.dart';
+import 'package:cetasol_app/Widgets/LoginScreen/reset_password_sheet.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:cetasol_app/Screens/signup_screen_1.dart';
 import 'package:flutter/material.dart';
@@ -134,8 +135,7 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
             margin: EdgeInsets.only(top: 5),
             alignment: Alignment.centerRight,
             child: GestureDetector(
-              onTap: () =>
-                  FirestoreDatabase().checkDuplicatePhone('+46760578565'),
+              onTap: () => _handlePasswordResetButton(),
               child: Text(
                 'Forgot password?',
                 style: TextStyle(
@@ -216,6 +216,21 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
       _setPasswordErrorText('Error logging in');
       _setPasswordVisibility(true);
     }
+  }
+
+  void _handlePasswordResetButton() {
+    showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return ResetPasswordSheet();
+      },
+    );
   }
 
   void _showHomeScreen() {
