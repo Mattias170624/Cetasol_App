@@ -22,19 +22,11 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Platform.isAndroid
-        ? MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: _SharedColorTheme().themedata,
-            home: _decideStartScreen(),
-          )
-        : MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: _SharedColorTheme().themedata,
-            home: CupertinoApp(
-              home: _decideStartScreen(),
-            ),
-          );
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: _SharedColorTheme().themedata,
+      home: _decideStartScreen(),
+    );
   }
 
   Widget _decideStartScreen() {

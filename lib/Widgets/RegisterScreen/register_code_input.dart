@@ -6,7 +6,6 @@ import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
 import 'package:cetasol_app/Models/user_model.dart';
 import 'package:cetasol_app/Screens/dynamic_home_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
@@ -117,7 +116,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -154,32 +153,20 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
                 ? EdgeInsets.only(bottom: 60)
                 : EdgeInsets.only(bottom: 0),
             width: double.infinity,
-            child: Platform.isAndroid
-                ? ElevatedButton(
-                    onPressed: _handleContinueButton,
-                    style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).colorScheme.onPrimary,
-                      fixedSize: Size(double.infinity, 40),
-                    ),
-                    child: Text(
-                      'Continue',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 20,
-                      ),
-                    ),
-                  )
-                : CupertinoButton(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    onPressed: _handleContinueButton,
-                    child: Text(
-                      'Continue',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
+            child: ElevatedButton(
+              onPressed: _handleContinueButton,
+              style: ElevatedButton.styleFrom(
+                primary: Theme.of(context).colorScheme.onPrimary,
+                fixedSize: Size(double.infinity, 40),
+              ),
+              child: Text(
+                'Continue',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 20,
+                ),
+              ),
+            ),
           ),
         ],
       ),
