@@ -1,32 +1,124 @@
-import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+// ignore_for_file: prefer_const_constructors
 
-class SettingsScreen extends StatelessWidget {
+import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
   @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  @override
   Widget build(BuildContext context) {
-    return Center(
+    return SizedBox(
+      width: double.infinity,
+      height: double.infinity,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text('Settings screen'),
-          Text(
-            'Logged in with\n${AuthService().auth.currentUser!.email}\n ${AuthService().auth.currentUser!.phoneNumber}',
-            textAlign: TextAlign.center,
+          DrawerHeader(
+            padding: EdgeInsets.all(0),
+            child: Container(
+              width: double.infinity,
+              color: Theme.of(context).colorScheme.primary,
+              child: Center(
+                child: Image.asset(
+                  'assets/images/cetasol_icon.png',
+                  height: 100,
+                  width: 100,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+            ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              AuthService().signOutUser(context);
-            },
-            child: Text('Log out'),
+          Expanded(
+            child: Container(
+              color: Theme.of(context).colorScheme.onSurface,
+              width: double.infinity,
+              child: Column(
+                children: [
+                  Divider(
+                    thickness: 1,
+                    endIndent: 10,
+                    indent: 10,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.only(left: 10, top: 0, bottom: 5),
+                    child: Text(
+                      'Account',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    visualDensity: VisualDensity(vertical: -4),
+                    horizontalTitleGap: 0,
+                    leading: Icon(
+                      Icons.mail,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    title: Text(
+                      AuthService().auth.currentUser!.email!,
+                      style: TextStyle(fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  ListTile(
+                    visualDensity: VisualDensity(vertical: -4),
+                    horizontalTitleGap: 0,
+                    leading: Icon(
+                      Icons.phone,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    title: Text(
+                      AuthService().auth.currentUser!.phoneNumber!,
+                      style: TextStyle(fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  Divider(
+                    thickness: 1,
+                    endIndent: 10,
+                    indent: 10,
+                  ),
+                  Padding(padding: EdgeInsets.only(top: 20)),
+                  Spacer(),
+                  Divider(
+                    thickness: 1,
+                    endIndent: 10,
+                    indent: 10,
+                  ),
+                  ListTile(
+                    onTap: _handleLogoutButton,
+                    visualDensity: VisualDensity(vertical: -4),
+                    horizontalTitleGap: 0,
+                    leading: Icon(
+                      Icons.exit_to_app_rounded,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                    title: Text(
+                      'Sign out',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                  Padding(padding: EdgeInsets.only(bottom: 10)),
+                ],
+              ),
+            ),
           ),
         ],
       ),
     );
+  }
+
+  void _handleLogoutButton() async {
+    await AuthService().signOutUser(context);
   }
 }

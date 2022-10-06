@@ -15,10 +15,6 @@ class SignUpScreen2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double iOSNavbarHeight = MediaQuery.of(context).padding.top;
-    double deviceSafeHeight = MediaQuery.of(context).size.height -
-        (MediaQuery.of(context).padding.top + kToolbarHeight);
-
     double paddingTop = MediaQuery.of(context).padding.top;
     double paddingBottom = MediaQuery.of(context).padding.bottom;
     double safeDeviceHeigt = MediaQuery.of(context).size.height -
