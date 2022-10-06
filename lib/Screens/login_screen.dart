@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:cetasol_app/Widgets/LoginScreen/login_header.dart';
 import 'package:cetasol_app/Widgets/LoginScreen/login_input_fields.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -20,16 +19,8 @@ class _LoginScreenState extends State<LoginScreen> {
     double safeDeviceHeigt =
         MediaQuery.of(context).size.height - paddingTop - paddingBottom;
 
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: Color.fromARGB(255, 14, 38, 61),
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.light,
-      ),
-    );
-
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.onSurface,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
