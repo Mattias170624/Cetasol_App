@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -108,7 +110,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                   ),
-                  Padding(padding: EdgeInsets.only(bottom: 10)),
+                  Divider(
+                    thickness: 1,
+                    endIndent: 10,
+                    indent: 10,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: Platform.isIOS ? 20 : 0),
+                  ),
                 ],
               ),
             ),
