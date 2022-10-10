@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:cetasol_app/Widgets/NavScreenWidgets/MediaPage/media_screen.dart';
 import 'package:cetasol_app/Widgets/NavScreenWidgets/SettingsPage/settings_screen.dart';
-import 'package:cetasol_app/Widgets/NavScreenWidgets/TroublshootPage/trouble_shoot_screen.dart';
+import 'package:cetasol_app/Screens/trouble_shoot_screen.dart';
 import 'package:cetasol_app/Widgets/NavScreenWidgets/VesselPage/vessel_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  int _pageIndex = 1;
+  int _pageIndex = 2;
 
   void _setCurrentPage(int index) {
     setState(() {
