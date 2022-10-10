@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 
 class TopContainer extends StatelessWidget {
-  const TopContainer({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +24,7 @@ class TopContainer extends StatelessWidget {
                 Container(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Verification',
+                    'Additional help',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.surface,
                       fontWeight: FontWeight.w400,
