@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cetasol_app/Screens/ticket_screen.dart';
 import 'package:flutter/material.dart';
 
 class TopContainer extends StatelessWidget {
@@ -49,7 +50,14 @@ class TopContainer extends StatelessWidget {
                   margin: EdgeInsets.only(right: 5, top: 10),
                   alignment: Alignment.centerRight,
                   child: ElevatedButton(
-                    onPressed: _handleTicketButton,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TicketScreen(),
+                        ),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       primary: Theme.of(context).colorScheme.onPrimary,
                     ),
@@ -82,6 +90,4 @@ class TopContainer extends StatelessWidget {
       ),
     );
   }
-
-  void _handleTicketButton() {}
 }
