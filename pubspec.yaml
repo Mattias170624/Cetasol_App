@@ -41,6 +41,9 @@ dependencies:
   pinput: ^2.2.12
   intl_phone_number_input: ^0.7.1
   awesome_bottom_bar: any
+  youtube_player_flutter: ^8.1.1
+  http: ^0.13.5
+  webview_flutter: ^3.0.4
 
 dev_dependencies:
   flutter_test:

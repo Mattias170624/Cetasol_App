@@ -2,7 +2,8 @@
 
 import 'dart:io';
 
-import 'package:cetasol_app/Widgets/NavScreenWidgets/MediaPage/media_screen.dart';
+import 'package:cetasol_app/Models/channel_model.dart';
+import 'package:cetasol_app/Screens/media_screen.dart';
 import 'package:cetasol_app/Widgets/NavScreenWidgets/SettingsPage/settings_screen.dart';
 import 'package:cetasol_app/Screens/trouble_shoot_screen.dart';
 import 'package:cetasol_app/Widgets/NavScreenWidgets/VesselPage/vessel_screen.dart';
@@ -17,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  int _pageIndex = 2;
+  int _pageIndex = 1;
 
   void _setCurrentPage(int index) {
     setState(() {
@@ -27,6 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Channel? cachedYoutubeData;
+
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.onSurface,
