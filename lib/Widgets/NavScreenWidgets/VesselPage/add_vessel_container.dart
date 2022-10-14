@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cetasol_app/Screens/vessel_form_screen.dart';
 import 'package:flutter/material.dart';
 
 class AddVesselContainer extends StatelessWidget {
@@ -45,7 +46,14 @@ class AddVesselContainer extends StatelessWidget {
             margin: EdgeInsets.only(right: 5, top: 10),
             alignment: Alignment.centerRight,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VesselFormScreen(),
+                  ),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 primary: Theme.of(context).colorScheme.onPrimary,
               ),
