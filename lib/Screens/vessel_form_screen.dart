@@ -25,11 +25,11 @@ class _VesselFormScreenState extends State<VesselFormScreen> {
       ),
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(0),
         width: double.infinity,
         child: Column(
           children: [
-            VesselFormTitle(),
+            // VesselFormTitle(),
             Expanded(
               child: VesselForm(),
             ),
