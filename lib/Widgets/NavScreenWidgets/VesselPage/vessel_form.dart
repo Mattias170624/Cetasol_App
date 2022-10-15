@@ -85,9 +85,9 @@ class _VesselFormState extends State<VesselForm> {
       ),
       child: Theme(
         data: ThemeData(
-          accentColor: Color.fromARGB(255, 255, 102, 37),
+          accentColor: Theme.of(context).colorScheme.onPrimary,
           colorScheme: ColorScheme.light(
-            primary: Color.fromARGB(255, 255, 102, 37),
+            primary: Theme.of(context).colorScheme.onPrimary,
           ),
         ),
         child: Stepper(
@@ -107,7 +107,9 @@ class _VesselFormState extends State<VesselForm> {
                       width: 100,
                       child: ElevatedButton(
                         onPressed: details.onStepContinue,
-                        child: Text('Next'),
+                        child: Text(_activeCurrentStep == stepList().length - 1
+                            ? 'Finish'
+                            : 'Next'),
                       ),
                     ),
                     SizedBox(
@@ -259,15 +261,17 @@ class _VesselFormState extends State<VesselForm> {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
-                Container(
+                SizedBox(
                   width: double.infinity,
-                  margin: EdgeInsets.only(bottom: 5),
                   child: Text(
                     'Technical contact',
                     style: TextStyle(fontSize: 15),
                   ),
+                ),
+                SizedBox(
+                  height: 15,
                 ),
                 TextFormField(
                   controller: _createTextController('technical_full_name'),
@@ -317,15 +321,17 @@ class _VesselFormState extends State<VesselForm> {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
                 Container(
                   width: double.infinity,
-                  margin: EdgeInsets.only(bottom: 5),
                   child: Text(
                     'Planning contact',
                     style: TextStyle(fontSize: 15),
                   ),
+                ),
+                SizedBox(
+                  height: 15,
                 ),
                 TextFormField(
                   controller: _createTextController('planning_full_name'),
@@ -377,13 +383,15 @@ class _VesselFormState extends State<VesselForm> {
                 SizedBox(
                   height: 15,
                 ),
-                Container(
+                SizedBox(
                   width: double.infinity,
-                  margin: EdgeInsets.only(top: 5),
                   child: Text(
                     'Display size best suited for your vessel',
                     style: TextStyle(fontSize: 15),
                   ),
+                ),
+                SizedBox(
+                  height: 5,
                 ),
                 FormField(
                   builder: (FormFieldState<bool> state) {
@@ -570,11 +578,14 @@ class _VesselFormState extends State<VesselForm> {
                     return null;
                   },
                 ),
+                SizedBox(
+                  height: 15,
+                ),
                 Visibility(
                   visible: _numOfdrivelineInfoBoxes > 0,
                   child: Container(
                     width: double.infinity,
-                    margin: EdgeInsets.only(bottom: 5, top: 20),
+                    margin: EdgeInsets.only(bottom: 15),
                     child: Text('Engine type and model for..'),
                   ),
                 ),
@@ -622,6 +633,9 @@ class _VesselFormState extends State<VesselForm> {
                   ),
                 ),
                 SizedBox(
+                  height: 5,
+                ),
+                SizedBox(
                   width: double.infinity,
                   child: Text(
                       'Current selected image: ${imageData1 == null ? 'No image selected' : '\n${imageData1!.path}'}'),
@@ -649,6 +663,9 @@ class _VesselFormState extends State<VesselForm> {
                     'Driveline type',
                     style: TextStyle(fontSize: 15),
                   ),
+                ),
+                SizedBox(
+                  height: 5,
                 ),
                 FormField(
                   builder: (FormFieldState<bool> state) {
@@ -790,9 +807,8 @@ class _VesselFormState extends State<VesselForm> {
                 SizedBox(
                   height: 5,
                 ),
-                Container(
+                SizedBox(
                   width: double.infinity,
-                  margin: EdgeInsets.only(bottom: 5, top: 10),
                   child: Text('Picture of wiring diagram drivelines'),
                 ),
                 Align(
@@ -834,7 +850,7 @@ class _VesselFormState extends State<VesselForm> {
                 SizedBox(
                   width: double.infinity,
                   child: Text(
-                      'Current selected image: ${imageData2 == null ? 'No image selected' : '\n${imageData2!.path}'}'),
+                      'Current selected image: ${imageData2 == null ? '' : '\n${imageData2!.path}'}'),
                 ),
                 Visibility(
                   visible: showImage2Error,
@@ -850,14 +866,17 @@ class _VesselFormState extends State<VesselForm> {
                     ),
                   ),
                 ),
-
-                //
                 SizedBox(
                   height: 15,
                 ),
-                Container(
+                Divider(
+                  thickness: 1,
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                SizedBox(
                   width: double.infinity,
-                  margin: EdgeInsets.only(bottom: 5, top: 10),
                   child: Text('Picture of wiring diagram navigation system'),
                 ),
                 Align(
@@ -899,7 +918,7 @@ class _VesselFormState extends State<VesselForm> {
                 SizedBox(
                   width: double.infinity,
                   child: Text(
-                      'Current selected image: ${imageData3 == null ? 'No image selected' : '\n${imageData3!.path}'}'),
+                      'Current selected image: ${imageData3 == null ? '' : '\n${imageData3!.path}'}'),
                 ),
                 Visibility(
                   visible: showImage3Error,
@@ -915,26 +934,13 @@ class _VesselFormState extends State<VesselForm> {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
               ],
             ),
           ),
         ),
-        //////////
-        ////
-        ///////////////////////////////////////
-        ///////
-        ///////
-        ///////
-        ///////
-        ///////
-        ///////
-        ///////
-        ///////
-        ///////
-        ///
-        ///////
-        ///////
-        ///
         Step(
           state: _activeCurrentStep == 3
               ? StepState.editing
@@ -954,9 +960,11 @@ class _VesselFormState extends State<VesselForm> {
                           radioButtonValuesList['driveline_type'] != 'electric',
                       child: Column(
                         children: [
-                          Container(
+                          SizedBox(
+                            height: 5,
+                          ),
+                          SizedBox(
                             width: double.infinity,
-                            margin: EdgeInsets.only(bottom: 5, top: 10),
                             child: Text(
                                 'Does your engine have a fuel flow signal?'),
                           ),
@@ -1044,6 +1052,12 @@ class _VesselFormState extends State<VesselForm> {
                                   ),
                                 ],
                               );
+                            },
+                            validator: (value) {
+                              if (value != true) {
+                                return 'Required!';
+                              }
+                              return null;
                             },
                           ),
                         ],
@@ -1214,7 +1228,7 @@ class _VesselFormState extends State<VesselForm> {
                             },
                             validator: (value) {
                               if (value != true) {
-                                return 'Please choose location';
+                                return 'Required!';
                               }
                               return null;
                             },
@@ -1292,7 +1306,7 @@ class _VesselFormState extends State<VesselForm> {
                             },
                             validator: (value) {
                               if (value != true) {
-                                return 'Please choose location';
+                                return 'Required!';
                               }
                               return null;
                             },
@@ -1374,6 +1388,12 @@ class _VesselFormState extends State<VesselForm> {
                                   ),
                                 ],
                               );
+                            },
+                            validator: (value) {
+                              if (value != true) {
+                                return 'Required!';
+                              }
+                              return null;
                             },
                           ),
                           SizedBox(
@@ -1471,7 +1491,7 @@ class _VesselFormState extends State<VesselForm> {
                             },
                             validator: (value) {
                               if (value != true) {
-                                return 'Please choose location';
+                                return 'Required!';
                               }
                               return null;
                             },
@@ -1549,7 +1569,7 @@ class _VesselFormState extends State<VesselForm> {
                       },
                       validator: (value) {
                         if (value != true) {
-                          return 'Please choose location';
+                          return 'Required!';
                         }
                         return null;
                       },
@@ -1572,9 +1592,11 @@ class _VesselFormState extends State<VesselForm> {
             key: formKeyList[4],
             child: Column(
               children: [
-                Container(
+                SizedBox(
+                  height: 5,
+                ),
+                SizedBox(
                   width: double.infinity,
-                  margin: EdgeInsets.only(bottom: 5, top: 10),
                   child: Text(
                       'Do you want to connect your power generation to the system as well?'),
                 ),
@@ -1661,7 +1683,7 @@ class _VesselFormState extends State<VesselForm> {
                   },
                   validator: (value) {
                     if (value != true) {
-                      return 'Please choose location';
+                      return 'Required!';
                     }
                     return null;
                   },
@@ -1673,9 +1695,6 @@ class _VesselFormState extends State<VesselForm> {
                       radioButtonValuesList['driveline_type'] != 'electric'),
                   child: Column(
                     children: [
-                      //
-                      //
-                      //
                       SizedBox(
                         height: 15,
                       ),
@@ -1769,17 +1788,22 @@ class _VesselFormState extends State<VesselForm> {
                             ],
                           );
                         },
+                        validator: (value) {
+                          if (value != true) {
+                            return 'Required!';
+                          }
+                          return null;
+                        },
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
-
                       Visibility(
                         visible:
                             radioButtonValuesList['extra_fuel_flow_signal'] ==
                                 'yes',
                         child: Column(
                           children: [
+                            SizedBox(
+                              height: 15,
+                            ),
                             SizedBox(
                               width: double.infinity,
                               child: Text('Is it based on...'),
@@ -1943,18 +1967,11 @@ class _VesselFormState extends State<VesselForm> {
                               },
                               validator: (value) {
                                 if (value != true) {
-                                  return 'Please choose location';
+                                  return 'Required!';
                                 }
                                 return null;
                               },
                             ),
-                            //
-                            //
-                            //
-                            //
-                            //
-                            //
-
                             SizedBox(
                               height: 15,
                             ),
@@ -2030,7 +2047,7 @@ class _VesselFormState extends State<VesselForm> {
                               },
                               validator: (value) {
                                 if (value != true) {
-                                  return 'Please choose location';
+                                  return 'Required!';
                                 }
                                 return null;
                               },
@@ -2118,7 +2135,7 @@ class _VesselFormState extends State<VesselForm> {
                               },
                               validator: (value) {
                                 if (value != true) {
-                                  return 'Please choose location';
+                                  return 'Required!';
                                 }
                                 return null;
                               },
@@ -2221,7 +2238,7 @@ class _VesselFormState extends State<VesselForm> {
                               },
                               validator: (value) {
                                 if (value != true) {
-                                  return 'Please choose location';
+                                  return 'Required!';
                                 }
                                 return null;
                               },
@@ -2311,7 +2328,7 @@ class _VesselFormState extends State<VesselForm> {
                   },
                   validator: (value) {
                     if (value != true) {
-                      return 'Please choose location';
+                      return 'Required!';
                     }
                     return null;
                   },
@@ -2388,7 +2405,7 @@ class _VesselFormState extends State<VesselForm> {
                         },
                         validator: (value) {
                           if (value != true) {
-                            return 'Please choose location';
+                            return 'Required!';
                           }
                           return null;
                         },
@@ -2459,7 +2476,7 @@ class _VesselFormState extends State<VesselForm> {
                   },
                   validator: (value) {
                     if (value != true) {
-                      return 'Please choose location';
+                      return 'Required!';
                     }
                     return null;
                   },
@@ -2538,7 +2555,7 @@ class _VesselFormState extends State<VesselForm> {
                         },
                         validator: (value) {
                           if (value != true) {
-                            return 'Please choose location';
+                            return 'Required!';
                           }
                           return null;
                         },
@@ -2687,7 +2704,7 @@ class _VesselFormState extends State<VesselForm> {
                         },
                         validator: (value) {
                           if (value != true) {
-                            return 'Please choose location';
+                            return 'Required!';
                           }
                           return null;
                         },
@@ -2762,7 +2779,7 @@ class _VesselFormState extends State<VesselForm> {
                   },
                   validator: (value) {
                     if (value != true) {
-                      return 'Please choose location';
+                      return 'Required!';
                     }
                     return null;
                   },
@@ -2795,7 +2812,7 @@ class _VesselFormState extends State<VesselForm> {
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 10, horizontal: 10),
                           border: OutlineInputBorder(),
-                          labelText: 'Connections...',
+                          labelText: 'Connections and protocols...',
                           labelStyle: TextStyle(),
                           errorStyle: TextStyle(height: 0.5),
                         ),
@@ -2827,9 +2844,6 @@ class _VesselFormState extends State<VesselForm> {
               ),
               SizedBox(
                 height: 15,
-              ),
-              Divider(
-                thickness: 1,
               ),
             ],
           ),
