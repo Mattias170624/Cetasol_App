@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:cetasol_app/Models/vessel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -36,13 +37,11 @@ class _VesselFormState extends State<VesselForm> {
     'engine_speed_torque_signals': '',
     'tank_sensor': '',
     'connect_power_generation_to_system': '',
-    // 10a questsion again:
     'extra_fuel_flow_signal': '',
     'extra_fuel_flow_signal_type': '',
     'extra_wire_engine_room_or_bridge': '',
     'extra_fuel_flow_installed': '',
     'extra_engine_speed_torque_signals': '',
-    // Continue normal:
     'have_gps': '',
     'gps_network': '',
     'have_compass': '',
@@ -61,14 +60,93 @@ class _VesselFormState extends State<VesselForm> {
   File? imageData3;
 
   void _handleFormComplete(List<dynamic> dataList) {
+    var drivelineInfoList = [];
+    var extraDescription = (textControllerList['final_extra_description']!
+                .text
+                .isNotEmpty &&
+            radioButtonValuesList['anything_else_you_want_to_contact'] == 'yes')
+        ? textControllerList['final_extra_description']!.text
+        : null;
+    final fuelFlowSignal = radioButtonValuesList['fuel_flow_signal'];
+    var fuelFlowSignalType = fuelFlowSignal == 'yes'
+        ? radioButtonValuesList['fuel_flow_signal_type']
+        : null;
+    var wiresLocation = fuelFlowSignal == 'yes'
+        ? radioButtonValuesList['wire_engine_room_or_bridge']
+        : null;
+    var fuelFlowInstalled = fuelFlowSignal == 'no'
+        ? radioButtonValuesList['fuel_flow_installed']
+        : null;
+    var engineSpeedAndTorque = fuelFlowSignal == 'no'
+        ? radioButtonValuesList['engine_speed_torque_signals']
+        : null;
+    var connectExtra =
+        radioButtonValuesList['connect_power_generation_to_system'];
+    var extraFuelFlowSignal = connectExtra == 'yes'
+        ? radioButtonValuesList['extra_fuel_flow_signal']
+        : null;
+    var extraFueldFlowSignalType = connectExtra == 'yes'
+        ? radioButtonValuesList['extra_fuel_flow_signal_type']
+        : null;
+    var extraWiresLocation = connectExtra == 'yes'
+        ? radioButtonValuesList['extra_location_of_wires']
+        : null;
+    var extraFuelFlowInstalled = connectExtra == 'no'
+        ? radioButtonValuesList['extra_fuel_flow_installed']
+        : null;
+    var extraSpeedAndTorque = connectExtra == 'no'
+        ? radioButtonValuesList['extra_engine_speed_and_torque_signals']
+        : null;
+    var gpsNetwork = radioButtonValuesList['have_gps'] == 'yes'
+        ? radioButtonValuesList['gps_network']
+        : null;
+
+    var compassNetwork = radioButtonValuesList['have_compass'] == 'yes'
+        ? radioButtonValuesList['compass_network']
+        : null;
+
     textControllerList.forEach((key, value) {
-      print('$key : ${value.text}');
+      if (key.startsWith('driveline_')) {
+        drivelineInfoList.add(value.text);
+      }
     });
 
-    print('\n');
+    var vesselObject = VesselModel(
+      textControllerList['company_name']!.text,
+      textControllerList['vessel_name']!.text,
+      textControllerList['imo_number']!.text,
+      textControllerList['technical_full_name']!.text,
+      textControllerList['technical_email']!.text,
+      textControllerList['planning_full_name']!.text,
+      textControllerList['planning_email']!.text,
+      textControllerList['number_of_drivelines']!.text,
+      drivelineInfoList,
+      radioButtonValuesList['driveline_type']!,
+      imageData1!,
+      imageData2!,
+      imageData3!,
+      radioButtonValuesList['tank_sensor']!,
+      radioButtonValuesList['fuel_flow_signal'],
+      fuelFlowSignalType,
+      wiresLocation,
+      fuelFlowInstalled,
+      engineSpeedAndTorque,
+      radioButtonValuesList['connect_power_generation_to_system']!,
+      extraFuelFlowSignal,
+      extraFueldFlowSignalType,
+      extraWiresLocation,
+      extraFuelFlowInstalled,
+      extraSpeedAndTorque,
+      radioButtonValuesList['have_gps']!,
+      gpsNetwork,
+      radioButtonValuesList['have_compass']!,
+      compassNetwork,
+      extraDescription,
+      radioButtonValuesList['display_size']!,
+    );
 
-    radioButtonValuesList.forEach((key, value) {
-      print('$key : $value');
+    vesselObject.createParsedList.forEach((key, value) {
+      print('$key  :  $value');
     });
   }
 
