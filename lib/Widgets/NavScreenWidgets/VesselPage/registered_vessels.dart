@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:cetasol_app/Models/registered_vessel_model.dart';
+import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class RegisteredVessels extends StatefulWidget {
@@ -8,114 +9,173 @@ class RegisteredVessels extends StatefulWidget {
   State<RegisteredVessels> createState() => _RegisteredVesselsState();
 }
 
-// Item generator for the vessel list
-List<RegisteredVesselItem> _generateItems(int numberOfItems) {
-  return List<RegisteredVesselItem>.generate(
-    numberOfItems,
-    (int index) {
-      return RegisteredVesselItem(
-        headerValue: 'Vessel $index',
-        expandedValue: 'This is item number $index',
-      );
-    },
-  );
-}
-
 class _RegisteredVesselsState extends State<RegisteredVessels> {
-  final List<RegisteredVesselItem> _data = _generateItems(3);
-  int _selectedItemIndex = 0;
+  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
+      .collection('users')
+      .doc(AuthService().auth.currentUser!.uid)
+      .collection('Registered vessels list')
+      .snapshots();
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.only(right: 20, left: 20, bottom: 20, top: 0),
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(5),
-        ),
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Registered vessels',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.surface,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16,
+    return StreamBuilder<QuerySnapshot>(
+      stream: _usersStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Container(
+            color: Colors.red,
+            child: const Text('Something went wrong'),
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container(
+            margin: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(5),
+              ),
+            ),
+          );
+        }
+
+        return Container(
+          margin: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(
+              Radius.circular(5),
+            ),
+          ),
+          child: snapshot.data?.docs == null || snapshot.data!.docs.isEmpty
+              ? Container(
+                  margin: EdgeInsets.all(10),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Registered vessels',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.surface,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.only(bottom: 20, top: 5),
+                        height: 3,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      Text(
+                        'No registered vessels yet',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 129, 129, 129),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : ListView(
+                  children: snapshot.data!.docs
+                      .map((DocumentSnapshot document) {
+                        Map vesselInfoMap = document.data()! as Map;
+                        return Container(
+                          padding: EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Registered vessels',
+                                  style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: double.infinity,
+                                margin: EdgeInsets.only(bottom: 20, top: 5),
+                                height: 3,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
+                              _listTileBuilder(vesselInfoMap),
+                            ],
+                          ),
+                        );
+                      })
+                      .toList()
+                      .cast(),
                 ),
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.only(bottom: 20, top: 5),
-              height: 3,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-            SingleChildScrollView(
-              child: _buildPanel(),
-            )
-          ],
-        ),
-      ),
+        );
+      },
     );
   }
 
-  // Expansion panel list
-  Widget _buildPanel() {
-    return ExpansionPanelList(
-      expandedHeaderPadding: EdgeInsets.all(0),
-      dividerColor: Colors.grey,
-      elevation: 2,
-      expansionCallback: (int index, bool isExpanded) {
-        setState(() {
-          for (var element in _data) {
-            element.isExpanded = false;
-          }
-          _data[_selectedItemIndex].isExpanded = false;
-          _data[index].isExpanded = !isExpanded;
-          _selectedItemIndex = index;
-        });
-      },
-      children: _data.map<ExpansionPanel>(
-        (RegisteredVesselItem item) {
-          return ExpansionPanel(
-            headerBuilder: (BuildContext context, bool isExpanded) {
-              return ListTile(
-                leading: Icon(Icons.directions_boat_filled),
-                minLeadingWidth: 0,
-                contentPadding: EdgeInsets.only(left: 10),
-                title: Text(
-                  item.headerValue!,
-                  style: TextStyle(fontSize: 15),
-                ),
-              );
-            },
-            body: Container(
-              width: double.infinity,
-              padding: EdgeInsets.only(left: 10, bottom: 8, right: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Vessel info 1'),
-                  Text('Vessel info 2'),
-                  Text('Vessel info 3'),
-                ],
+  Widget _listTileBuilder(Map vesselDetails) {
+    List<Widget> displayItems() {
+      List<Widget> list = [];
+
+      try {
+        vesselDetails.forEach(
+          (key, value) {
+            list.add(
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.only(left: 20, bottom: 5),
+                child: Text('$key : $value'),
               ),
-            ),
-            backgroundColor: Color.fromARGB(255, 240, 240, 240),
-            isExpanded: item.isExpanded,
-          );
-        },
-      ).toList(),
+            );
+          },
+        );
+      } catch (error) {
+        list.clear();
+        list.add(
+          Center(
+            child: Text('No vessels found'),
+          ),
+        );
+        print(error);
+      }
+      return list;
+    }
+
+    return Container(
+      color: Color.fromARGB(255, 238, 238, 238),
+      child: ExpansionTile(
+        leading: Padding(
+          padding: EdgeInsets.all(0),
+          child: Icon(Icons.directions_boat_filled_outlined),
+        ),
+        iconColor: Theme.of(context).colorScheme.onPrimary,
+        collapsedIconColor: Theme.of(context).colorScheme.onPrimary,
+        title: Text(vesselDetails['Vessel name']),
+        children: displayItems(),
+      ),
     );
   }
 }
