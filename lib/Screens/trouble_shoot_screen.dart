@@ -8,18 +8,15 @@ class TroubleshootScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      body: Container(
-        color: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+      body: SizedBox(
+        width: double.infinity,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                color: Theme.of(context).colorScheme.secondary,
-                child: TopContainer(),
-              ),
+            Container(
+              width: double.infinity,
+              color: Theme.of(context).colorScheme.secondary,
+              child: TopContainer(),
             ),
             Expanded(
               child: Container(

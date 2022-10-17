@@ -29,7 +29,6 @@ class _VesselFormScreenState extends State<VesselFormScreen> {
         width: double.infinity,
         child: Column(
           children: [
-            // VesselFormTitle(),
             Expanded(
               child: VesselForm(),
             ),

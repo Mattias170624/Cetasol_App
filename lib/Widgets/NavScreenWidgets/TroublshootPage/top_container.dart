@@ -10,7 +10,6 @@ class TopContainer extends StatelessWidget {
       margin: EdgeInsets.all(20),
       child: Column(
         children: [
-          Spacer(),
           Container(
             width: double.infinity,
             padding: EdgeInsets.all(10),
