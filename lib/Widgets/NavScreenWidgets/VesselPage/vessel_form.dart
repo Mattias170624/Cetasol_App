@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
 import 'package:cetasol_app/Models/vessel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -54,12 +55,13 @@ class _VesselFormState extends State<VesselForm> {
   bool showImage1Error = false;
   bool showImage2Error = false;
   bool showImage3Error = false;
+  bool _showDuplicateVesselError = false;
 
   File? imageData1;
   File? imageData2;
   File? imageData3;
 
-  void _handleFormComplete(List<dynamic> dataList) {
+  void _handleFormComplete() async {
     var drivelineInfoList = [];
     var extraDescription = (textControllerList['final_extra_description']!
                 .text
@@ -145,9 +147,13 @@ class _VesselFormState extends State<VesselForm> {
       radioButtonValuesList['display_size']!,
     );
 
-    vesselObject.createParsedList.forEach((key, value) {
-      print('$key  :  $value');
-    });
+    if (await FirestoreDatabase().addNewVessel(vesselObject.createParsedList)) {
+      Navigator.pop(context);
+    } else {
+      setState(() {
+        _showDuplicateVesselError = true;
+      });
+    }
   }
 
   @override
@@ -209,7 +215,7 @@ class _VesselFormState extends State<VesselForm> {
 
             // Check if we reached the end of steps
             if (_activeCurrentStep == stepList().length - 1) {
-              _handleFormComplete([]);
+              _handleFormComplete();
               return;
             }
 
@@ -250,13 +256,13 @@ class _VesselFormState extends State<VesselForm> {
             }
           },
           onStepCancel: () {
-            _handleFormComplete([]);
             if (_activeCurrentStep == 0) {
               return;
             }
 
             setState(() {
               _activeCurrentStep -= 1;
+              _showDuplicateVesselError = false;
             });
           },
           steps: stepList(),
@@ -2919,6 +2925,19 @@ class _VesselFormState extends State<VesselForm> {
             children: [
               Text(
                 'All questions completed!\n\nYou can always delete or edit your vessel in the future if needed.',
+              ),
+              Visibility(
+                visible: _showDuplicateVesselError,
+                child: Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    'A vessel already exists with the same name!',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                  ),
+                ),
               ),
               SizedBox(
                 height: 15,

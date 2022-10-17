@@ -8,8 +8,9 @@ class FirestoreDatabase extends AuthService {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<bool> addNewUser(UserModel user) async {
-    CollectionReference userRef =
-        FirebaseFirestore.instance.collection('users');
+    DocumentReference userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(auth.currentUser!.uid);
 
     DocumentReference validNumbersRef =
         FirebaseFirestore.instance.collection('validnumbers').doc('numbers');
@@ -19,7 +20,7 @@ class FirestoreDatabase extends AuthService {
 
     // Add object to 'users' collection
     try {
-      await userRef.add(user.toMap());
+      await userRef.set(user.toMap());
       print('Added user to users collection');
       testResult1 = true;
     } catch (error) {
@@ -39,6 +40,40 @@ class FirestoreDatabase extends AuthService {
     }
 
     return (testResult1 && testResult2);
+  }
+
+  Future<bool> addNewVessel(Map<String, dynamic> parsedVesselMap) async {
+    DocumentReference userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(auth.currentUser!.uid);
+    bool finalResult = false;
+
+    try {
+      await userRef.collection('Registered vessels list').get().then((result) {
+        if (result.docs.isEmpty) {
+          finalResult = true;
+        } else {
+          for (var element in result.docs) {
+            if (element.id == parsedVesselMap['Vessel name']) {
+              finalResult = false;
+              return;
+            }
+          }
+          finalResult = true;
+        }
+      });
+
+      if (finalResult) {
+        await userRef
+            .collection('Registered vessels list')
+            .doc('${parsedVesselMap['Vessel name']}')
+            .set(parsedVesselMap);
+      }
+    } catch (error) {
+      print(error);
+      return false;
+    }
+    return finalResult;
   }
 
   Future<bool> checkDuplicatePhone(String usersPhone) async {

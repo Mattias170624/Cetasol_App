@@ -27,6 +27,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _attachSnapshotListener(context));
+  }
+
+  void _attachSnapshotListener(BuildContext context) {
+    print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+  }
+
+  @override
   Widget build(BuildContext context) {
     Channel? cachedYoutubeData;
 
