@@ -57,9 +57,9 @@ class _VesselFormState extends State<VesselForm> {
   bool showImage3Error = false;
   bool _showDuplicateVesselError = false;
 
-  File? imageData1;
-  File? imageData2;
-  File? imageData3;
+  XFile? imageData1;
+  XFile? imageData2;
+  XFile? imageData3;
 
   void _handleFormComplete() async {
     var drivelineInfoList = [];
@@ -2993,9 +2993,9 @@ class _VesselFormState extends State<VesselForm> {
 
   Future pickImage(ImageSource imageSource, int storeInVariable) async {
     try {
-      final image = await ImagePicker().pickImage(source: imageSource);
+      final XFile? image = await ImagePicker().pickImage(source: imageSource);
       if (image == null) return;
-      final choosenImage = File(image.path);
+      final choosenImage = XFile(image.path);
       setState(() {
         switch (storeInVariable) {
           case 0:

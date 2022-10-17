@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cetasol_app/Models/user_model.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FirestoreDatabase extends AuthService {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -48,6 +52,21 @@ class FirestoreDatabase extends AuthService {
         .doc(auth.currentUser!.uid);
     bool finalResult = false;
 
+    var imageName1 = File(XFile(parsedVesselMap['Image 1']).path);
+    var imageName2 = File(XFile(parsedVesselMap['Image 2']).path);
+    var imageName3 = File(XFile(parsedVesselMap['Image 3']).path);
+    final userUid = AuthService().auth.currentUser!.uid;
+    final vesselName = parsedVesselMap['Vessel name'];
+
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference referenceDirImages =
+        referenceRoot.child(userUid).child(vesselName);
+
+    Reference imageRef1 = referenceDirImages.child('manufacturing label');
+    Reference imageRef2 = referenceDirImages.child('wiring_diagram_drivelines');
+    Reference imageRef3 =
+        referenceDirImages.child('wiring_diagram_navigation_system');
+
     try {
       await userRef.collection('Registered vessels list').get().then((result) {
         if (result.docs.isEmpty) {
@@ -73,6 +92,16 @@ class FirestoreDatabase extends AuthService {
       print(error);
       return false;
     }
+
+    try {
+      await imageRef1.putFile(imageName1);
+      await imageRef2.putFile(imageName2);
+      await imageRef3.putFile(imageName3);
+    } catch (error) {
+      finalResult = false;
+      print(error);
+    }
+
     return finalResult;
   }
 
