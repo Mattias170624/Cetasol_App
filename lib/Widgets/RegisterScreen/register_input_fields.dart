@@ -1,16 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:io';
-
-import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:cetasol_app/Screens/signup_screen_2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class RegisterInputFields extends StatefulWidget {
+  const RegisterInputFields({super.key});
+
   @override
   State<RegisterInputFields> createState() => _RegisterInputFieldsState();
 }
@@ -24,12 +23,12 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
   String _usedDuplicatePhoneNumber = '';
   String _phoneErrorText = '';
   String? emailErrorText;
-  bool obscurePassword = true;
   bool isPhoneTextInvalid = false;
+  bool obscurePassword = true;
   bool showPhoneError = false;
 
+  PhoneNumber _parsedNumber = PhoneNumber(isoCode: '', phoneNumber: '');
   PhoneNumber number = PhoneNumber(isoCode: 'SE');
-  late PhoneNumber _parsedNumber;
   String initialCountry = 'SE';
 
   void _setPreviousPhoneNumber(String text) {
@@ -267,10 +266,7 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
             textAlign: TextAlign.left,
           ),
           Spacer(),
-          Container(
-            margin: Platform.isAndroid
-                ? EdgeInsets.only(bottom: 60)
-                : EdgeInsets.only(bottom: 40),
+          SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               onPressed: _handleContinueButton,
@@ -287,8 +283,85 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
               ),
             ),
           ),
+          Container(
+            margin: EdgeInsets.only(top: 5),
+            child: Column(
+              children: [
+                Text(
+                  'By registering to this app you agree to our',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.surface,
+                    fontSize: 12,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: _handleTOSbutton,
+                  child: Text(
+                    'Terms of Service and Privacy Policy',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 30,
+          ),
         ],
       ),
+    );
+  }
+
+  void _handleTOSbutton() {
+    showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Terms of Service',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.surface,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.only(bottom: 20, top: 5),
+                height: 3,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              Text('Terms of Service text..'),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -350,8 +423,12 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
     }
 
     // 4: Case if phone number is already in use
-    if (_parsedNumber.phoneNumber == _usedDuplicatePhoneNumber) {
-      _setPhoneError(true);
+    if (_parsedNumber.phoneNumber != null) {
+      if (_parsedNumber.phoneNumber == _usedDuplicatePhoneNumber) {
+        _setPhoneError(true);
+        return false;
+      }
+    } else {
       return false;
     }
 
