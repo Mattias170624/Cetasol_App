@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:image_picker/image_picker.dart';
+
 class VesselModel {
   final String company_name;
   final String vessel_name;
@@ -35,9 +37,9 @@ class VesselModel {
   final String? compass_type;
   final String? user_extra_connection_description;
 
-  final File image1;
-  final File image2;
-  final File image3;
+  final XFile image1;
+  final XFile image2;
+  final XFile image3;
 
   VesselModel(
     this.company_name,
