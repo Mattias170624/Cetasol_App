@@ -125,4 +125,31 @@ class FirestoreDatabase extends AuthService {
       return false;
     }
   }
+
+  Future<bool> sendTicket(String problemType, String description) async {
+    final user = AuthService().auth.currentUser!;
+    DocumentReference ticketListRef =
+        FirebaseFirestore.instance.collection('tickets').doc(user.uid);
+    DateTime date = DateTime.now();
+    final formattedDate = '${date.day}-${date.month}-${date.year}';
+
+    List ticketObject = [
+      {
+        'type': problemType,
+        'Sent date': formattedDate,
+        'description': description,
+        'contact': user.phoneNumber,
+      }
+    ];
+
+    // Try adding a new ticket to database
+    try {
+      await ticketListRef.set({'tickets': FieldValue.arrayUnion(ticketObject)},
+          SetOptions(merge: true));
+      return true;
+    } catch (error) {
+      print(error);
+      return false;
+    }
+  }
 }
