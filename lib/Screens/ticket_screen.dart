@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cetasol_app/Widgets/NavScreenWidgets/TroublshootPage/ticket_input_fields.dart';
 import 'package:flutter/material.dart';
 
 class TicketScreen extends StatelessWidget {
@@ -13,6 +14,21 @@ class TicketScreen extends StatelessWidget {
           style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
         ),
         centerTitle: true,
+      ),
+      body: SizedBox(
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Flexible(
+              fit: FlexFit.loose,
+              child: SingleChildScrollView(
+                child: TicketInputFields(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
