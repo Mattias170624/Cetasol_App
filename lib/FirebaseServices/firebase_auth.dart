@@ -15,7 +15,7 @@ class AuthService {
     UserCredential result =
         await auth.signInWithEmailAndPassword(email: email, password: password);
     final User user = result.user!;
-
+    print('a $user');
     return user;
   }
 
@@ -127,6 +127,14 @@ class AuthService {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
       return true;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  Future<dynamic> removeUserAuth(BuildContext context) async {
+    try {
+      return await AuthService().auth.currentUser!.delete();
     } catch (error) {
       return error;
     }

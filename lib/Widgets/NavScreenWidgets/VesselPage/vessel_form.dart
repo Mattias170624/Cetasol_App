@@ -55,7 +55,8 @@ class _VesselFormState extends State<VesselForm> {
   bool showImage1Error = false;
   bool showImage2Error = false;
   bool showImage3Error = false;
-  bool _showDuplicateVesselError = false;
+
+  String _finalErrorText = '';
 
   XFile? imageData1;
   XFile? imageData2;
@@ -113,7 +114,7 @@ class _VesselFormState extends State<VesselForm> {
       }
     });
 
-    var vesselObject = VesselModel(
+    var vesselData = VesselModel(
       textControllerList['company_name']!.text,
       textControllerList['vessel_name']!.text,
       textControllerList['imo_number']!.text,
@@ -147,13 +148,22 @@ class _VesselFormState extends State<VesselForm> {
       radioButtonValuesList['display_size']!,
     );
 
-    if (await FirestoreDatabase().addNewVessel(vesselObject.createParsedList)) {
-      Navigator.pop(context);
-    } else {
+    try {
+      await FirestoreDatabase().addNewVessel2(vesselData.createParsedList);
+      await FirestoreDatabase().addVesselImages(
+          imageData1!, imageData2!, imageData3!, vesselData.vessel_name);
+
+      _showHomeScreen();
+    } catch (error) {
+      print('Got error: $error');
       setState(() {
-        _showDuplicateVesselError = true;
+        _finalErrorText = error.toString();
       });
     }
+  }
+
+  void _showHomeScreen() {
+    Navigator.pop(context);
   }
 
   @override
@@ -262,7 +272,7 @@ class _VesselFormState extends State<VesselForm> {
 
             setState(() {
               _activeCurrentStep -= 1;
-              _showDuplicateVesselError = false;
+              _finalErrorText = '';
             });
           },
           steps: stepList(),
@@ -2927,12 +2937,12 @@ class _VesselFormState extends State<VesselForm> {
                 'All questions completed!\n\nYou can always delete or edit your vessel in the future if needed.',
               ),
               Visibility(
-                visible: _showDuplicateVesselError,
+                visible: _finalErrorText.isNotEmpty,
                 child: Container(
                   width: double.infinity,
                   margin: EdgeInsets.symmetric(vertical: 10),
                   child: Text(
-                    'A vessel already exists with the same name!',
+                    _finalErrorText,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.error,
                     ),
