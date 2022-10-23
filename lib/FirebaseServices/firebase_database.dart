@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cetasol_app/Models/user_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
 class FirestoreDatabase extends AuthService {
@@ -46,83 +48,147 @@ class FirestoreDatabase extends AuthService {
     return (testResult1 && testResult2);
   }
 
-  Future<bool> addNewVessel(Map<String, dynamic> parsedVesselMap) async {
+  Future<dynamic> addNewVessel2(Map<String, dynamic> parsedVesselMap) async {
     DocumentReference userRef = FirebaseFirestore.instance
         .collection('users')
         .doc(auth.currentUser!.uid);
-    bool finalResult = false;
 
-    var imageName1 = File(XFile(parsedVesselMap['Image 1']).path);
-    var imageName2 = File(XFile(parsedVesselMap['Image 2']).path);
-    var imageName3 = File(XFile(parsedVesselMap['Image 3']).path);
-    final userUid = AuthService().auth.currentUser!.uid;
-    final vesselName = parsedVesselMap['Vessel name'];
-
-    Reference referenceRoot = FirebaseStorage.instance.ref();
-    Reference referenceDirImages =
-        referenceRoot.child(userUid).child(vesselName);
-
-    Reference imageRef1 = referenceDirImages.child('manufacturing label');
-    Reference imageRef2 = referenceDirImages.child('wiring_diagram_drivelines');
-    Reference imageRef3 =
-        referenceDirImages.child('wiring_diagram_navigation_system');
+    dynamic resultValue;
+    final userDoc = await userRef.get();
 
     try {
-      await userRef.collection('Registered vessels list').get().then((result) {
-        if (result.docs.isEmpty) {
-          finalResult = true;
-        } else {
-          for (var element in result.docs) {
-            if (element.id == parsedVesselMap['Vessel name']) {
-              finalResult = false;
-              return;
-            }
-          }
-          finalResult = true;
+      final vesselMap = userDoc.get('vessels') as Map;
+
+      // Look for existing vessel
+      vesselMap.forEach((key, value) {
+        if (key == parsedVesselMap['Vessel name']) {
+          throw ('A vessel already exists with the same name');
         }
       });
 
-      if (finalResult) {
-        await userRef
-            .collection('Registered vessels list')
-            .doc('${parsedVesselMap['Vessel name']}')
-            .set(parsedVesselMap);
+      // If no duplicate vessels found, then add current vessel
+      await userRef.set({
+        'vessels': {parsedVesselMap['Vessel name']: parsedVesselMap}
+      }, SetOptions(merge: true)).catchError((e) {
+        throw (e);
+      });
+
+      resultValue = true;
+    } on StateError catch (error) {
+      switch (error.message) {
+
+        // Case if user has no registered vessels
+        case 'field does not exist within the DocumentSnapshotPlatform':
+          await userRef.update({
+            'vessels': {parsedVesselMap['Vessel name']: parsedVesselMap}
+          }).catchError((e) {
+            resultValue = e;
+          });
+          break;
+
+        case 'A vessel already exists with the same name':
+          return resultValue = error.message;
+
+        default:
+          resultValue = error.message;
+          break;
       }
-    } catch (error) {
-      print(error);
-      return false;
     }
-
-    try {
-      await imageRef1.putFile(imageName1);
-      await imageRef2.putFile(imageName2);
-      await imageRef3.putFile(imageName3);
-    } catch (error) {
-      finalResult = false;
-      print(error);
-    }
-
-    return finalResult;
+    return resultValue;
   }
 
-  Future<bool> checkDuplicatePhone(String usersPhone) async {
-    DocumentReference validNumbersRef =
-        FirebaseFirestore.instance.collection('validnumbers').doc('numbers');
+  Future<dynamic> deleteVessel(Map selectedVessel) async {
+    DocumentReference userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(auth.currentUser!.uid);
+
+    // Update user vessel list with removed selected vessel
+    try {
+      final vesselList = await userRef.get();
+      final vesselMap = vesselList.get('vessels') as Map;
+      vesselMap
+          .removeWhere((key, value) => key == selectedVessel['Vessel name']);
+      userRef.update({'vessels': vesselMap});
+
+      return true;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  Future<dynamic> addVesselImages(
+      XFile image1, XFile image2, XFile image3, String vesselName) async {
+    dynamic resultValue;
+    // Firebase storage reference to users image
+    Reference imageDirectoryRef = FirebaseStorage.instance
+        .ref()
+        .child(AuthService().auth.currentUser!.uid)
+        .child(vesselName);
+
+    // Add the images with thier own respective child name
+    try {
+      imageDirectoryRef.child('manufacturing_label').putFile(
+            File(image1.path),
+          );
+      imageDirectoryRef.child('wiring_diagram_drivelines').putFile(
+            File(image2.path),
+          );
+      imageDirectoryRef.child('wiring_diagram_navigation_system').putFile(
+            File(image3.path),
+          );
+
+      resultValue = true;
+    } catch (error) {
+      resultValue = error;
+    }
+    return resultValue;
+  }
+
+  Future<dynamic> removeVesselImages(String vesselName) async {
+    Reference imageDirectoryRef = FirebaseStorage.instance
+        .ref()
+        .child(AuthService().auth.currentUser!.uid)
+        .child(vesselName);
 
     try {
-      final response = await validNumbersRef.get();
+      await imageDirectoryRef.child('manufacturing_label').delete();
+      await imageDirectoryRef.child('wiring_diagram_drivelines').delete();
+      await imageDirectoryRef
+          .child('wiring_diagram_navigation_system')
+          .delete();
+
+      return true;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  Future<dynamic> checkDuplicatePhone(String usersPhone) async {
+    DocumentReference numberListRef =
+        FirebaseFirestore.instance.collection('validnumbers').doc('numbers');
+    try {
+      final response = await numberListRef.get();
       final numberArray = await response.get(FieldPath(['numberarray']));
 
+      // Check for duplicate phone number
       for (var number in numberArray) {
         if (number == usersPhone) {
-          // Case on duplicate phone number
           return false;
         }
       }
+
       return true;
-    } catch (error) {
-      print('$error');
-      return false;
+    } on StateError catch (error) {
+      switch (error.message) {
+
+        // Case if there is no valid number list
+        case 'cannot get a field on a DocumentSnapshotPlatform which does not exist':
+          return true;
+
+        default:
+          print('EEEEEEEEEEEEEEEEEEEEEE');
+          return error.message;
+      }
     }
   }
 
@@ -150,6 +216,52 @@ class FirestoreDatabase extends AuthService {
     } catch (error) {
       print(error);
       return false;
+    }
+  }
+
+  Future<dynamic> deleteNumberFromList() async {
+    final phoneNum = AuthService().auth.currentUser!.phoneNumber;
+    final numberRef =
+        FirebaseFirestore.instance.collection('validnumbers').doc('numbers');
+    dynamic resultValue;
+
+    try {
+      await numberRef.update({
+        'numberarray': FieldValue.arrayRemove([phoneNum])
+      });
+      resultValue = true;
+    } catch (error) {
+      if (error.toString() ==
+          '[cloud_firestore/not-found] Some requested document was not found.') {
+        return resultValue = false;
+      }
+      resultValue = error;
+    }
+
+    return resultValue;
+  }
+
+  Future<dynamic> deleteUserDocument() async {
+    final uid = AuthService().auth.currentUser!.uid;
+    final userRef = FirebaseFirestore.instance.collection('users').doc(uid);
+
+    try {
+      await userRef.delete();
+      return true;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  Future<dynamic> deleteUserTickets() async {
+    final ticketRef = FirebaseFirestore.instance.collection('tickets');
+    final uid = AuthService().auth.currentUser!.uid;
+
+    try {
+      await ticketRef.doc(uid).delete();
+      return true;
+    } catch (error) {
+      return error;
     }
   }
 }

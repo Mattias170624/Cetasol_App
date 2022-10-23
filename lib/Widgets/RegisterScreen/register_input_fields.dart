@@ -423,32 +423,26 @@ class _RegisterInputFieldsState extends State<RegisterInputFields> {
     }
 
     // 4: Case if phone number is already in use
-    if (_parsedNumber.phoneNumber != null) {
+    if (validationResult2) {
       if (_parsedNumber.phoneNumber == _usedDuplicatePhoneNumber) {
         _setPhoneError(true);
         return false;
       }
-    } else {
-      return false;
-    }
 
-    if (validationResult2) {
       print('Reading database');
       await FirestoreDatabase()
           .checkDuplicatePhone(_parsedNumber.phoneNumber!)
-          .then(
-        (result) {
+          .then((result) {
+        if (result == true) {
+          _setPhoneError(false);
+          validationResult4 = true;
+        } else {
           _setPreviousPhoneNumber(_parsedNumber.phoneNumber!);
-          if (result) {
-            _setPhoneError(false);
-            validationResult4 = true;
-          } else {
-            _setPhoneErrorText('Phone number already in use');
-            _setPhoneError(true);
-            validationResult4 = false;
-          }
-        },
-      );
+          validationResult4 = false;
+          _setPhoneErrorText('Phone number already in use');
+          _setPhoneError(true);
+        }
+      });
     } else {
       validationResult4 = false;
     }
