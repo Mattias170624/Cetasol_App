@@ -2,6 +2,8 @@
 
 import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
+import 'package:cetasol_app/Screens/vessel_form_screen.dart';
+import 'package:cetasol_app/Widgets/NavScreenWidgets/VesselPage/vessel_form.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -212,7 +214,52 @@ class _RegisteredVesselsState extends State<RegisteredVessels> {
   }
 
   void _handleEditVessel(Map selectedVessel) async {
+    Map<String, String> textList = {
+      'Company name': selectedVessel['Company name'],
+      'Vessel name': selectedVessel['Vessel name'],
+      'Imo number': selectedVessel['Imo number'],
+      'Tech name': selectedVessel['Tech name'],
+      'Tech email': selectedVessel['Tech email'],
+      'Planning name': selectedVessel['Planning name'],
+      'Planning email': selectedVessel['Planning email'],
+    };
+
+    _showVesselForm(textList);
     try {} catch (error) {}
+  }
+
+  void _showVesselForm(Map<String, String> previousVesselTextInfo) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              title: Text(
+                'Edit form',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+              centerTitle: true,
+            ),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            body: Container(
+              padding: EdgeInsets.all(0),
+              width: double.infinity,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: VesselForm(previousVesselTextInfo),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 
   void _handleDeleteVessel(Map selectedVessel) async {

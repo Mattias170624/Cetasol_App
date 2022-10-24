@@ -30,7 +30,7 @@ class _VesselFormScreenState extends State<VesselFormScreen> {
         child: Column(
           children: [
             Expanded(
-              child: VesselForm(),
+              child: VesselForm(const {}),
             ),
           ],
         ),

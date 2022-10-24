@@ -245,10 +245,12 @@ class _DeleteSheetState extends State<DeleteSheet> {
       FirestoreDatabase().deleteNumberFromList(),
       FirestoreDatabase().deleteUserTickets(),
       FirestoreDatabase().deleteUserDocument(),
-    ]).then((resultList) {
+      FirestoreDatabase().deleteAllUserImages(),
+    ]).then((resultList) async {
       print('OOO $resultList');
       if (resultList.contains(false) || resultList.contains(true)) {
         print('No test had null or errors');
+        await AuthService().removeUserAuth(context);
         _showLoginScreen();
       } else {
         print('Error in results!');

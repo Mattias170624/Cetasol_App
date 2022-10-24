@@ -15,7 +15,6 @@ class AuthService {
     UserCredential result =
         await auth.signInWithEmailAndPassword(email: email, password: password);
     final User user = result.user!;
-    print('a $user');
     return user;
   }
 
