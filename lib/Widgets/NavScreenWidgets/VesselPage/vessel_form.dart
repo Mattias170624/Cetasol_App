@@ -10,6 +10,10 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:image_picker/image_picker.dart';
 
 class VesselForm extends StatefulWidget {
+  Map<String, String> editModeText;
+
+  VesselForm(this.editModeText);
+
   @override
   State<VesselForm> createState() => _VesselFormState();
 }
@@ -148,8 +152,11 @@ class _VesselFormState extends State<VesselForm> {
       radioButtonValuesList['display_size']!,
     );
 
+    String? editedVesselName = widget.editModeText['Vessel name'];
+
     try {
-      await FirestoreDatabase().addNewVessel2(vesselData.createParsedList);
+      await FirestoreDatabase()
+          .addNewVessel2(vesselData.createParsedList, editedVesselName);
       await FirestoreDatabase().addVesselImages(
           imageData1!, imageData2!, imageData3!, vesselData.vessel_name);
 
@@ -2982,8 +2989,7 @@ class _VesselFormState extends State<VesselForm> {
   }
 
   TextEditingController _createTextController(String textIdentifier) {
-    // Incase if user refreshes the form,
-    // Assign previous controller to the new texfield
+    // Check if text controller already exists
     if (textControllerList.containsKey(textIdentifier)) {
       late final TextEditingController existingController;
       textControllerList.forEach((key, value) {
@@ -2994,9 +3000,47 @@ class _VesselFormState extends State<VesselForm> {
       });
       return existingController;
     }
+
+    // Create new controller and also add it to controller list
+    if (widget.editModeText.isNotEmpty) {
+      final newController = TextEditingController();
+      final controllerObject = {textIdentifier: newController};
+      textControllerList.addEntries(controllerObject.entries);
+    }
+
     final newController = TextEditingController();
     final controllerObject = {textIdentifier: newController};
     textControllerList.addEntries(controllerObject.entries);
+
+    // Set some textfields to previous saved value if form is in edit mode
+    if (widget.editModeText.isNotEmpty) {
+      final savedTextResults = widget.editModeText;
+      switch (textIdentifier) {
+        case 'company_name':
+          newController.text = savedTextResults['Company name']!;
+          break;
+        case 'vessel_name':
+          newController.text = savedTextResults['Vessel name']!;
+          break;
+        case 'imo_number':
+          newController.text = savedTextResults['Imo number']!;
+          break;
+        case 'technical_full_name':
+          newController.text = savedTextResults['Tech name']!;
+          break;
+        case 'technical_email':
+          newController.text = savedTextResults['Tech email']!;
+          break;
+        case 'planning_full_name':
+          newController.text = savedTextResults['Planning name']!;
+          break;
+        case 'planning_email':
+          newController.text = savedTextResults['Planning email']!;
+          break;
+
+        default:
+      }
+    }
 
     return newController;
   }

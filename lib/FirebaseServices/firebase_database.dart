@@ -1,13 +1,11 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'dart:io';
-import 'dart:math';
 
 import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cetasol_app/Models/user_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
 class FirestoreDatabase extends AuthService {
@@ -48,7 +46,8 @@ class FirestoreDatabase extends AuthService {
     return (testResult1 && testResult2);
   }
 
-  Future<dynamic> addNewVessel2(Map<String, dynamic> parsedVesselMap) async {
+  Future<dynamic> addNewVessel2(
+      Map<String, dynamic> parsedVesselMap, String? replacedVesselName) async {
     DocumentReference userRef = FirebaseFirestore.instance
         .collection('users')
         .doc(auth.currentUser!.uid);
@@ -57,6 +56,10 @@ class FirestoreDatabase extends AuthService {
     final userDoc = await userRef.get();
 
     try {
+      if (replacedVesselName != null) {
+        await deleteVessel({'Vessel name': replacedVesselName});
+        await removeVesselImages(replacedVesselName);
+      }
       final vesselMap = userDoc.get('vessels') as Map;
 
       // Look for existing vessel
@@ -103,6 +106,7 @@ class FirestoreDatabase extends AuthService {
         .doc(auth.currentUser!.uid);
 
     // Update user vessel list with removed selected vessel
+    print('Removing vessel name::: ${selectedVessel['Vessel name']}');
     try {
       final vesselList = await userRef.get();
       final vesselMap = vesselList.get('vessels') as Map;
@@ -160,6 +164,20 @@ class FirestoreDatabase extends AuthService {
       return true;
     } catch (error) {
       return error;
+    }
+  }
+
+  Future<dynamic> deleteAllUserImages() async {
+    String uid = AuthService().auth.currentUser!.uid;
+    ListResult storageRef =
+        await FirebaseStorage.instance.ref().child(uid).listAll();
+
+    // Loops through all stored images uses has and deletes them
+    for (var vessel in storageRef.prefixes) {
+      var vesselImages = await vessel.listAll();
+      for (var image in vesselImages.items) {
+        image.delete();
+      }
     }
   }
 
