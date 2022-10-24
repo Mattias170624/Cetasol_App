@@ -4,6 +4,8 @@ import 'package:cetasol_app/Screens/ticket_screen.dart';
 import 'package:flutter/material.dart';
 
 class TopContainer extends StatelessWidget {
+  const TopContainer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(

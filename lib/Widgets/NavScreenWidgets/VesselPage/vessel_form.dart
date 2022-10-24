@@ -1,18 +1,16 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
-import 'dart:io';
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable, invalid_use_of_protected_member
 
 import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:cetasol_app/Models/vessel.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:form_field_validator/form_field_validator.dart';
-import 'package:image_picker/image_picker.dart';
 
 class VesselForm extends StatefulWidget {
   Map<String, String> editModeText;
 
-  VesselForm(this.editModeText);
+  VesselForm(this.editModeText, {super.key});
 
   @override
   State<VesselForm> createState() => _VesselFormState();
@@ -156,7 +154,7 @@ class _VesselFormState extends State<VesselForm> {
 
     try {
       await FirestoreDatabase()
-          .addNewVessel2(vesselData.createParsedList, editedVesselName);
+          .addNewVessel2(vesselData.createFilteredList, editedVesselName);
       await FirestoreDatabase().addVesselImages(
           imageData1!, imageData2!, imageData3!, vesselData.vessel_name);
 
@@ -792,7 +790,6 @@ class _VesselFormState extends State<VesselForm> {
                             value: 'diesel',
                             groupValue: radioButtonValuesList['driveline_type'],
                             onChanged: (value) {
-                              print(value);
                               setState(() {
                                 state.setValue(true);
                                 if (value != null) {
@@ -2076,7 +2073,7 @@ class _VesselFormState extends State<VesselForm> {
                             SizedBox(
                               height: 15,
                             ),
-                            Container(
+                            SizedBox(
                               width: double.infinity,
                               child: Text(
                                   'Are those wires available in the engine room, or in the bridge'),

@@ -1,4 +1,4 @@
-import 'dart:io';
+// ignore_for_file: non_constant_identifier_names
 
 import 'package:image_picker/image_picker.dart';
 
@@ -22,7 +22,6 @@ class VesselModel {
   final String? engine_speed_and_torque_signals;
   final String tank_sensor;
 
-  // If user chooses to install an extra system
   final String install_power_generator_to_system;
   final String? extra_fuel_flow_signal;
   final String? extra_fuel_flow_signal_type;
@@ -75,7 +74,7 @@ class VesselModel {
     this.display_size,
   );
 
-  Map<String, dynamic> get createParsedList {
+  Map<String, dynamic> get createFilteredList {
     final unParsedList = {
       'Company name': company_name,
       'Vessel name': vessel_name,
@@ -107,8 +106,8 @@ class VesselModel {
       'Preferred display size': display_size,
     };
 
+    // Filter out form questions that the user has not answered
     Map<String, dynamic> parsedList = {};
-
     unParsedList.forEach((key, value) {
       if (value != null) {
         parsedList.addEntries({key: value}.entries);

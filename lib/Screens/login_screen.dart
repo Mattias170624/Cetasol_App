@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:io';
-
-import 'package:cetasol_app/Widgets/LoginScreen/login_header.dart';
 import 'package:cetasol_app/Widgets/LoginScreen/login_input_fields.dart';
+import 'package:cetasol_app/Widgets/LoginScreen/login_header.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }

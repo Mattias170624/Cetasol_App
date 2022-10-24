@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:io';
-
 import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:cetasol_app/Screens/dynamic_home_screen.dart';
 import 'package:cetasol_app/Screens/login_screen.dart';
@@ -19,6 +17,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

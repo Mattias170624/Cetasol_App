@@ -5,6 +5,8 @@ import 'package:cetasol_app/Widgets/NavScreenWidgets/VesselPage/registered_vesse
 import 'package:flutter/material.dart';
 
 class VesselScreen extends StatelessWidget {
+  const VesselScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

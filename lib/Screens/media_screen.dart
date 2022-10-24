@@ -2,6 +2,8 @@ import 'package:cetasol_app/Widgets/NavScreenWidgets/MediaPage/youtube_container
 import 'package:flutter/material.dart';
 
 class MediaScreen extends StatelessWidget {
+  const MediaScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

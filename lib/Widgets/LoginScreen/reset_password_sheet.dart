@@ -5,6 +5,8 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:flutter/material.dart';
 
 class ResetPasswordSheet extends StatefulWidget {
+  const ResetPasswordSheet({super.key});
+
   @override
   State<ResetPasswordSheet> createState() => _ResetPasswordSheetState();
 }
@@ -119,8 +121,12 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
       print(_emailController.value.text);
       final result =
           await AuthService().sendPasswordReset(_emailController.value.text);
-      if (result) Navigator.pop(context);
+      if (result) _closePasswordSheet();
     }
+  }
+
+  void _closePasswordSheet() {
+    Navigator.pop(context);
   }
 
   @override

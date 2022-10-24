@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 
 class QuestionsAndAnswers extends StatefulWidget {
+  const QuestionsAndAnswers({super.key});
+
   @override
   State<QuestionsAndAnswers> createState() => _QuestionsAndAnswersState();
 }

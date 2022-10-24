@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,7 +7,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 class VideoPlayer extends StatefulWidget {
   final String id;
 
-  VideoPlayer({required this.id});
+  VideoPlayer({super.key, required this.id});
 
   @override
   State<VideoPlayer> createState() => _VideoPlayerState();

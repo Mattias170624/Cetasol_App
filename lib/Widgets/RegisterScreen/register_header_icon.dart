@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 
 class RegisterHeaderIcon extends StatelessWidget {
+  const RegisterHeaderIcon({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(

@@ -1,10 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:cetasol_app/Widgets/NavScreenWidgets/VesselPage/vessel_form.dart';
-import 'package:cetasol_app/Widgets/NavScreenWidgets/VesselPage/vessel_form_title.dart';
 import 'package:flutter/material.dart';
 
 class VesselFormScreen extends StatefulWidget {
+  const VesselFormScreen({super.key});
+
   @override
   State<VesselFormScreen> createState() => _VesselFormScreenState();
 }
