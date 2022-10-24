@@ -1,12 +1,12 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:io';
-
-import 'package:cetasol_app/Widgets/LoginScreen/login_header.dart';
 import 'package:cetasol_app/Widgets/LoginScreen/login_input_fields.dart';
+import 'package:cetasol_app/Widgets/LoginScreen/login_header.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -20,7 +20,11 @@ class _LoginScreenState extends State<LoginScreen> {
         MediaQuery.of(context).size.height - paddingTop - paddingBottom;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      appBar: AppBar(
+        elevation: 0,
+        toolbarHeight: 0,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,

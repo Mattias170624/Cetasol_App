@@ -6,6 +6,8 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
 class TicketInputFields extends StatefulWidget {
+  const TicketInputFields({super.key});
+
   @override
   State<TicketInputFields> createState() => _TicketInputFieldsState();
 }

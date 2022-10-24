@@ -1,6 +1,4 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'dart:io';
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
 
 import 'package:cetasol_app/Widgets/RegisterScreen/register_code_input.dart';
 import 'package:cetasol_app/Widgets/RegisterScreen/register_title.dart';
@@ -11,7 +9,7 @@ class SignUpScreen2 extends StatelessWidget {
   final String password;
   final String phone;
 
-  SignUpScreen2(this.email, this.password, this.phone);
+  SignUpScreen2(this.email, this.password, this.phone, {super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -24,7 +24,7 @@ class FirestoreDatabase extends AuthService {
 
     // Add object to 'users' collection
     try {
-      await userRef.set(user.toMap());
+      await userRef.set(user.userInfoToMap());
       print('Added user to users collection');
       testResult1 = true;
     } catch (error) {

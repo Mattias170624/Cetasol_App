@@ -4,6 +4,8 @@ import 'package:cetasol_app/Screens/vessel_form_screen.dart';
 import 'package:flutter/material.dart';
 
 class AddVesselContainer extends StatelessWidget {
+  const AddVesselContainer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(

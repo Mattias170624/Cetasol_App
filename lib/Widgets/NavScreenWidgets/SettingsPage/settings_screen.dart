@@ -4,10 +4,11 @@ import 'dart:io';
 
 import 'package:cetasol_app/Widgets/NavScreenWidgets/SettingsPage/delete_sheet.dart';
 import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
-import 'package:cetasol_app/Screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
+
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
@@ -153,7 +154,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _handleLogoutButton() async {
     await AuthService().signOutUser(context);
-    //FirebaseAuth.instance.currentUser!.delete();
   }
 
   void _showDeleteUserSheet() {
@@ -181,29 +181,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     Navigator.pop(context);
     _showDeleteUserSheet();
-    // setState(() {
-    //   widget.toggleDrawerShowing();
-    // });
-    //_showDeleteUserSheet();
-
-    // Future.wait([
-    //   // FirestoreDatabase().deleteNumberFromList(),
-    //   // FirestoreDatabase().deleteUserTickets(),
-    //   // FirestoreDatabase().deleteUserDocument(),
-    // ]).then((List<dynamic> resultList) async {
-    //   print('e');
-    //   print(resultList);
-
-    //   await AuthService().removeUserAuth(context);
-    //   _sendToLoginScreen();
-    // }).onError((error, stackTrace) {
-    //   print('eee e$error');
-    // });
-  }
-
-  void _sendToLoginScreen() {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-        (Route route) => false);
   }
 }

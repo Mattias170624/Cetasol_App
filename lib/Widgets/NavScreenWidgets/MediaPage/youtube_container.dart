@@ -7,6 +7,8 @@ import 'package:cetasol_app/Models/video_model.dart';
 import 'package:flutter/material.dart';
 
 class YouTubeContainer extends StatefulWidget {
+  const YouTubeContainer({super.key});
+
   @override
   State<YouTubeContainer> createState() => _YouTubeContainerState();
 }

@@ -1,12 +1,12 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:io';
-
-import 'package:cetasol_app/Widgets/RegisterScreen/register_header_icon.dart';
 import 'package:cetasol_app/Widgets/RegisterScreen/register_input_fields.dart';
+import 'package:cetasol_app/Widgets/RegisterScreen/register_header_icon.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen1 extends StatelessWidget {
+  const SignUpScreen1({super.key});
+
   @override
   Widget build(BuildContext context) {
     double paddingTop = MediaQuery.of(context).padding.top;

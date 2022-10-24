@@ -1,20 +1,20 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
 
 import 'dart:io';
 
-import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
-import 'package:cetasol_app/Models/user_model.dart';
+import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:cetasol_app/Screens/dynamic_home_screen.dart';
+import 'package:cetasol_app/Models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
 class RegisterCodeInput extends StatefulWidget {
+  late final String phoneNumber;
   late final String email;
   final String password;
-  late final String phoneNumber;
 
-  RegisterCodeInput(this.email, this.password, this.phoneNumber);
+  RegisterCodeInput(this.email, this.password, this.phoneNumber, {super.key});
 
   @override
   State<RegisterCodeInput> createState() => _RegisterCodeInputState();
@@ -252,6 +252,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
     super.dispose();
   }
 
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {

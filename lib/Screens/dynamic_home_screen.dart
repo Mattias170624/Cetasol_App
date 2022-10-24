@@ -2,16 +2,17 @@
 
 import 'dart:io';
 
-import 'package:cetasol_app/Models/channel_model.dart';
-import 'package:cetasol_app/Screens/media_screen.dart';
-import 'package:cetasol_app/Screens/vessel_screen.dart';
 import 'package:cetasol_app/Widgets/NavScreenWidgets/SettingsPage/settings_screen.dart';
-import 'package:cetasol_app/Screens/trouble_shoot_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:awesome_bottom_bar/widgets/inspired/inspired.dart';
+import 'package:cetasol_app/Screens/trouble_shoot_screen.dart';
+import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
+import 'package:cetasol_app/Screens/vessel_screen.dart';
+import 'package:cetasol_app/Screens/media_screen.dart';
+import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -27,20 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => _attachSnapshotListener(context));
-  }
-
-  void _attachSnapshotListener(BuildContext context) {
-    print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-  }
-
-  @override
   Widget build(BuildContext context) {
-    Channel? cachedYoutubeData;
-
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.onSurface,

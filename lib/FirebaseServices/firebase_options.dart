@@ -63,7 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '737963305019',
     projectId: 'cetasol-guide-app',
     storageBucket: 'cetasol-guide-app.appspot.com',
-    iosClientId: '737963305019-3v60mmbff2q8a44vt2771uvt4eeuc8j1.apps.googleusercontent.com',
+    iosClientId:
+        '737963305019-3v60mmbff2q8a44vt2771uvt4eeuc8j1.apps.googleusercontent.com',
     iosBundleId: 'com.example.cetasolApp',
   );
 }

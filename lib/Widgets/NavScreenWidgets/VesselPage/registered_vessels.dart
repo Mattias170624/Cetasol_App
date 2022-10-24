@@ -1,13 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
-import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
-import 'package:cetasol_app/Screens/vessel_form_screen.dart';
 import 'package:cetasol_app/Widgets/NavScreenWidgets/VesselPage/vessel_form.dart';
+import 'package:cetasol_app/FirebaseServices/firebase_database.dart';
+import 'package:cetasol_app/FirebaseServices/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class RegisteredVessels extends StatefulWidget {
+  const RegisteredVessels({super.key});
+
   @override
   State<RegisteredVessels> createState() => _RegisteredVesselsState();
 }
@@ -106,6 +107,7 @@ class _RegisteredVesselsState extends State<RegisteredVessels> {
     );
   }
 
+  // Returns an expansion tile filled with vessel information
   ExpansionTile _createVesselTile(Map vesselDetails) {
     return ExpansionTile(
       title: Text(vesselDetails['Vessel name']),
@@ -196,6 +198,7 @@ class _RegisteredVesselsState extends State<RegisteredVessels> {
     );
   }
 
+  // Returns a list of vessel details in a column
   Widget _vesselTextInfoList(Map vesselDetails) {
     List<Widget> vesselText = [];
 
@@ -225,9 +228,9 @@ class _RegisteredVesselsState extends State<RegisteredVessels> {
     };
 
     _showVesselForm(textList);
-    try {} catch (error) {}
   }
 
+  // Brings up the vessel form with some textfields filled in with data from previous vessel
   void _showVesselForm(Map<String, String> previousVesselTextInfo) {
     Navigator.push(
       context,
