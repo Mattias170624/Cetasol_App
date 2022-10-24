@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:cetasol_app/Widgets/NavScreenWidgets/MediaPage/youtube_container.dart';
 import 'package:flutter/material.dart';
 

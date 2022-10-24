@@ -252,6 +252,7 @@ class _RegisterCodeInputState extends State<RegisterCodeInput> {
     super.dispose();
   }
 
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {

@@ -422,7 +422,7 @@ class _VesselFormState extends State<VesselForm> {
                 SizedBox(
                   height: 15,
                 ),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: Text(
                     'Planning contact',
@@ -1334,7 +1334,7 @@ class _VesselFormState extends State<VesselForm> {
                           SizedBox(
                             height: 15,
                           ),
-                          Container(
+                          SizedBox(
                             width: double.infinity,
                             child: Text(
                                 'Are those wires available in the engine room, or in the bridge'),

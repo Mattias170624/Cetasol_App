@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:cetasol_app/Widgets/RegisterScreen/register_input_fields.dart';
 import 'package:cetasol_app/Widgets/RegisterScreen/register_header_icon.dart';
