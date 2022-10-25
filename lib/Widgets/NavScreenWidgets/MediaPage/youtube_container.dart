@@ -82,9 +82,7 @@ class _YouTubeContainerState extends State<YouTubeContainer> {
                   height: 15,
                 ),
                 Text(
-                  _channel!.videoCount.length == 1
-                      ? '1 Total upload'
-                      : '${_channel!.videoCount} Total uploads',
+                  '${_channel!.videoCount} Total uploads',
                   style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 14,

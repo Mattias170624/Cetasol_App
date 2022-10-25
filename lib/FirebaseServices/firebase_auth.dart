@@ -123,12 +123,35 @@ class AuthService {
   }
 
   Future<dynamic> loginUser(String email, String password) async {
+    dynamic returnValue;
+
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
-      return true;
-    } catch (error) {
-      return error;
+      returnValue = true;
+    } on FirebaseAuthException catch (error) {
+      switch (error.message) {
+        case 'user-not-found':
+          returnValue = 'No user found with this email!';
+          break;
+
+        case 'wrong-password':
+          returnValue = 'Wrong password!';
+          break;
+
+        case 'There is no user record corresponding to this identifier. The user may have been deleted.':
+          returnValue = 'No user found with this email!';
+          break;
+
+        case 'The password is invalid or the user does not have a password.':
+          returnValue = 'Wrong password!';
+          break;
+
+        default:
+          returnValue = error.message;
+          break;
+      }
     }
+    return returnValue;
   }
 
   Future<dynamic> removeUserAuth(BuildContext context) async {

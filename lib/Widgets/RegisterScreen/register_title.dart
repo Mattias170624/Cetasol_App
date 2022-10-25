@@ -13,7 +13,7 @@ class RegisterTitle extends StatelessWidget {
         children: [
           Spacer(),
           Text(
-            'A 5 digit code has been\nsent to your device',
+            'A 6 digit code has been\nsent to your device',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 24,

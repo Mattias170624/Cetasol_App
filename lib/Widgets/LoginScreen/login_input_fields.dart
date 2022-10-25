@@ -20,14 +20,7 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool showPasswordError = false;
   String passwordErrorText = '';
-
-  void _setPasswordVisibility(bool newValue) {
-    setState(() {
-      showPasswordError = newValue;
-    });
-  }
 
   void _setPasswordErrorText(String text) {
     setState(() {
@@ -109,7 +102,8 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                       [
                         RequiredValidator(errorText: "Required"),
                         MinLengthValidator(10,
-                            errorText: 'Password is too short')
+                            errorText:
+                                'Password must be atleast 10 characters!')
                       ],
                     ),
                   ),
@@ -118,7 +112,7 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
             ),
           ),
           Visibility(
-            visible: showPasswordError,
+            visible: passwordErrorText.isNotEmpty,
             child: Container(
               width: double.infinity,
               margin: EdgeInsets.only(bottom: 10),
@@ -180,13 +174,7 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                 ? EdgeInsets.only(bottom: 20)
                 : EdgeInsets.only(bottom: 0),
             child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignUpScreen1()),
-                );
-              },
+              onTap: _showRegisterPage,
               child: Text(
                 'Sign up',
                 style: TextStyle(
@@ -202,20 +190,30 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
     );
   }
 
+  void _showRegisterPage() {
+    FocusScope.of(context).unfocus();
+    _formKey.currentState!.reset();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SignUpScreen1(),
+      ),
+    );
+  }
+
   void _handleLoginButton() async {
     final emailText = _emailController.value.text;
     final passwordText = _passwordController.value.text;
-    _setPasswordVisibility(false);
+    _setPasswordErrorText('');
+
+    // If user input is invalid do not continue
     if (!_formKey.currentState!.validate()) return;
 
-    final loginResult = await AuthService().loginUser(emailText, passwordText);
-    if (loginResult.runtimeType == bool && loginResult == true) {
-      if (loginResult) {
-        _showHomeScreen();
-      }
+    final result = await AuthService().loginUser(emailText, passwordText);
+    if (result == true) {
+      _showHomeScreen();
     } else {
-      _setPasswordErrorText('Error logging in');
-      _setPasswordVisibility(true);
+      _setPasswordErrorText(result);
     }
   }
 
