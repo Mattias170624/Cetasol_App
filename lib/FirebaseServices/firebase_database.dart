@@ -46,7 +46,7 @@ class FirestoreDatabase extends AuthService {
     return (testResult1 && testResult2);
   }
 
-  Future<dynamic> addNewVessel2(
+  Future<dynamic> addNewVessel(
       Map<String, dynamic> parsedVesselMap, String? replacedVesselName) async {
     DocumentReference userRef = FirebaseFirestore.instance
         .collection('users')
@@ -60,14 +60,17 @@ class FirestoreDatabase extends AuthService {
         await deleteVessel({'Vessel name': replacedVesselName});
         await removeVesselImages(replacedVesselName);
       }
+
       final vesselMap = userDoc.get('vessels') as Map;
 
       // Look for existing vessel
-      vesselMap.forEach((key, value) {
-        if (key == parsedVesselMap['Vessel name']) {
-          throw ('A vessel already exists with the same name');
-        }
-      });
+      if (replacedVesselName == null) {
+        vesselMap.forEach((key, value) {
+          if (key == parsedVesselMap['Vessel name']) {
+            throw ('A vessel already exists with the same name');
+          }
+        });
+      }
 
       // If no duplicate vessels found, then add current vessel
       await userRef.set({
