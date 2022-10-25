@@ -65,51 +65,7 @@ class _VesselFormState extends State<VesselForm> {
   XFile? imageData3;
 
   void _handleFormComplete() async {
-    var drivelineInfoList = [];
-    var extraDescription = (textControllerList['final_extra_description']!
-                .text
-                .isNotEmpty &&
-            radioButtonValuesList['anything_else_you_want_to_contact'] == 'yes')
-        ? textControllerList['final_extra_description']!.text
-        : null;
-    final fuelFlowSignal = radioButtonValuesList['fuel_flow_signal'];
-    var fuelFlowSignalType = fuelFlowSignal == 'yes'
-        ? radioButtonValuesList['fuel_flow_signal_type']
-        : null;
-    var wiresLocation = fuelFlowSignal == 'yes'
-        ? radioButtonValuesList['wire_engine_room_or_bridge']
-        : null;
-    var fuelFlowInstalled = fuelFlowSignal == 'no'
-        ? radioButtonValuesList['fuel_flow_installed']
-        : null;
-    var engineSpeedAndTorque = fuelFlowSignal == 'no'
-        ? radioButtonValuesList['engine_speed_torque_signals']
-        : null;
-    var connectExtra =
-        radioButtonValuesList['connect_power_generation_to_system'];
-    var extraFuelFlowSignal = connectExtra == 'yes'
-        ? radioButtonValuesList['extra_fuel_flow_signal']
-        : null;
-    var extraFueldFlowSignalType = connectExtra == 'yes'
-        ? radioButtonValuesList['extra_fuel_flow_signal_type']
-        : null;
-    var extraWiresLocation = connectExtra == 'yes'
-        ? radioButtonValuesList['extra_location_of_wires']
-        : null;
-    var extraFuelFlowInstalled = connectExtra == 'no'
-        ? radioButtonValuesList['extra_fuel_flow_installed']
-        : null;
-    var extraSpeedAndTorque = connectExtra == 'no'
-        ? radioButtonValuesList['extra_engine_speed_and_torque_signals']
-        : null;
-    var gpsNetwork = radioButtonValuesList['have_gps'] == 'yes'
-        ? radioButtonValuesList['gps_network']
-        : null;
-
-    var compassNetwork = radioButtonValuesList['have_compass'] == 'yes'
-        ? radioButtonValuesList['compass_network']
-        : null;
-
+    final drivelineInfoList = [];
     textControllerList.forEach((key, value) {
       if (key.startsWith('driveline_')) {
         drivelineInfoList.add(value.text);
@@ -132,29 +88,30 @@ class _VesselFormState extends State<VesselForm> {
       imageData3!,
       radioButtonValuesList['tank_sensor']!,
       radioButtonValuesList['fuel_flow_signal'],
-      fuelFlowSignalType,
-      wiresLocation,
-      fuelFlowInstalled,
-      engineSpeedAndTorque,
+      radioButtonValuesList['fuel_flow_signal_type'],
+      radioButtonValuesList['wire_engine_room_or_bridge'],
+      radioButtonValuesList['fuel_flow_installed'],
+      radioButtonValuesList['engine_speed_torque_signals'],
       radioButtonValuesList['connect_power_generation_to_system']!,
-      extraFuelFlowSignal,
-      extraFueldFlowSignalType,
-      extraWiresLocation,
-      extraFuelFlowInstalled,
-      extraSpeedAndTorque,
+      radioButtonValuesList['extra_fuel_flow_signal'],
+      radioButtonValuesList['extra_fuel_flow_signal_type'],
+      radioButtonValuesList['extra_location_of_wires'],
+      radioButtonValuesList['extra_fuel_flow_installed'],
+      radioButtonValuesList['extra_engine_speed_and_torque_signals'],
       radioButtonValuesList['have_gps']!,
-      gpsNetwork,
+      radioButtonValuesList['gps_network'],
       radioButtonValuesList['have_compass']!,
-      compassNetwork,
-      extraDescription,
+      radioButtonValuesList['compass_network'],
+      textControllerList['final_extra_description']?.text,
       radioButtonValuesList['display_size']!,
     );
 
-    String? editedVesselName = widget.editModeText['Vessel name'];
+    // Case if we enter the form in edit mode, then this variable has value
+    String? selectedEditVessel = widget.editModeText['Vessel name'];
 
     try {
       await FirestoreDatabase()
-          .addNewVessel2(vesselData.createFilteredList, editedVesselName);
+          .addNewVessel(vesselData.createFilteredList, selectedEditVessel);
       await FirestoreDatabase().addVesselImages(
           imageData1!, imageData2!, imageData3!, vesselData.vessel_name);
 

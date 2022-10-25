@@ -108,11 +108,61 @@ class VesselModel {
 
     // Filter out form questions that the user has not answered
     Map<String, dynamic> parsedList = {};
+
     unParsedList.forEach((key, value) {
-      if (value != null) {
+      if (value != null && value.toString().isNotEmpty) {
         parsedList.addEntries({key: value}.entries);
       }
     });
+
+    // Filter out questions for some textfields that might have unnecessary value
+    // if the parent question was changed to another value later on
+    if (parsedList['Driveline type'] == 'electric' ||
+        parsedList['Fuel flow signal'] == 'i_dont_know') {
+      parsedList.remove('Fuel flow signal');
+      parsedList.remove('Fuel flow signal type');
+      parsedList.remove('Location of wires');
+      parsedList.remove('Fuel flow installed');
+      parsedList.remove('Engine speed and torque signals');
+
+      parsedList.remove('Extra fuel flow signal');
+      parsedList.remove('Extra fuel flow signal type');
+      parsedList.remove('Extra location of wires');
+      parsedList.remove('Extra fuel flow installed');
+      parsedList.remove('Extra speed and torque signals');
+    } else {
+      if (parsedList['Extra fuel flow signal'] == 'no') {
+        parsedList.remove('Extra fuel flow signal type');
+        parsedList.remove('Extra location of wires');
+      }
+
+      if (parsedList['Extra fuel flow signal'] == 'yes') {
+        parsedList.remove('Extra fuel flow installed');
+        parsedList.remove('Extra speed and torque signals');
+      }
+
+      if (parsedList['Fuel flow signal'] == 'no') {
+        parsedList.remove('Fuel flow signal type');
+        parsedList.remove('Location of wires');
+      }
+
+      if (parsedList['Fuel flow signal'] == 'yes') {
+        parsedList.remove('Fuel flow installed');
+        parsedList.remove('Engine speed and torque signals');
+      }
+    }
+
+    if (parsedList['GPS installed'] == 'no') {
+      parsedList.remove('GPS type');
+    }
+
+    if (parsedList['Compass installed'] == 'no') {
+      parsedList.remove('Compass type');
+    }
+
+    if (parsedList['Compass installed'] == 'no') {
+      parsedList.remove('Compass type');
+    }
 
     return parsedList;
   }
