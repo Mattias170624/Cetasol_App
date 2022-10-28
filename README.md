@@ -1,16 +1,32 @@
-# cetasol_app
+# Cetasol troubleshoot / guide prototype app
+A project made to test if a troubleshoot / guide app targeted for Cetasols iHelm solution can help the customer onboarding process.
+The app is coded in Dart using Flutter as framework, and has been worked on for ~5 weeks.
+Project development is currenly on a pause.
 
-A new Flutter project.
+App uses the following Firebase services:
+- Firestore cloud database - Used for storing user information
+- Firestore authentication - Used for the sign up process to authenticate real users using phone number as verification.
+- Firestore storage - Used for storing user images.
 
-## Getting Started
+# Installation
+I recommend going through [Flutters installation guide](https://docs.flutter.dev/get-started/install) on how to get started.
+The steps in that guide will look roughly like this:
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Install Flutter SDk
+2. Update your PATH variable 
+3. Install Android studio or xCode and setup phone simulator
+4. Install Flutter and Dart plugins in VS Code
+5. Validate your setup with Flutter Doctor
+======
+After flutter doctor command returns with no errors, then go ahead and clone the repository:
+```
+git clone https://github.com/Mattias170624/Cetasol_App.git
+```
+Run the following command in project root to get the required dependencies:
+```
+flutter pub get
+```
+======
+The app uses an API_KEY variable in order to fetch youtube videos, this variable is in .gitIgnore so you will have to just
+replace the variable with an empty string and remove the import.
+File is located in /lib/Widgets/YoutubeServices/api_service.dart
