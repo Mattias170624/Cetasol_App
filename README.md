@@ -14,11 +14,11 @@ The steps in that guide will look roughly like this:
 
 1. Install Flutter SDk
 2. Update your PATH variable 
-3. Install Android studio or xCode and setup phone simulator
+3. Install Android studio or xCode and setup a phone simulator
 4. Install Flutter and Dart plugins in VS Code
 5. Validate your setup with Flutter Doctor
 #
-After flutter doctor command returns with no errors, then go ahead and clone the repository:
+After the flutter doctor command returns with no errors, then go ahead and clone the repository:
 ```
 git clone https://github.com/Mattias170624/Cetasol_App.git
 ```
