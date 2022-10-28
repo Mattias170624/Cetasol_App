@@ -22,7 +22,7 @@ After the flutter doctor command returns with no errors, then go ahead and clone
 ```
 git clone https://github.com/Mattias170624/Cetasol_App.git
 ```
-Run the following command in project root to get the required dependencies:
+Then run the following command in project root to get the required dependencies:
 ```
 flutter pub get
 ```
